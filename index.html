@@ -467,8 +467,7 @@
         <div class="zot-connect-card" id="zotConnectCard">
           <div style="font-size:34px;margin-bottom:12px">📚</div>
           <div class="zot-connect-title">Connect Zotero</div>
-          <div class="zot-connect-sub">Enter your <strong>numeric</strong> Zotero User ID and a personal API key.<br>Find both at <strong>zotero.org/settings/keys</strong></div>
-          <input class="zot-connect-input" id="zotUidInput" placeholder="Numeric User ID (e.g. 1234567)" onkeydown="if(event.key==='Enter')connectZotero()">
+          <div class="zot-connect-sub">Enter your Zotero personal API key.<br>Find it at <strong>zotero.org/settings/keys</strong></div>
           <input class="zot-connect-input" id="zotApiKeyInput" type="password" aria-label="Zotero API Key" placeholder="API Key" onkeydown="if(event.key==='Enter')connectZotero()">
           <button class="zot-connect-btn" onclick="connectZotero()">Connect &amp; Sync</button>
           <div style="font-size:11px;color:var(--text-faint);margin-top:10px;font-family:'JetBrains Mono',monospace" id="zotConnectErr"></div>
@@ -583,7 +582,7 @@ const PH={note:'Write your observations, findings, or ideas…',comment:'Add con
 let entries=[],experiences=[],links=[],filter='all',editId=null,curType='note',inited=false;
 let editExpId=null,editLinkId=null,currentPage='notes';
 let modalImages=[],expModalImages=[],featuredIdx=0;
-let zotItems=[],zotCollections=[],zotUID=null,zotApiKey=null,zotTypeFilter='all';
+let zotItems=[],zotCollections=[],zotUID=null,zotApiKey=null,zotUsername=null,zotTypeFilter='all';
 
 function init(){
   if(inited)return;inited=true;
@@ -592,6 +591,7 @@ function init(){
   links=JSON.parse(localStorage.getItem('rnb_links')||'[]');
   zotUID=localStorage.getItem('rnb_zotuid')||null;
   zotApiKey=localStorage.getItem('rnb_zotkey')||null;
+  zotUsername=localStorage.getItem('rnb_zotuname')||null;
   zotItems=JSON.parse(localStorage.getItem('rnb_zotitems')||'[]');
   zotCollections=JSON.parse(localStorage.getItem('rnb_zotcols')||'[]');
   document.getElementById('sbDate').textContent=new Date().toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'long',year:'numeric'});
@@ -600,7 +600,7 @@ function init(){
     document.getElementById('zotConnectCard').style.display='none';
     document.getElementById('zotItemsContainer').style.display='block';
     populateZotCollections();renderZotItems();
-    document.getElementById('zotHeaderSub').textContent='User ID: '+zotUID+' · '+zotItems.length+' items cached';
+    document.getElementById('zotHeaderSub').textContent=(zotUsername||zotUID)+' · '+zotItems.length+' items cached';
   }
   setupPasteListener();
   document.addEventListener('keydown',e=>{
@@ -615,7 +615,7 @@ function init(){
 function save(){localStorage.setItem('rnb_entries',JSON.stringify(entries))}
 function saveExps(){localStorage.setItem('rnb_exp',JSON.stringify(experiences))}
 function saveLinks(){localStorage.setItem('rnb_links',JSON.stringify(links))}
-function saveZoteroCredentials(uid,key){localStorage.setItem('rnb_zotuid',uid||'');localStorage.setItem('rnb_zotkey',key||'');}
+function saveZoteroCredentials(uid,key,username){localStorage.setItem('rnb_zotuid',uid||'');localStorage.setItem('rnb_zotkey',key||'');localStorage.setItem('rnb_zotuname',username||'');}
 
 function exportData(){
   const data={
@@ -625,6 +625,7 @@ function exportData(){
     experiences:experiences,
     links:links,
     zotUID:zotUID,
+    zotUsername:zotUsername,
     zotApiKey:zotApiKey,
     zotItems:zotItems,
     zotCollections:zotCollections
@@ -654,11 +655,12 @@ function importData(e){
       experiences=data.experiences||[];
       links=data.links||[];
       zotUID=data.zotUID||null;
+      zotUsername=data.zotUsername||null;
       zotApiKey=data.zotApiKey||null;
       zotItems=data.zotItems||[];
       zotCollections=data.zotCollections||[];
       save();saveExps();saveLinks();
-      saveZoteroCredentials(zotUID,zotApiKey);
+      saveZoteroCredentials(zotUID,zotApiKey,zotUsername);
       localStorage.setItem('rnb_zotitems',JSON.stringify(zotItems));
       localStorage.setItem('rnb_zotcols',JSON.stringify(zotCollections));
       renderAll();renderExp();renderLinks();
@@ -666,7 +668,7 @@ function importData(e){
         document.getElementById('zotConnectCard').style.display='none';
         document.getElementById('zotItemsContainer').style.display='block';
         populateZotCollections();renderZotItems();
-        document.getElementById('zotHeaderSub').textContent='User ID: '+zotUID+' · '+zotItems.length+' items cached';
+        document.getElementById('zotHeaderSub').textContent=(zotUsername||zotUID)+' · '+zotItems.length+' items cached';
       }
       showToast('✓ Notebook imported — '+entries.length+' notes, '+experiences.length+' experiences, '+links.length+' links.');
     }catch(err){showToast('Failed to read file: '+err.message)}
@@ -848,25 +850,27 @@ function saveLink(){
 function delLink(id){links=links.filter(l=>l.id!==id);saveLinks();renderLinks();renderSidebar()}
 function autoFetchTitle(){const url=document.getElementById('lUrl').value.trim();if(!url||document.getElementById('lTitle').value)return;try{const u=new URL(url.startsWith('http')?url:'https://'+url);document.getElementById('lTitle').placeholder=u.hostname.replace('www.','')}catch(e){}}
 async function connectZotero(){
-  const uid=document.getElementById('zotUidInput').value.trim();
   const apiKey=document.getElementById('zotApiKeyInput').value.trim();
-  if(!uid){document.getElementById('zotConnectErr').textContent='Please enter your numeric User ID.';return}
   if(!apiKey){document.getElementById('zotConnectErr').textContent='Please enter your API key.';return}
   document.getElementById('zotConnectErr').textContent='Connecting…';
   try{
-    const res=await fetch(`https://api.zotero.org/users/${uid}/items?limit=1`,{headers:{'Zotero-API-Key':apiKey}});
-    if(res.status===403||res.status===401){document.getElementById('zotConnectErr').textContent='Access denied. Check your API key permissions.';return}
-    if(!res.ok){document.getElementById('zotConnectErr').textContent=`Error ${res.status}. Check your User ID.`;return}
-    zotUID=uid;zotApiKey=apiKey;
-    saveZoteroCredentials(uid,apiKey);
+    const keyRes=await fetch(`https://api.zotero.org/keys/${apiKey}`,{headers:{'Zotero-API-Key':apiKey}});
+    if(keyRes.status===403||keyRes.status===401){document.getElementById('zotConnectErr').textContent='Access denied. Check your API key.';return}
+    if(!keyRes.ok){document.getElementById('zotConnectErr').textContent=`Error ${keyRes.status}. Check your API key.`;return}
+    const keyData=await keyRes.json();
+    if(!keyData.userID){document.getElementById('zotConnectErr').textContent='Could not resolve user ID. Check your API key.';return}
+    const uid=String(keyData.userID);
+    const username=keyData.username||uid;
+    zotUID=uid;zotApiKey=apiKey;zotUsername=username;
+    saveZoteroCredentials(uid,apiKey,username);
     document.getElementById('zotConnectCard').style.display='none';
     document.getElementById('zotItemsContainer').style.display='block';
-    document.getElementById('zotHeaderSub').textContent='User ID: '+uid;
+    document.getElementById('zotHeaderSub').textContent=username;
     await zotSync();
   }catch(e){document.getElementById('zotConnectErr').textContent='Network error. Try again.'}
 }
 async function zotSync(){
-  if(!zotUID){showToast('Enter your Zotero User ID first');return}
+  if(!zotUID){showToast('Connect Zotero first');return}
   if(!zotApiKey){showToast('No API key found. Please reconnect Zotero.');return}
   const btn=document.getElementById('zotSyncBtn');
   btn.classList.add('spinning');document.getElementById('zotStatus').textContent='Syncing…';
@@ -883,7 +887,7 @@ async function zotSync(){
     zotItems=allItems;localStorage.setItem('rnb_zotitems',JSON.stringify(zotItems));
     const cRes=await fetch(`https://api.zotero.org/users/${zotUID}/collections?format=json`,{headers:{'Zotero-API-Key':zotApiKey}});
     if(cRes.ok){zotCollections=await cRes.json();localStorage.setItem('rnb_zotcols',JSON.stringify(zotCollections));populateZotCollections()}
-    document.getElementById('zotHeaderSub').textContent='User ID: '+zotUID+' · '+zotItems.length+' items';
+    document.getElementById('zotHeaderSub').textContent=(zotUsername||zotUID)+' · '+zotItems.length+' items';
     document.getElementById('zotStatus').textContent='✓ '+zotItems.length+' items synced';
     renderZotItems();
   }catch(e){document.getElementById('zotStatus').textContent='Sync failed.';showToast('Zotero sync failed: '+e.message)}
