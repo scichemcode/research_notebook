@@ -854,7 +854,7 @@ async function connectZotero(){
   if(!apiKey){document.getElementById('zotConnectErr').textContent='Please enter your API key.';return}
   document.getElementById('zotConnectErr').textContent='Connecting…';
   try{
-    const res=await fetch(`https://api.zotero.org/users/${uid}/items?limit=1&key=${encodeURIComponent(apiKey)}`);
+    const res=await fetch(`https://api.zotero.org/users/${uid}/items?limit=1`,{headers:{'Zotero-API-Key':apiKey}});
     if(res.status===403||res.status===401){document.getElementById('zotConnectErr').textContent='Access denied. Check your API key permissions.';return}
     if(!res.ok){document.getElementById('zotConnectErr').textContent=`Error ${res.status}. Check your User ID.`;return}
     zotUID=uid;zotApiKey=apiKey;
@@ -873,7 +873,7 @@ async function zotSync(){
   try{
     let allItems=[],start=0,limit=100,total=Infinity;
     while(allItems.length<total){
-      const res=await fetch(`https://api.zotero.org/users/${zotUID}/items?limit=${limit}&start=${start}&key=${encodeURIComponent(zotApiKey)}&format=json`);
+      const res=await fetch(`https://api.zotero.org/users/${zotUID}/items?limit=${limit}&start=${start}&format=json`,{headers:{'Zotero-API-Key':zotApiKey}});
       if(!res.ok)throw new Error('HTTP '+res.status);
       total=parseInt(res.headers.get('Total-Results')||'0');
       const batch=await res.json();
@@ -881,7 +881,7 @@ async function zotSync(){
       start+=limit;if(batch.length<limit)break;
     }
     zotItems=allItems;localStorage.setItem('rnb_zotitems',JSON.stringify(zotItems));
-    const cRes=await fetch(`https://api.zotero.org/users/${zotUID}/collections?key=${encodeURIComponent(zotApiKey)}&format=json`);
+    const cRes=await fetch(`https://api.zotero.org/users/${zotUID}/collections?format=json`,{headers:{'Zotero-API-Key':zotApiKey}});
     if(cRes.ok){zotCollections=await cRes.json();localStorage.setItem('rnb_zotcols',JSON.stringify(zotCollections));populateZotCollections()}
     document.getElementById('zotHeaderSub').textContent='User ID: '+zotUID+' · '+zotItems.length+' items';
     document.getElementById('zotStatus').textContent='✓ '+zotItems.length+' items synced';
