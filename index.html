@@ -58,6 +58,11 @@
   .sb-date{font-size:11px;color:var(--text-faint);margin-top:3px;font-family:'JetBrains Mono',monospace}
   .sb-lock{display:inline-flex;align-items:center;gap:5px;margin-top:6px;font-size:11px;color:var(--text-faint);background:none;border:none;cursor:pointer;padding:0;font-family:'Instrument Sans',sans-serif;transition:color .14s}
   .sb-lock:hover{color:var(--text-muted)}
+  .sb-portability{padding:8px 12px;border-bottom:1px solid var(--border-light);display:flex;gap:5px}
+  .port-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:4px;padding:6px 4px;border-radius:6px;border:1.5px solid var(--border);background:none;font-family:'Instrument Sans',sans-serif;font-size:11px;font-weight:500;cursor:pointer;color:var(--text-muted);transition:all .16s}
+  .port-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow);background:var(--surface2)}
+  .port-btn.export:hover{border-color:var(--note-border);color:var(--note-accent)}
+  .port-btn.import:hover{border-color:var(--link-border);color:var(--link-accent)}
   .sb-profiles{padding:9px 12px;border-bottom:1px solid var(--border-light);display:flex;gap:6px}
   .profile-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:4px;padding:6px 4px;border-radius:6px;border:1.5px solid var(--border);background:none;font-family:'Instrument Sans',sans-serif;font-size:11px;font-weight:500;cursor:pointer;text-decoration:none;color:var(--text-muted);transition:all .16s}
   .profile-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
@@ -355,6 +360,11 @@
       </a>
       <a class="profile-btn zo" href="https://www.zotero.org" target="_blank" title="Zotero">📚 Zotero</a>
     </div>
+    <div class="sb-portability">
+      <button class="port-btn export" onclick="exportData()" title="Export all notebook data to a JSON file for use on another device">⬆ Export</button>
+      <button class="port-btn import" onclick="document.getElementById('importFileInput').click()" title="Import notebook data from a JSON file exported on another device">⬇ Import</button>
+      <input type="file" id="importFileInput" accept=".json" aria-label="Import notebook data file" style="display:none" onchange="importData(event)">
+    </div>
     <div class="new-group">
       <button class="new-btn note"       onclick="openModal('note')">◈ New Note</button>
       <button class="new-btn comment"    onclick="openModal('comment')">◎ New Comment</button>
@@ -457,8 +467,9 @@
         <div class="zot-connect-card" id="zotConnectCard">
           <div style="font-size:34px;margin-bottom:12px">📚</div>
           <div class="zot-connect-title">Connect Zotero</div>
-          <div class="zot-connect-sub">Enter your <strong>numeric</strong> Zotero User ID.<br>Find it at <strong>zotero.org/settings/keys</strong></div>
+          <div class="zot-connect-sub">Enter your <strong>numeric</strong> Zotero User ID and a personal API key.<br>Find both at <strong>zotero.org/settings/keys</strong></div>
           <input class="zot-connect-input" id="zotUidInput" placeholder="Numeric User ID (e.g. 1234567)" onkeydown="if(event.key==='Enter')connectZotero()">
+          <input class="zot-connect-input" id="zotApiKeyInput" type="password" aria-label="Zotero API Key" placeholder="API Key" onkeydown="if(event.key==='Enter')connectZotero()">
           <button class="zot-connect-btn" onclick="connectZotero()">Connect &amp; Sync</button>
           <div style="font-size:11px;color:var(--text-faint);margin-top:10px;font-family:'JetBrains Mono',monospace" id="zotConnectErr"></div>
         </div>
@@ -530,7 +541,6 @@
 </div>
 
 <script>
-const ZOTERO_API_KEY='65WD3huN1jqZDpqphStYTkq4';
 const CAT_ICONS={Papers:'📄',Tools:'🛠',Docs:'📖',Datasets:'💾',Other:'🔗'};
 const ITEM_ICONS={journalArticle:'📰',book:'📗',bookSection:'📖',conferencePaper:'🏛',thesis:'🎓',report:'📋',preprint:'📝',webpage:'🌐',software:'💻',dataset:'💾',default:'📄'};
 const PW_KEY='rnb_pw',SESSION_KEY='rnb_ok',DEFAULT='research';
@@ -573,7 +583,7 @@ const PH={note:'Write your observations, findings, or ideas…',comment:'Add con
 let entries=[],experiences=[],links=[],filter='all',editId=null,curType='note',inited=false;
 let editExpId=null,editLinkId=null,currentPage='notes';
 let modalImages=[],expModalImages=[],featuredIdx=0;
-let zotItems=[],zotCollections=[],zotUID=null,zotTypeFilter='all';
+let zotItems=[],zotCollections=[],zotUID=null,zotApiKey=null,zotTypeFilter='all';
 
 function init(){
   if(inited)return;inited=true;
@@ -581,6 +591,7 @@ function init(){
   experiences=JSON.parse(localStorage.getItem('rnb_exp')||'[]');
   links=JSON.parse(localStorage.getItem('rnb_links')||'[]');
   zotUID=localStorage.getItem('rnb_zotuid')||null;
+  zotApiKey=localStorage.getItem('rnb_zotkey')||null;
   zotItems=JSON.parse(localStorage.getItem('rnb_zotitems')||'[]');
   zotCollections=JSON.parse(localStorage.getItem('rnb_zotcols')||'[]');
   document.getElementById('sbDate').textContent=new Date().toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'long',year:'numeric'});
@@ -604,6 +615,65 @@ function init(){
 function save(){localStorage.setItem('rnb_entries',JSON.stringify(entries))}
 function saveExps(){localStorage.setItem('rnb_exp',JSON.stringify(experiences))}
 function saveLinks(){localStorage.setItem('rnb_links',JSON.stringify(links))}
+function saveZoteroCredentials(uid,key){localStorage.setItem('rnb_zotuid',uid||'');localStorage.setItem('rnb_zotkey',key||'');}
+
+function exportData(){
+  const data={
+    version:1,
+    exportedAt:new Date().toISOString(),
+    entries:entries,
+    experiences:experiences,
+    links:links,
+    zotUID:zotUID,
+    zotApiKey:zotApiKey,
+    zotItems:zotItems,
+    zotCollections:zotCollections
+  };
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download='research_notebook_'+new Date().toISOString().slice(0,10)+'.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Notebook exported — keep this file private, it contains your Zotero API key.');
+}
+
+function importData(e){
+  const file=e.target.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    try{
+      const data=JSON.parse(ev.target.result);
+      if(!data.version||!Array.isArray(data.entries)){showToast('This file is not a valid Research Notebook backup.');return}
+      const hasData=entries.length||experiences.length||links.length;
+      const proceed=!hasData||confirm('This will replace all current notebook data with the imported data. Continue?');
+      if(!proceed)return;
+      entries=data.entries||[];
+      experiences=data.experiences||[];
+      links=data.links||[];
+      zotUID=data.zotUID||null;
+      zotApiKey=data.zotApiKey||null;
+      zotItems=data.zotItems||[];
+      zotCollections=data.zotCollections||[];
+      save();saveExps();saveLinks();
+      saveZoteroCredentials(zotUID,zotApiKey);
+      localStorage.setItem('rnb_zotitems',JSON.stringify(zotItems));
+      localStorage.setItem('rnb_zotcols',JSON.stringify(zotCollections));
+      renderAll();renderExp();renderLinks();
+      if(zotUID){
+        document.getElementById('zotConnectCard').style.display='none';
+        document.getElementById('zotItemsContainer').style.display='block';
+        populateZotCollections();renderZotItems();
+        document.getElementById('zotHeaderSub').textContent='User ID: '+zotUID+' · '+zotItems.length+' items cached';
+      }
+      showToast('✓ Notebook imported — '+entries.length+' notes, '+experiences.length+' experiences, '+links.length+' links.');
+    }catch(err){showToast('Failed to read file: '+err.message)}
+  };
+  reader.readAsText(file);
+  e.target.value='';
+}
 function gid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
 function fd(ts){const d=new Date(ts);return d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'2-digit'})+' '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}
 function fs(ts){return new Date(ts).toLocaleDateString('en-GB',{day:'2-digit',month:'short'})}
@@ -779,13 +849,16 @@ function delLink(id){links=links.filter(l=>l.id!==id);saveLinks();renderLinks();
 function autoFetchTitle(){const url=document.getElementById('lUrl').value.trim();if(!url||document.getElementById('lTitle').value)return;try{const u=new URL(url.startsWith('http')?url:'https://'+url);document.getElementById('lTitle').placeholder=u.hostname.replace('www.','')}catch(e){}}
 async function connectZotero(){
   const uid=document.getElementById('zotUidInput').value.trim();
+  const apiKey=document.getElementById('zotApiKeyInput').value.trim();
   if(!uid){document.getElementById('zotConnectErr').textContent='Please enter your numeric User ID.';return}
+  if(!apiKey){document.getElementById('zotConnectErr').textContent='Please enter your API key.';return}
   document.getElementById('zotConnectErr').textContent='Connecting…';
   try{
-    const res=await fetch(`https://api.zotero.org/users/${uid}/items?limit=1&key=${ZOTERO_API_KEY}`);
+    const res=await fetch(`https://api.zotero.org/users/${uid}/items?limit=1`,{headers:{'Zotero-API-Key':apiKey}});
     if(res.status===403||res.status===401){document.getElementById('zotConnectErr').textContent='Access denied. Check your API key permissions.';return}
     if(!res.ok){document.getElementById('zotConnectErr').textContent=`Error ${res.status}. Check your User ID.`;return}
-    zotUID=uid;localStorage.setItem('rnb_zotuid',uid);
+    zotUID=uid;zotApiKey=apiKey;
+    saveZoteroCredentials(uid,apiKey);
     document.getElementById('zotConnectCard').style.display='none';
     document.getElementById('zotItemsContainer').style.display='block';
     document.getElementById('zotHeaderSub').textContent='User ID: '+uid;
@@ -794,12 +867,13 @@ async function connectZotero(){
 }
 async function zotSync(){
   if(!zotUID){showToast('Enter your Zotero User ID first');return}
+  if(!zotApiKey){showToast('No API key found. Please reconnect Zotero.');return}
   const btn=document.getElementById('zotSyncBtn');
   btn.classList.add('spinning');document.getElementById('zotStatus').textContent='Syncing…';
   try{
     let allItems=[],start=0,limit=100,total=Infinity;
     while(allItems.length<total){
-      const res=await fetch(`https://api.zotero.org/users/${zotUID}/items?limit=${limit}&start=${start}&key=${ZOTERO_API_KEY}&format=json`);
+      const res=await fetch(`https://api.zotero.org/users/${zotUID}/items?limit=${limit}&start=${start}&format=json`,{headers:{'Zotero-API-Key':zotApiKey}});
       if(!res.ok)throw new Error('HTTP '+res.status);
       total=parseInt(res.headers.get('Total-Results')||'0');
       const batch=await res.json();
@@ -807,7 +881,7 @@ async function zotSync(){
       start+=limit;if(batch.length<limit)break;
     }
     zotItems=allItems;localStorage.setItem('rnb_zotitems',JSON.stringify(zotItems));
-    const cRes=await fetch(`https://api.zotero.org/users/${zotUID}/collections?key=${ZOTERO_API_KEY}&format=json`);
+    const cRes=await fetch(`https://api.zotero.org/users/${zotUID}/collections?format=json`,{headers:{'Zotero-API-Key':zotApiKey}});
     if(cRes.ok){zotCollections=await cRes.json();localStorage.setItem('rnb_zotcols',JSON.stringify(zotCollections));populateZotCollections()}
     document.getElementById('zotHeaderSub').textContent='User ID: '+zotUID+' · '+zotItems.length+' items';
     document.getElementById('zotStatus').textContent='✓ '+zotItems.length+' items synced';
