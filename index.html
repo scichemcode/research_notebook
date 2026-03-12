@@ -1441,27 +1441,34 @@ async function fetchScholarPapers(){
   const btn=document.getElementById('scholarSyncBtn');
   btn.classList.add('spinning');
   document.getElementById('scholarStatus').textContent='Fetching…';
-  const newPapers=[],seenIds=new Set();
-  try{
-    for(const topic of scholarTopics){
+  const newPapers=[],seenIds=new Set(),failed=[];
+  for(const topic of scholarTopics){
+    try{
       const q=encodeURIComponent(topic);
       const res=await fetch(`https://api.semanticscholar.org/graph/v1/paper/search?query=${q}&fields=paperId,title,authors,year,abstract,url,externalIds,publicationDate&limit=10`);
-      if(!res.ok)throw new Error('Failed to fetch papers for "'+topic+'": HTTP '+res.status);
+      if(!res.ok)throw new Error('HTTP '+res.status);
       const data=await res.json();
       for(const p of(data.data||[])){
         if(!seenIds.has(p.paperId)){seenIds.add(p.paperId);newPapers.push({...p,_topic:topic,_fetchedAt:Date.now()})}
       }
-      await new Promise(r=>setTimeout(r,350)); // respect Semantic Scholar rate limit (~1 req/sec)
-    }
+    }catch(e){failed.push(topic);console.error('Scholar fetch failed for topic "'+topic+'":',e)}
+    await new Promise(r=>setTimeout(r,350)); // respect Semantic Scholar rate limit (~1 req/sec)
+  }
+  const allFailed=failed.length>0&&failed.length===scholarTopics.length;
+  if(!allFailed){
     scholarPapers=newPapers;
     scholarLastFetch=Date.now();
     saveScholarState();
     const next=new Date(scholarLastFetch+7*24*60*60*1000);
     document.getElementById('scholarStatus').textContent='✓ '+scholarPapers.length+' papers · next: '+next.toLocaleDateString('en-GB',{day:'2-digit',month:'short'});
     document.getElementById('scholarHeaderSub').textContent='Last updated '+fd(scholarLastFetch)+' · powered by Semantic Scholar';
-    renderScholarTopicFilter();
-    renderScholarPapers();
-  }catch(e){document.getElementById('scholarStatus').textContent='Fetch failed.';showToast('Scholar fetch failed: '+e.message)}
+    if(failed.length)showToast('Fetch failed for: '+failed.join(', '));
+  }else{
+    document.getElementById('scholarStatus').textContent='Fetch failed.';
+    showToast('Scholar fetch failed: could not reach Semantic Scholar');
+  }
+  renderScholarTopicFilter();
+  renderScholarPapers();
   btn.classList.remove('spinning');
 }
 function setScholarFilter(t){
