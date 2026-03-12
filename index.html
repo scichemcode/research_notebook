@@ -16,6 +16,7 @@
     --exp-accent:#7a6e9e;--exp-bg:#f0eef8;--exp-border:#b4aed4;
     --link-accent:#5a7e9a;--link-bg:#eef3f8;--link-border:#a4c0d4;
     --zot-accent:#c0522a;--zot-bg:#fdf0eb;--zot-border:#e0b090;
+    --checklist-accent:#5a7e8a;--checklist-bg:#eef3f5;--checklist-border:#a0bfc8;
     --shadow:0 1px 4px rgba(44,40,32,.08);--shadow-md:0 4px 16px rgba(44,40,32,.12);--radius:8px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -314,6 +315,90 @@
   .lightbox{display:none;position:fixed;inset:0;background:rgba(44,40,32,.82);z-index:500;align-items:center;justify-content:center;cursor:zoom-out}
   .lightbox.open{display:flex}
   .lightbox img{max-width:90vw;max-height:90vh;border-radius:8px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+  /* Checklist */
+  .card.checklist{border-top:3px solid var(--checklist-accent)}
+  .badge.checklist{background:var(--checklist-bg);color:var(--checklist-accent)}
+  .new-btn.checklist{background:var(--checklist-bg);border-color:var(--checklist-border);color:var(--checklist-accent)}
+  .fb.checklist.on{background:var(--checklist-accent);color:#fff;border-color:var(--checklist-accent)}
+  .sb-item.checklist .sb-dot{background:var(--checklist-accent)}
+  .to.checklist.sel{border-color:var(--checklist-accent);background:var(--checklist-bg);color:var(--checklist-accent)}
+  .cl-items{padding:4px 14px 10px;display:flex;flex-direction:column;gap:6px}
+  .cl-item{display:flex;align-items:flex-start;gap:8px}
+  .cl-item input[type=checkbox]{margin-top:3px;accent-color:var(--checklist-accent);cursor:pointer;flex-shrink:0;width:14px;height:14px}
+  .cl-item-text{font-family:'Instrument Sans',sans-serif;font-size:13.5px;color:var(--text-muted);line-height:1.5;word-break:break-word;flex:1;user-select:none}
+  .cl-item-text.done{text-decoration:line-through;color:var(--text-faint)}
+  .cl-add{display:flex;gap:6px;padding:0 14px 9px}
+  .cl-add-input{flex:1;padding:5px 9px;background:var(--bg);border:1.5px solid var(--border);border-radius:6px;font-family:'Instrument Sans',sans-serif;font-size:12.5px;color:var(--text);outline:none;transition:border-color .16s}
+  .cl-add-input:focus{border-color:var(--checklist-border)}
+  .cl-add-input::placeholder{color:var(--text-faint);font-style:italic}
+  .cl-add-btn{padding:5px 11px;border-radius:6px;border:1.5px solid var(--checklist-border);background:var(--checklist-bg);color:var(--checklist-accent);font-family:'Instrument Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .14s;white-space:nowrap}
+  .cl-add-btn:hover{background:var(--checklist-accent);color:#fff}
+  /* Paste from clipboard */
+  .paste-from-cb{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:6px;border:1.5px solid var(--border);background:var(--surface);font-family:'Instrument Sans',sans-serif;font-size:11.5px;font-weight:500;color:var(--text-muted);cursor:pointer;transition:all .14s;margin-top:5px}
+  .paste-from-cb:hover{border-color:var(--note-border);background:var(--note-bg);color:var(--note-accent)}
+  .paste-card-btn{background:none;border:none;cursor:pointer;color:var(--text-faint);font-size:10.5px;font-style:italic;padding:0;text-decoration:underline dotted;font-family:'Instrument Sans',sans-serif;transition:color .14s}
+  .paste-card-btn:hover{color:var(--note-accent)}
+  /* Link preview */
+  .link-preview{display:flex;gap:9px;margin-top:7px;padding:8px 10px;background:var(--bg);border:1px solid var(--border-light);border-radius:6px;overflow:hidden;align-items:flex-start}
+  .link-preview-img{width:72px;height:48px;object-fit:cover;border-radius:4px;flex-shrink:0;background:var(--surface2);border:1px solid var(--border-light)}
+  .link-preview-text{flex:1;min-width:0}
+  .link-preview-desc{font-size:11.5px;color:var(--text-muted);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .link-preview-domain{font-size:10px;color:var(--text-faint);font-family:'JetBrains Mono',monospace;margin-top:2px}
+  /* Outlook Inbox */
+  .ptab.inbox-tab.active{color:#0072c6;border-bottom-color:#0072c6}
+  #inboxPage{display:none;flex:1;flex-direction:column;overflow:hidden}
+  #inboxPage.active{display:flex}
+  .inbox-header{padding:22px 26px 16px;border-bottom:1px solid var(--border-light);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  .inbox-header-title{font-family:'Lora',serif;font-size:20px;font-weight:600}
+  .inbox-header-sub{font-size:12px;color:var(--text-faint);margin-top:3px}
+  .inbox-sync-btn{display:flex;align-items:center;gap:6px;padding:7px 15px;border-radius:8px;border:1.5px solid #c8dff0;background:#edf4fb;color:#0072c6;font-family:'Instrument Sans',sans-serif;font-size:12.5px;font-weight:500;cursor:pointer;transition:all .18s}
+  .inbox-sync-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+  .inbox-sync-btn.spinning svg{animation:spin .8s linear infinite}
+  .inbox-toolbar{padding:9px 26px;border-bottom:1px solid var(--border-light);display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .inbox-search-wrap{position:relative;flex:1;max-width:280px}
+  .inbox-si{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-faint);font-size:13px;pointer-events:none}
+  .inbox-search{width:100%;padding:7px 12px 7px 30px;background:var(--bg);border:1px solid var(--border);border-radius:6px;font-family:'Instrument Sans',sans-serif;font-size:13px;color:var(--text);outline:none;transition:border-color .16s}
+  .inbox-search:focus{border-color:#c8dff0}
+  .inbox-folder-sel{padding:7px 10px;background:var(--bg);border:1px solid var(--border);border-radius:6px;font-family:'Instrument Sans',sans-serif;font-size:12.5px;color:var(--text);outline:none;cursor:pointer}
+  .inbox-area{flex:1;overflow-y:auto;padding:0 26px 22px}
+  .inbox-area::-webkit-scrollbar{width:5px}
+  .inbox-area::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+  .inbox-connect-card{background:var(--surface);border:1.5px solid #c8dff0;border-radius:12px;padding:26px;max-width:480px;margin:36px auto;text-align:center}
+  .inbox-connect-title{font-family:'Lora',serif;font-size:18px;font-weight:600;margin-bottom:8px}
+  .inbox-connect-sub{font-size:13px;color:var(--text-muted);line-height:1.65;margin-bottom:18px}
+  .inbox-connect-link{color:#0072c6;text-decoration:none}
+  .inbox-connect-link:hover{text-decoration:underline}
+  .inbox-connect-input{width:100%;padding:10px 12px;background:var(--bg);border:1.5px solid var(--border);border-radius:7px;font-family:'Instrument Sans',sans-serif;font-size:14px;color:var(--text);outline:none;margin-bottom:10px;transition:border-color .16s}
+  .inbox-connect-input:focus{border-color:#c8dff0}
+  .inbox-connect-btn{width:100%;padding:11px;background:#0072c6;color:#fff;border:none;border-radius:8px;font-family:'Instrument Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .14s;margin-bottom:8px}
+  .inbox-connect-btn:hover{opacity:.85}
+  .inbox-disconnect-btn{background:none;border:1.5px solid var(--border);border-radius:7px;padding:8px 18px;font-family:'Instrument Sans',sans-serif;font-size:12.5px;font-weight:500;color:var(--text-muted);cursor:pointer;transition:all .14s}
+  .inbox-disconnect-btn:hover{border-color:var(--failure-border);color:var(--failure-accent)}
+  .email-item{background:var(--surface);border:1.5px solid var(--border-light);border-radius:8px;padding:13px 15px;margin-bottom:8px;display:flex;align-items:flex-start;gap:11px;cursor:pointer;transition:all .16s;animation:ci .22s ease both;margin-top:8px}
+  .email-item:hover{box-shadow:var(--shadow-md)}
+  .email-item.unread{border-left:3px solid #0072c6}
+  .email-item-avatar{width:34px;height:34px;border-radius:50%;background:#e0eefa;color:#0072c6;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0;font-family:'Instrument Sans',sans-serif}
+  .email-item-body{flex:1;min-width:0}
+  .email-item-from{font-size:12.5px;font-weight:500;color:var(--text-muted);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .email-item-subject{font-size:13px;color:var(--text);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .email-item-subject.unread{font-weight:700}
+  .email-item-preview{font-size:11.5px;color:var(--text-faint);line-height:1.5;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+  .email-item-date{font-size:10px;color:var(--text-faint);font-family:'JetBrains Mono',monospace;white-space:nowrap;flex-shrink:0;margin-top:1px}
+  .email-item-actions{display:flex;gap:4px;opacity:0;transition:opacity .14s;flex-shrink:0;align-items:center}
+  .email-item:hover .email-item-actions{opacity:1}
+  .email-action-btn{background:none;border:none;cursor:pointer;color:var(--text-faint);font-size:11.5px;padding:4px 7px;border-radius:4px;transition:color .14s;font-family:'Instrument Sans',sans-serif;font-weight:500;white-space:nowrap}
+  .email-action-btn:hover{color:var(--text);background:var(--surface2)}
+  .email-modal-ov{display:none;position:fixed;inset:0;background:rgba(44,40,32,.35);backdrop-filter:blur(3px);z-index:300;align-items:center;justify-content:center;animation:fi .2s ease}
+  .email-modal-ov.open{display:flex}
+  .email-modal{background:var(--surface);border-radius:12px;border:1px solid var(--border);box-shadow:0 20px 60px rgba(44,40,32,.18);width:90%;max-width:680px;max-height:88vh;overflow-y:auto;animation:mi .22s ease}
+  .email-modal::-webkit-scrollbar{width:4px}
+  .email-modal::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+  .email-modal-head{padding:16px 20px 12px;border-bottom:1px solid var(--border-light);display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+  .email-modal-subject{font-family:'Lora',serif;font-size:16px;font-weight:600;line-height:1.4;flex:1}
+  .email-modal-meta{padding:10px 20px;border-bottom:1px solid var(--border-light);font-size:12px;color:var(--text-muted);line-height:1.6}
+  .email-modal-body{padding:18px 22px;font-size:13.5px;line-height:1.75;color:var(--text-muted);white-space:pre-wrap;word-break:break-word}
+  .email-modal-actions{padding:12px 20px 16px;border-top:1px solid var(--border-light);display:flex;gap:8px}
+  .inbox-status{font-size:11px;color:var(--text-faint);font-family:'JetBrains Mono',monospace}
   @media(max-width:700px){.sidebar{display:none}.stats{display:none}.profile-cards{grid-template-columns:1fr 1fr}}
 </style>
 </head>
@@ -369,6 +454,7 @@
       <button class="new-btn note"       onclick="openModal('note')">◈ New Note</button>
       <button class="new-btn comment"    onclick="openModal('comment')">◎ New Comment</button>
       <button class="new-btn failure"    onclick="openModal('failure')">◇ New Failure</button>
+      <button class="new-btn checklist"  onclick="openModal('checklist')">☑ New Checklist</button>
       <button class="new-btn experience" onclick="openExpModal()">✦ New Experience</button>
       <button class="new-btn link"       onclick="openLinkModal()">🔗 Save Link</button>
     </div>
@@ -382,6 +468,7 @@
       <button class="ptab exp-tab"  id="tabExp"   onclick="switchPage('exp')">✦ Experiences</button>
       <button class="ptab link-tab" id="tabLinks" onclick="switchPage('links')">🔗 Links</button>
       <button class="ptab zot-tab"  id="tabZot"   onclick="switchPage('zot')">📚 Zotero</button>
+      <button class="ptab inbox-tab" id="tabInbox" onclick="switchPage('inbox')">📧 Inbox</button>
     </div>
 
     <!-- NOTES -->
@@ -393,6 +480,7 @@
           <button class="fb note" data-f="note" onclick="setFilter('note')">Notes</button>
           <button class="fb comment" data-f="comment" onclick="setFilter('comment')">Comments</button>
           <button class="fb failure" data-f="failure" onclick="setFilter('failure')">Failures</button>
+          <button class="fb checklist" data-f="checklist" onclick="setFilter('checklist')">Checklists</button>
         </div>
         <div class="stats" id="statsBar"></div>
       </div>
@@ -476,8 +564,61 @@
         <div class="es" id="zotEmpty" style="display:none"><div class="ei">📚</div><div class="et">No items found</div><div class="esub">Try adjusting your search or filter.</div></div>
       </div>
     </div>
+
+    <!-- INBOX -->
+    <div id="inboxPage">
+      <div class="inbox-header">
+        <div><div class="inbox-header-title">Outlook Inbox</div><div class="inbox-header-sub" id="inboxHeaderSub">Connect your Microsoft account below</div></div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="inbox-status" id="inboxStatus"></span>
+          <button class="inbox-sync-btn" id="inboxSyncBtn" onclick="fetchOutlookEmails()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            Refresh
+          </button>
+        </div>
+      </div>
+      <div class="inbox-toolbar" id="inboxToolbar" style="display:none">
+        <div class="inbox-search-wrap"><span class="inbox-si">⌕</span><input class="inbox-search" id="inboxSearch" placeholder="Search emails…" oninput="renderEmailList()"></div>
+        <select class="inbox-folder-sel" id="inboxFolderSel" onchange="fetchOutlookEmails()">
+          <option value="inbox">Inbox</option>
+          <option value="sentitems">Sent</option>
+          <option value="drafts">Drafts</option>
+          <option value="deleteditems">Deleted</option>
+        </select>
+        <button class="inbox-disconnect-btn" onclick="disconnectOutlook()">Disconnect</button>
+      </div>
+      <div class="inbox-area" id="inboxArea">
+        <div class="inbox-connect-card" id="inboxConnectCard">
+          <div style="font-size:34px;margin-bottom:12px">📧</div>
+          <div class="inbox-connect-title">Connect Outlook</div>
+          <div class="inbox-connect-sub">Enter your Azure AD Application (Client) ID to connect your Microsoft 365 / Outlook account.<br><br>
+            <strong>Setup:</strong> Register an app at <a class="inbox-connect-link" href="https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationsListBlade" target="_blank">portal.azure.com</a>, set platform to <em>Single-page application</em>, and add this page's URL as a redirect URI.</div>
+          <input class="inbox-connect-input" id="inboxClientIdInput" placeholder="Azure AD Client ID (e.g. xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)" onkeydown="if(event.key==='Enter')connectOutlook()">
+          <button class="inbox-connect-btn" onclick="connectOutlook()">Connect with Microsoft</button>
+          <div style="font-size:11px;color:var(--text-faint);margin-top:8px;font-family:'JetBrains Mono',monospace" id="inboxConnectErr"></div>
+        </div>
+        <div id="inboxItemsContainer" style="display:none"></div>
+        <div class="es" id="inboxEmpty" style="display:none"><div style="font-size:32px;opacity:.35">📭</div><div class="et">No emails found</div><div class="esub">Try a different folder or search term.</div></div>
+      </div>
+    </div>
   </main>
 </div>
+</div>
+
+<!-- Email detail modal -->
+<div class="email-modal-ov" id="emailModalOv" onclick="if(event.target===this)closeEmailModal()">
+  <div class="email-modal">
+    <div class="email-modal-head">
+      <div class="email-modal-subject" id="emailModalSubject"></div>
+      <button class="mx" onclick="closeEmailModal()">×</button>
+    </div>
+    <div class="email-modal-meta" id="emailModalMeta"></div>
+    <div class="email-modal-body" id="emailModalBody"></div>
+    <div class="email-modal-actions">
+      <button class="bsave" onclick="importEmailToNote()">→ Import as Note</button>
+      <button class="bcancel" onclick="closeEmailModal()">Close</button>
+    </div>
+  </div>
 </div>
 
 <!-- Notes Modal -->
@@ -486,11 +627,17 @@
     <div class="mh"><span class="mt" id="modalHead">New Entry</span><button class="mx" onclick="closeModal()">×</button></div>
     <div class="ts2" id="typeSelect"></div>
     <div class="mf"><label class="ml">Title</label><input class="mi" id="mTitle" placeholder="Entry title…"></div>
-    <div class="mf"><label class="ml">Content</label><textarea class="mta" id="mBody" rows="5"></textarea></div>
+    <div class="mf" id="mBodySection"><label class="ml">Content</label><textarea class="mta" id="mBody" rows="5"></textarea></div>
+    <div id="mChecklistSection" style="display:none">
+      <div class="mf"><label class="ml">Checklist Items</label></div>
+      <div id="mChecklistItems" style="padding:0 20px 7px;display:flex;flex-direction:column;gap:6px"></div>
+      <div style="padding:0 20px 10px;display:flex;gap:7px"><input class="mi" id="mChecklistInput" placeholder="Add item…" style="flex:1" onkeydown="addChecklistModalItem(event)"><button onclick="addChecklistModalItem(null)" style="padding:9px 14px;border-radius:7px;border:1.5px solid var(--checklist-border);background:var(--checklist-bg);color:var(--checklist-accent);font-family:'Instrument Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0">+ Add</button></div>
+    </div>
     <div class="mf"><label class="ml">Images <span style="font-size:9px;letter-spacing:0;text-transform:none;color:var(--text-faint)">paste, drag & drop, or click</span></label></div>
     <div class="modal-img-zone" id="modalImgZone" ondragover="handleModalDragOver(event)" ondrop="handleModalDrop(event)">
       <input type="file" accept="image/*" multiple onchange="handleModalFileInput(event)">📎 Drop or click to add images
     </div>
+    <div style="padding:0 20px 5px"><button class="paste-from-cb" onclick="pasteFromClipboard('modal')" type="button">📋 Paste from clipboard</button></div>
     <div class="modal-img-previews" id="modalImgPreviews"></div>
     <div class="mf"><label class="ml">Tags <span style="font-size:9px;letter-spacing:0;text-transform:none;color:var(--text-faint)">(comma-separated)</span></label><input class="mi" id="mTags" placeholder="e.g. experiment-1, hypothesis"></div>
     <div class="ma"><button class="bcancel" onclick="closeModal()">Cancel</button><button class="bsave" onclick="saveEntry()">Save Entry</button></div>
@@ -507,6 +654,7 @@
     <div class="modal-img-zone" id="expImgZone" ondragover="handleExpDragOver(event)" ondrop="handleExpDrop(event)">
       <input type="file" accept="image/*" multiple onchange="handleExpFileInput(event)">📎 Drop or click to add images
     </div>
+    <div style="padding:0 20px 5px"><button class="paste-from-cb" onclick="pasteFromClipboard('exp')" type="button">📋 Paste from clipboard</button></div>
     <div class="modal-img-previews" id="expImgPreviews"></div>
     <div class="mf"><label class="ml">Tags</label><input class="mi" id="expTags" placeholder="e.g. breakthrough, serendipity"></div>
     <div class="ma"><button class="bcancel" onclick="closeExpModal()">Cancel</button><button class="bsave" onclick="saveExp()">Save</button></div>
@@ -576,12 +724,14 @@ function changePassword(){
   const el=document.getElementById('cpErr');el.style.color='var(--note-accent)';el.textContent='✓ Updated!';
   setTimeout(()=>{toggleCP();el.style.color=''},1600);
 }
-const ICONS={note:'◈',comment:'◎',failure:'◇'};
-const LABELS={note:'Note',comment:'Comment',failure:'Failure'};
-const PH={note:'Write your observations, findings, or ideas…',comment:'Add context, caveats, or reflections…',failure:'Describe what went wrong, error details, and next steps…'};
+const ICONS={note:'◈',comment:'◎',failure:'◇',checklist:'☑'};
+const LABELS={note:'Note',comment:'Comment',failure:'Failure',checklist:'Checklist'};
+const PH={note:'Write your observations, findings, or ideas…',comment:'Add context, caveats, or reflections…',failure:'Describe what went wrong, error details, and next steps…',checklist:''};
 let entries=[],experiences=[],links=[],filter='all',editId=null,curType='note',inited=false;
 let editExpId=null,editLinkId=null,currentPage='notes';
-let modalImages=[],expModalImages=[],featuredIdx=0;
+let modalImages=[],expModalImages=[],featuredIdx=0,modalChecklistItems=[];
+let msalApp=null,outlookToken=null,emailMessages=[],openEmailData=null;
+let inboxClientId=null;
 let zotItems=[],zotCollections=[],zotUID=null,zotApiKey=null,zotUsername=null,zotTypeFilter='all';
 
 function init(){
@@ -594,6 +744,8 @@ function init(){
   zotUsername=localStorage.getItem('rnb_zotuname')||null;
   zotItems=JSON.parse(localStorage.getItem('rnb_zotitems')||'[]');
   zotCollections=JSON.parse(localStorage.getItem('rnb_zotcols')||'[]');
+  inboxClientId=localStorage.getItem('rnb_inbox_clientid')||null;
+  if(inboxClientId){initMSAL(inboxClientId).then(()=>tryRestoreOutlookSession()).catch(()=>{})}
   document.getElementById('sbDate').textContent=new Date().toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'long',year:'numeric'});
   renderAll();renderExp();renderLinks();
   if(zotUID){
@@ -609,6 +761,7 @@ function init(){
     if(e.key==='n')openModal('note');
     if(e.key==='c')openModal('comment');
     if(e.key==='f')openModal('failure');
+    if(e.key==='k')openModal('checklist');
     if(e.key==='Escape'){closeModal();closeExpModal();closeLinkModal();closeLightbox()}
   });
 }
@@ -681,12 +834,13 @@ function fd(ts){const d=new Date(ts);return d.toLocaleDateString('en-GB',{day:'2
 function fs(ts){return new Date(ts).toLocaleDateString('en-GB',{day:'2-digit',month:'short'})}
 function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 function escAttr(s){return String(s).replace(/'/g,"\\'")}
+function stripHtml(html){try{const d=new DOMParser().parseFromString(html,'text/html');return d.body.textContent||''}catch(e){return html.replace(/<[^>]+>/g,' ')}}
 
 function switchPage(page){
   currentPage=page;
-  ['notes','exp','links','zot'].forEach(p=>{
-    const tabMap={notes:'tabNotes',exp:'tabExp',links:'tabLinks',zot:'tabZot'};
-    const pageMap={notes:'notesPage',exp:'expPage',links:'linksPage',zot:'zotPage'};
+  const tabMap={notes:'tabNotes',exp:'tabExp',links:'tabLinks',zot:'tabZot',inbox:'tabInbox'};
+  const pageMap={notes:'notesPage',exp:'expPage',links:'linksPage',zot:'zotPage',inbox:'inboxPage'};
+  ['notes','exp','links','zot','inbox'].forEach(p=>{
     document.getElementById(tabMap[p]).classList.toggle('active',p===page);
     document.getElementById(pageMap[p]).classList.toggle('active',p===page);
   });
@@ -700,14 +854,16 @@ function renderSidebar(){
 }
 function scrollCard(id){document.getElementById('card-'+id)?.scrollIntoView({behavior:'smooth',block:'center'})}
 function renderStats(){
-  const n=entries.filter(e=>e.type==='note').length,c=entries.filter(e=>e.type==='comment').length,f=entries.filter(e=>e.type==='failure').length;
-  document.getElementById('statsBar').innerHTML=`<span class="stat"><strong>${n}</strong> notes</span><span class="stat"><strong>${c}</strong> comments</span><span class="stat"><strong>${f}</strong> failures</span>`;
+  const n=entries.filter(e=>e.type==='note').length,c=entries.filter(e=>e.type==='comment').length,f=entries.filter(e=>e.type==='failure').length,cl=entries.filter(e=>e.type==='checklist').length;
+  let s=`<span class="stat"><strong>${n}</strong> notes</span><span class="stat"><strong>${c}</strong> comments</span><span class="stat"><strong>${f}</strong> failures</span>`;
+  if(cl)s+=`<span class="stat"><strong>${cl}</strong> checklists</span>`;
+  document.getElementById('statsBar').innerHTML=s;
 }
 function renderEntries(){
   const q=(document.getElementById('searchInput')?.value||'').toLowerCase();
   const list=entries.filter(e=>{if(filter!=='all'&&e.type!==filter)return false;if(q)return(e.title+' '+e.body+' '+(e.tags||[]).join(' ')).toLowerCase().includes(q);return true}).sort((a,b)=>b.ts-a.ts);
   const grid=document.getElementById('grid'),es=document.getElementById('emptyState');
-  if(!list.length){grid.style.display='none';es.style.display='flex';es.innerHTML=entries.length?'<div class="ei">◎</div><div class="et">No results</div><div class="esub">Adjust your search or filter.</div>':'<div class="ei">✦</div><div class="et">Your notebook is empty</div><div class="esub">Add a note, comment, or log a failure.</div>';return}
+  if(!list.length){grid.style.display='none';es.style.display='flex';es.innerHTML=entries.length?'<div class="ei">◎</div><div class="et">No results</div><div class="esub">Adjust your search or filter.</div>':'<div class="ei">✦</div><div class="et">Your notebook is empty</div><div class="esub">Add a note, comment, failure, or checklist.<br><small style="font-size:11px;opacity:.7">💡 Paste images with Ctrl+V over a card</small></div>';return}
   es.style.display='none';grid.style.display='grid';
   grid.innerHTML=list.map(cardHTML).join('');
   grid.querySelectorAll('textarea').forEach(rz);
@@ -715,18 +871,30 @@ function renderEntries(){
 }
 function cardHTML(e){
   const imgs=(e.images||[]).map((src,i)=>`<div class="card-img-wrap"><img src="${src}" onclick="openLightbox('${src}')"><button class="img-del" onclick="delImg('${e.id}',${i})">×</button></div>`).join('');
+  const body=e.type==='checklist'
+    ?renderChecklistCard(e)
+    :`<textarea class="cb2" placeholder="${PH[e.type]||''}" oninput="rz(this);uf('${e.id}','body',this.value)">${e.body||''}</textarea>`;
   return `<div class="card ${e.type}" id="card-${e.id}" ondragover="event.preventDefault()" ondrop="handleCardDrop(event,'${e.id}')">
     <div class="ch"><span class="badge ${e.type}">${ICONS[e.type]} ${LABELS[e.type]}</span>
     <div class="ca"><button class="cb" onclick="openEditModal('${e.id}')">✎</button><button class="cb del" onclick="del('${e.id}')">⊗</button></div></div>
     <textarea class="ct" rows="1" placeholder="Title…" oninput="rz(this);uf('${e.id}','title',this.value)">${e.title||''}</textarea>
     <div class="cd"></div>
-    <textarea class="cb2" placeholder="${PH[e.type]}" oninput="rz(this);uf('${e.id}','body',this.value)">${e.body||''}</textarea>
+    ${body}
     ${imgs?`<div class="card-images">${imgs}</div>`:''}
-    <div class="paste-hint">💡 Ctrl+V or drag image to attach</div>
+    <div class="paste-hint">💡 <button class="paste-card-btn" onclick="pasteImgToCard('${e.id}')">📋 Paste image</button> or drag to attach</div>
     <div class="cf"><div class="ctags"></div><div class="ts">${fd(e.ts)}</div></div>
     <div class="trow" id="tr-${e.id}"></div>
   </div>`;
 }
+function parseChecklist(body){return(body||'').split('\n').filter(l=>l.trim()).map(l=>l.startsWith('[x] ')?{text:l.slice(4),checked:true}:l.startsWith('[ ] ')?{text:l.slice(4),checked:false}:{text:l,checked:false})}
+function serializeChecklist(items){return items.map(i=>(i.checked?'[x] ':'[ ] ')+i.text).join('\n')}
+function renderChecklistCard(e){
+  const items=parseChecklist(e.body||'');
+  const itemsHTML=items.length?items.map((item,i)=>`<label class="cl-item"><input type="checkbox" ${item.checked?'checked':''} onchange="toggleChecklistItem('${e.id}',${i})"><span class="cl-item-text${item.checked?' done':''}">${escHtml(item.text)}</span></label>`).join(''):'<div style="font-size:12px;color:var(--text-faint);font-style:italic;padding:2px 0">No items yet — add one below</div>';
+  return `<div class="cl-items">${itemsHTML}</div><div class="cl-add"><input class="cl-add-input" placeholder="Add item…" onkeydown="if(event.key==='Enter')addItemToCard('${e.id}',this)"><button class="cl-add-btn" onclick="addItemToCard('${e.id}',this.previousElementSibling)">+</button></div>`;
+}
+function toggleChecklistItem(id,idx){const e=entries.find(x=>x.id===id);if(!e)return;const items=parseChecklist(e.body||'');if(idx<0||idx>=items.length)return;items[idx].checked=!items[idx].checked;e.body=serializeChecklist(items);save();const card=document.getElementById('card-'+id);if(card){const cbs=card.querySelectorAll('.cl-item input[type=checkbox]');if(cbs[idx]){const txt=cbs[idx].closest('.cl-item')?.querySelector('.cl-item-text');if(txt)txt.classList.toggle('done',items[idx].checked)}}}
+function addItemToCard(id,input){const text=input.value.trim();if(!text)return;const e=entries.find(x=>x.id===id);if(!e)return;const items=parseChecklist(e.body||'');items.push({text,checked:false});e.body=serializeChecklist(items);save();input.value='';renderEntries();requestAnimationFrame(buildTagRows)}
 function rz(el){el.style.height='auto';el.style.height=el.scrollHeight+'px'}
 function buildTagRows(){entries.forEach(e=>{const r=document.getElementById('tr-'+e.id);if(r)refreshTR(e,r)})}
 function refreshTR(e,row){if(!row)row=document.getElementById('tr-'+e.id);if(!row)return;row.innerHTML=(e.tags||[]).map(t=>`<span class="tag">${escHtml(t)}<button class="tr" onclick="rmTag('${e.id}','${escAttr(t)}')">×</button></span>`).join('')+`<input class="ti" placeholder="+ tag" onkeydown="addTag(event,'${e.id}',this)">`}
@@ -752,6 +920,28 @@ async function handlePasteIntoModal(e,which){const items=[...e.clipboardData.ite
 function addImgToEntry(id,b64){const e=entries.find(x=>x.id===id);if(!e)return;if(!e.images)e.images=[];e.images.push(b64);save();renderEntries();requestAnimationFrame(buildTagRows)}
 function delImg(id,idx){const e=entries.find(x=>x.id===id);if(!e||!e.images)return;e.images.splice(idx,1);save();renderEntries();requestAnimationFrame(buildTagRows)}
 function handleCardDrop(event,id){event.preventDefault();[...event.dataTransfer.files].filter(f=>f.type.startsWith('image/')).forEach(async f=>{const b64=await fileToBase64(f);addImgToEntry(id,b64)})}
+async function pasteFromClipboard(target,cardId){
+  try{
+    const clipItems=await navigator.clipboard.read();
+    let found=false;
+    for(const ci of clipItems){
+      const imgType=ci.types.find(t=>t.startsWith('image/'));
+      if(imgType){
+        const blob=await ci.getType(imgType);
+        const b64=await fileToBase64(blob);
+        if(target==='modal'){modalImages.push(b64);renderModalPreviews()}
+        else if(target==='exp'){expModalImages.push(b64);renderExpPreviews()}
+        else if(target==='card'&&cardId){addImgToEntry(cardId,b64)}
+        found=true;
+      }
+    }
+    if(!found)showToast('No image in clipboard — copy an image first');
+  }catch(err){
+    if(err.name==='NotAllowedError'||err.name==='SecurityError')showToast('Clipboard access denied — use Ctrl+V instead');
+    else showToast('Could not read clipboard — try Ctrl+V instead');
+  }
+}
+function pasteImgToCard(id){pasteFromClipboard('card',id)}
 function handleModalDragOver(e){e.preventDefault();document.getElementById('modalImgZone').classList.add('drag-over')}
 function handleModalDrop(e){e.preventDefault();document.getElementById('modalImgZone').classList.remove('drag-over');[...e.dataTransfer.files].filter(f=>f.type.startsWith('image/')).forEach(async f=>{const b64=await fileToBase64(f);modalImages.push(b64);renderModalPreviews()})}
 function handleModalFileInput(e){[...e.target.files].forEach(async f=>{const b64=await fileToBase64(f);modalImages.push(b64);renderModalPreviews()})}
@@ -760,17 +950,26 @@ function handleExpDragOver(e){e.preventDefault();document.getElementById('expImg
 function handleExpDrop(e){e.preventDefault();document.getElementById('expImgZone').classList.remove('drag-over');[...e.dataTransfer.files].filter(f=>f.type.startsWith('image/')).forEach(async f=>{const b64=await fileToBase64(f);expModalImages.push(b64);renderExpPreviews()})}
 function handleExpFileInput(e){[...e.target.files].forEach(async f=>{const b64=await fileToBase64(f);expModalImages.push(b64);renderExpPreviews()})}
 function renderExpPreviews(){document.getElementById('expImgPreviews').innerHTML=expModalImages.map((src,i)=>`<div class="modal-img-thumb"><img src="${src}"><button class="img-del" onclick="expModalImages.splice(${i},1);renderExpPreviews()">×</button></div>`).join('')}
+function renderModalChecklistItems(){
+  const c=document.getElementById('mChecklistItems');if(!c)return;
+  c.innerHTML=modalChecklistItems.length
+    ?modalChecklistItems.map((item,i)=>`<div style="display:flex;align-items:center;gap:8px;padding:3px 0"><input type="checkbox" ${item.checked?'checked':''} onchange="modalChecklistItems[${i}].checked=this.checked" style="accent-color:var(--checklist-accent);cursor:pointer;width:14px;height:14px;flex-shrink:0"><span style="flex:1;font-size:13px;color:var(--text-muted);${item.checked?'text-decoration:line-through;color:var(--text-faint)':''}">${escHtml(item.text)}</span><button onclick="modalChecklistItems.splice(${i},1);renderModalChecklistItems()" style="background:none;border:none;cursor:pointer;color:var(--text-faint);font-size:15px;padding:0 3px;border-radius:3px;line-height:1;flex-shrink:0">×</button></div>`).join('')
+    :'<div style="font-size:12px;color:var(--text-faint);font-style:italic">No items yet — add one above</div>';
+}
+function addChecklistModalItem(e){if(e&&e.type==='keydown'&&e.key!=='Enter')return;if(e&&e.preventDefault)e.preventDefault();const input=document.getElementById('mChecklistInput');const text=input.value.trim();if(!text)return;modalChecklistItems.push({text,checked:false});input.value='';renderModalChecklistItems()}
 function openLightbox(src){document.getElementById('lightboxImg').src=src;document.getElementById('lightbox').classList.add('open')}
 function closeLightbox(){document.getElementById('lightbox').classList.remove('open')}
 function showToast(msg){let t=document.getElementById('toast');if(!t){t=document.createElement('div');t.id='toast';t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:9px 18px;border-radius:8px;font-size:13px;z-index:999;opacity:0;transition:opacity .2s;font-family:Instrument Sans,sans-serif;pointer-events:none';document.body.appendChild(t)}t.textContent=msg;t.style.opacity=1;clearTimeout(t._tid);t._tid=setTimeout(()=>t.style.opacity=0,2500)}
-function buildTS(sel){document.getElementById('typeSelect').innerHTML=['note','comment','failure'].map(t=>`<button class="to ${t}${sel===t?' sel':''}" onclick="selType('${t}')">${ICONS[t]} ${LABELS[t]}</button>`).join('')}
-function openModal(type){editId=null;curType=type;buildTS(type);document.getElementById('mTitle').value='';document.getElementById('mBody').value='';document.getElementById('mTags').value='';document.getElementById('mBody').placeholder=PH[type];document.getElementById('modalHead').textContent='New Entry';modalImages=[];renderModalPreviews();document.getElementById('ov').classList.add('open');setTimeout(()=>document.getElementById('mTitle').focus(),80)}
-function openEditModal(id){const e=entries.find(x=>x.id===id);if(!e)return;editId=id;curType=e.type;buildTS(e.type);document.getElementById('mTitle').value=e.title||'';document.getElementById('mBody').value=e.body||'';document.getElementById('mTags').value=(e.tags||[]).join(', ');document.getElementById('mBody').placeholder=PH[e.type];document.getElementById('modalHead').textContent='Edit Entry';modalImages=[...(e.images||[])];renderModalPreviews();document.getElementById('ov').classList.add('open')}
-function closeModal(){document.getElementById('ov').classList.remove('open');editId=null;modalImages=[];renderModalPreviews()}
-function selType(t){curType=t;buildTS(t);document.getElementById('mBody').placeholder=PH[t]}
+function buildTS(sel){document.getElementById('typeSelect').innerHTML=['note','comment','failure','checklist'].map(t=>`<button class="to ${t}${sel===t?' sel':''}" onclick="selType('${t}')">${ICONS[t]} ${LABELS[t]}</button>`).join('')}
+function openModal(type){editId=null;curType=type;buildTS(type);document.getElementById('mTitle').value='';document.getElementById('mBody').value='';document.getElementById('mTags').value='';document.getElementById('mBody').placeholder=PH[type]||'';document.getElementById('modalHead').textContent='New Entry';modalImages=[];renderModalPreviews();modalChecklistItems=[];const isCL=type==='checklist';document.getElementById('mBodySection').style.display=isCL?'none':'';document.getElementById('mChecklistSection').style.display=isCL?'':'none';if(isCL)renderModalChecklistItems();document.getElementById('ov').classList.add('open');setTimeout(()=>document.getElementById('mTitle').focus(),80)}
+function openEditModal(id){const e=entries.find(x=>x.id===id);if(!e)return;editId=id;curType=e.type;buildTS(e.type);document.getElementById('mTitle').value=e.title||'';document.getElementById('mTags').value=(e.tags||[]).join(', ');document.getElementById('modalHead').textContent='Edit Entry';modalImages=[...(e.images||[])];renderModalPreviews();const isCL=e.type==='checklist';document.getElementById('mBodySection').style.display=isCL?'none':'';document.getElementById('mChecklistSection').style.display=isCL?'':'none';if(isCL){modalChecklistItems=parseChecklist(e.body||'');renderModalChecklistItems()}else{document.getElementById('mBody').value=e.body||'';document.getElementById('mBody').placeholder=PH[e.type]||''}document.getElementById('ov').classList.add('open')}
+function closeModal(){document.getElementById('ov').classList.remove('open');editId=null;modalImages=[];renderModalPreviews();modalChecklistItems=[]}
+function selType(t){curType=t;buildTS(t);const isCL=t==='checklist';document.getElementById('mBodySection').style.display=isCL?'none':'';document.getElementById('mChecklistSection').style.display=isCL?'':'none';if(!isCL)document.getElementById('mBody').placeholder=PH[t]||'';if(isCL)renderModalChecklistItems()}
 function saveEntry(){
-  const title=document.getElementById('mTitle').value.trim(),body=document.getElementById('mBody').value.trim(),tags=document.getElementById('mTags').value.split(',').map(t=>t.trim()).filter(Boolean);
-  if(!title&&!body){document.getElementById('mTitle').focus();return}
+  const title=document.getElementById('mTitle').value.trim(),tags=document.getElementById('mTags').value.split(',').map(t=>t.trim()).filter(Boolean);
+  let body;
+  if(curType==='checklist'){body=serializeChecklist(modalChecklistItems);if(!title&&!modalChecklistItems.length){document.getElementById('mTitle').focus();return}}
+  else{body=document.getElementById('mBody').value.trim();if(!title&&!body){document.getElementById('mTitle').focus();return}}
   if(editId){const e=entries.find(x=>x.id===editId);if(e){e.title=title;e.body=body;e.tags=tags;e.type=curType;e.images=[...modalImages]}}
   else entries.push({id:gid(),type:curType,title,body,tags,images:[...modalImages],ts:Date.now()});
   save();renderAll();requestAnimationFrame(buildTagRows);closeModal();
@@ -822,6 +1021,7 @@ function renderLinks(){
             <a class="link-item-url" href="${escHtml(l.url)}" target="_blank">${escHtml(l.url)}</a>
             ${l.note?`<div class="link-item-note">${escHtml(l.note)}</div>`:''}
             ${(l.tags||[]).length?`<div class="link-item-tags">${l.tags.map(t=>`<span class="link-tag">${escHtml(t)}</span>`).join('')}</div>`:''}
+            ${l.preview?(l.preview.image||l.preview.description?`<div class="link-preview">${l.preview.image?`<img class="link-preview-img" src="${escHtml(l.preview.image)}" alt="" onerror="this.style.display='none'">`:''}${(l.preview.description||l.preview.domain)?`<div class="link-preview-text">${l.preview.description?`<div class="link-preview-desc">${escHtml(l.preview.description)}</div>`:''}${l.preview.domain?`<div class="link-preview-domain">${escHtml(l.preview.domain)}</div>`:''}</div>`:''}</div>`:''):''}
             <div class="link-item-date">${fs(l.ts)}</div>
           </div>
           <div class="link-item-actions">
@@ -844,8 +1044,18 @@ function saveLink(){
   if(!url){document.getElementById('lUrl').focus();return}
   const finalUrl=url.startsWith('http')?url:'https://'+url;
   if(editLinkId){const l=links.find(x=>x.id===editLinkId);if(l){l.url=finalUrl;l.title=title||finalUrl;l.note=note;l.category=category;l.tags=tags}}
-  else links.push({id:gid(),url:finalUrl,title:title||finalUrl,note,category,tags,ts:Date.now()});
+  else{const newLink={id:gid(),url:finalUrl,title:title||finalUrl,note,category,tags,ts:Date.now()};links.push(newLink);fetchLinkPreview(finalUrl).then(p=>{if(p){newLink.preview=p;saveLinks();renderLinks()}});}
   saveLinks();renderLinks();renderSidebar();closeLinkModal();
+}
+async function fetchLinkPreview(url){
+  try{
+    const res=await fetch('https://api.microlink.io/?url='+encodeURIComponent(url),{signal:AbortSignal.timeout(7000)});
+    if(!res.ok)return null;
+    const data=await res.json();
+    if(data.status!=='success')return null;
+    let domain='';try{domain=new URL(url).hostname.replace('www.','')}catch(e){}
+    return{description:data.data.description||'',image:data.data.image?.url||'',domain};
+  }catch(e){return null}
 }
 function delLink(id){links=links.filter(l=>l.id!==id);saveLinks();renderLinks();renderSidebar()}
 function autoFetchTitle(){const url=document.getElementById('lUrl').value.trim();if(!url||document.getElementById('lTitle').value)return;try{const u=new URL(url.startsWith('http')?url:'https://'+url);document.getElementById('lTitle').placeholder=u.hostname.replace('www.','')}catch(e){}}
@@ -946,6 +1156,155 @@ function importZotToNote(key){
   openModal('note');
   setTimeout(()=>{document.getElementById('mTitle').value=d.title||'';document.getElementById('mBody').value=body;document.getElementById('mTags').value=(d.tags||[]).slice(0,5).map(t=>t.tag).join(', ')},60);
 }
+
+/* ── Outlook Inbox ── */
+async function loadMSAL(){
+  if(window.msal)return;
+  return new Promise((res,rej)=>{
+    const s=document.createElement('script');
+    s.src='https://alcdn.msauth.net/browser/2.38.3/js/msal-browser.min.js';
+    s.onload=()=>res();s.onerror=()=>rej(new Error('Failed to load MSAL library'));
+    document.head.appendChild(s);
+  });
+}
+async function initMSAL(clientId){
+  await loadMSAL();
+  msalApp=new msal.PublicClientApplication({
+    auth:{clientId,authority:'https://login.microsoftonline.com/common',redirectUri:window.location.href.split('?')[0].split('#')[0]},
+    cache:{cacheLocation:'localStorage',storeAuthStateInCookie:false}
+  });
+  await msalApp.initialize();
+}
+async function tryRestoreOutlookSession(){
+  if(!msalApp)return;
+  const accounts=msalApp.getAllAccounts();
+  if(!accounts.length)return;
+  try{
+    const resp=await msalApp.acquireTokenSilent({scopes:['Mail.Read','Mail.ReadWrite'],account:accounts[0]});
+    outlookToken=resp.accessToken;
+    showInboxConnected(accounts[0].username||accounts[0].name);
+    await fetchOutlookEmails();
+  }catch(e){console.debug('[Outlook] Silent session restore failed:',e.message)}
+}
+async function connectOutlook(){
+  const clientId=document.getElementById('inboxClientIdInput').value.trim();
+  if(!clientId){document.getElementById('inboxConnectErr').textContent='Please enter your Azure AD Client ID.';return}
+  document.getElementById('inboxConnectErr').textContent='Loading…';
+  try{
+    await initMSAL(clientId);
+    inboxClientId=clientId;
+    localStorage.setItem('rnb_inbox_clientid',clientId);
+    const resp=await msalApp.loginPopup({scopes:['Mail.Read','Mail.ReadWrite'],prompt:'select_account'});
+    outlookToken=resp.accessToken;
+    showInboxConnected(resp.account.username||resp.account.name||'Connected');
+    await fetchOutlookEmails();
+  }catch(e){
+    const msg=e.message||String(e);
+    if(msg.includes('popup'))document.getElementById('inboxConnectErr').textContent='Popup blocked — please allow popups for this page.';
+    else if(msg.includes('MSAL'))document.getElementById('inboxConnectErr').textContent='Failed to load authentication library. Check your connection.';
+    else document.getElementById('inboxConnectErr').textContent='Connection failed: '+msg.slice(0,80);
+  }
+}
+function showInboxConnected(user){
+  document.getElementById('inboxConnectCard').style.display='none';
+  document.getElementById('inboxItemsContainer').style.display='block';
+  document.getElementById('inboxToolbar').style.display='flex';
+  document.getElementById('inboxHeaderSub').textContent=user;
+}
+function disconnectOutlook(){
+  outlookToken=null;msalApp=null;emailMessages=[];
+  localStorage.removeItem('rnb_inbox_clientid');inboxClientId=null;
+  document.getElementById('inboxConnectCard').style.display='';
+  document.getElementById('inboxItemsContainer').style.display='none';
+  document.getElementById('inboxToolbar').style.display='none';
+  document.getElementById('inboxHeaderSub').textContent='Connect your Microsoft account below';
+  document.getElementById('inboxConnectErr').textContent='';
+  document.getElementById('inboxConnectCard').style.display='';
+}
+async function fetchOutlookEmails(){
+  if(!outlookToken){showToast('Connect your Outlook account first');return}
+  const btn=document.getElementById('inboxSyncBtn');
+  btn.classList.add('spinning');document.getElementById('inboxStatus').textContent='Loading…';
+  try{
+    if(msalApp){
+      const accounts=msalApp.getAllAccounts();
+      if(accounts.length){
+        try{const r=await msalApp.acquireTokenSilent({scopes:['Mail.Read','Mail.ReadWrite'],account:accounts[0]});outlookToken=r.accessToken}catch(e){}
+      }
+    }
+    const folder=document.getElementById('inboxFolderSel')?.value||'inbox';
+    const res=await fetch(`https://graph.microsoft.com/v1.0/me/mailFolders/${folder}/messages?$top=50&$select=id,subject,from,receivedDateTime,isRead,bodyPreview,body&$orderby=receivedDateTime desc`,
+      {headers:{Authorization:'Bearer '+outlookToken}});
+    if(!res.ok){
+      if(res.status===401){outlookToken=null;showToast('Session expired — please reconnect');disconnectOutlook();return}
+      throw new Error('HTTP '+res.status);
+    }
+    const data=await res.json();
+    emailMessages=data.value||[];
+    const unread=emailMessages.filter(m=>!m.isRead).length;
+    document.getElementById('inboxStatus').textContent=emailMessages.length+' messages'+(unread?' · '+unread+' unread':'');
+    renderEmailList();
+  }catch(e){document.getElementById('inboxStatus').textContent='Error: '+e.message.slice(0,40);showToast('Failed to load emails: '+e.message)}
+  btn.classList.remove('spinning');
+}
+function renderEmailList(){
+  const q=(document.getElementById('inboxSearch')?.value||'').toLowerCase();
+  const list=q?emailMessages.filter(m=>((m.subject||'')+(m.from?.emailAddress?.name||'')+(m.bodyPreview||'')).toLowerCase().includes(q)):emailMessages;
+  const container=document.getElementById('inboxItemsContainer'),empty=document.getElementById('inboxEmpty');
+  if(!list.length){container.innerHTML='';empty.style.display='flex';return}
+  empty.style.display='none';
+  container.innerHTML=list.map(m=>{
+    const from=m.from?.emailAddress?.name||m.from?.emailAddress?.address||'Unknown';
+    const initial=(from[0]||'?').toUpperCase();
+    const date=new Date(m.receivedDateTime);
+    const dateStr=date.toLocaleDateString('en-GB',{day:'2-digit',month:'short'})+' '+date.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+    return `<div class="email-item${m.isRead?'':' unread'}" onclick="openEmail('${escAttr(m.id)}')">
+      <div class="email-item-avatar">${escHtml(initial)}</div>
+      <div class="email-item-body">
+        <div class="email-item-from">${escHtml(from)}</div>
+        <div class="email-item-subject${m.isRead?'':' unread'}">${escHtml(m.subject||'(no subject)')}</div>
+        <div class="email-item-preview">${escHtml(m.bodyPreview||'')}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0">
+        <div class="email-item-date">${dateStr}</div>
+        <div class="email-item-actions">
+          ${!m.isRead?`<button class="email-action-btn" onclick="event.stopPropagation();markEmailRead('${escAttr(m.id)}')">Mark read</button>`:''}
+          <button class="email-action-btn" onclick="event.stopPropagation();openEmail('${escAttr(m.id)}')">Open</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+function openEmail(id){
+  const m=emailMessages.find(x=>x.id===id);if(!m)return;
+  openEmailData=m;
+  document.getElementById('emailModalSubject').textContent=m.subject||'(no subject)';
+  const from=m.from?.emailAddress?.name?`${m.from.emailAddress.name} <${m.from.emailAddress.address}>`:m.from?.emailAddress?.address||'Unknown';
+  const date=new Date(m.receivedDateTime).toLocaleString('en-GB',{weekday:'short',day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  document.getElementById('emailModalMeta').innerHTML=`<strong>From:</strong> ${escHtml(from)}<br><strong>Date:</strong> ${escHtml(date)}`;
+  const body=m.body?.content||m.bodyPreview||'';
+  document.getElementById('emailModalBody').textContent=stripHtml(body).replace(/\s{2,}/g,' ').trim();
+  document.getElementById('emailModalOv').classList.add('open');
+  if(!m.isRead)markEmailRead(id);
+}
+function closeEmailModal(){document.getElementById('emailModalOv').classList.remove('open');openEmailData=null}
+async function markEmailRead(id){
+  const m=emailMessages.find(x=>x.id===id);if(!m||m.isRead)return;
+  m.isRead=true;renderEmailList();
+  if(!outlookToken)return;
+  try{await fetch(`https://graph.microsoft.com/v1.0/me/messages/${id}`,{method:'PATCH',headers:{Authorization:'Bearer '+outlookToken,'Content-Type':'application/json'},body:JSON.stringify({isRead:true})})}catch(e){}
+}
+function importEmailToNote(){
+  if(!openEmailData)return;
+  const m=openEmailData;
+  const from=m.from?.emailAddress?.name?`${m.from.emailAddress.name} <${m.from.emailAddress.address}>`:m.from?.emailAddress?.address||'';
+  const date=new Date(m.receivedDateTime).toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  const body=`From: ${from}\nDate: ${date}\n\n${stripHtml(m.body?.content||m.bodyPreview||'').replace(/\s{2,}/g,' ').trim()}`;
+  closeEmailModal();
+  openModal('note');
+  setTimeout(()=>{document.getElementById('mTitle').value=m.subject||'';document.getElementById('mBody').value=body},60);
+}
+
 if(sessionStorage.getItem(SESSION_KEY)){
   document.getElementById('lockScreen').style.display='none';
   document.getElementById('app').style.display='flex';
