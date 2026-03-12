@@ -1628,10 +1628,12 @@ async function fetchSciNews(){
   const newArticles=[],seenIds=new Set(),failed=[];
   for(const cat of SCNEWS_CATS){
     try{
-      const res=await fetch(`https://export.arxiv.org/api/query?search_query=${encodeURIComponent(cat.q)}&sortBy=lastUpdatedDate&sortOrder=descending&max_results=8`);
+      const q=encodeURIComponent(cat.q).replace(/%3A/gi,':');
+      const res=await fetch(`https://export.arxiv.org/api/query?search_query=${q}&sortBy=lastUpdatedDate&sortOrder=descending&max_results=8`);
       if(!res.ok)throw new Error('HTTP '+res.status);
       const xml=await res.text();
       const doc=new DOMParser().parseFromString(xml,'application/xml');
+      if(doc.querySelector('parsererror'))throw new Error('XML parse error');
       for(const entry of doc.querySelectorAll('entry')){
         const id=entry.querySelector('id')?.textContent?.trim()||'';
         if(!seenIds.has(id)){
