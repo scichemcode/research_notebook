@@ -17,6 +17,7 @@
     --link-accent:#5a7e9a;--link-bg:#eef3f8;--link-border:#a4c0d4;
     --zot-accent:#c0522a;--zot-bg:#fdf0eb;--zot-border:#e0b090;
     --checklist-accent:#5a7e8a;--checklist-bg:#eef3f5;--checklist-border:#a0bfc8;
+    --scholar-accent:#5a6ea0;--scholar-bg:#eef0f8;--scholar-border:#b0bce0;
     --shadow:0 1px 4px rgba(44,40,32,.08);--shadow-md:0 4px 16px rgba(44,40,32,.12);--radius:8px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -151,6 +152,7 @@
   .tr{background:none;border:none;cursor:pointer;color:var(--text-faint);font-size:11px;padding:0 1px;line-height:1}
   .tr:hover{color:var(--failure-accent)}
   .ts{font-size:10px;color:var(--text-faint);font-family:'JetBrains Mono',monospace;white-space:nowrap}
+  .ts-upd{font-size:10px;color:var(--text-faint);font-family:'JetBrains Mono',monospace;white-space:nowrap;display:block;margin-top:2px}
   .trow{padding:0 14px 9px;display:flex;gap:4px;flex-wrap:wrap;align-items:center}
   .ti{font-size:11px;padding:3px 8px;background:var(--bg);border:1px solid var(--border);border-radius:4px;color:var(--text);outline:none;width:82px;font-family:'Instrument Sans',sans-serif}
   .ti::placeholder{color:var(--text-faint)}
@@ -346,6 +348,7 @@
   .link-preview-domain{font-size:10px;color:var(--text-faint);font-family:'JetBrains Mono',monospace;margin-top:2px}
   /* Outlook Inbox */
   .ptab.inbox-tab.active{color:#0072c6;border-bottom-color:#0072c6}
+  .ptab.scholar-tab.active{color:var(--scholar-accent);border-bottom-color:var(--scholar-accent)}
   #inboxPage{display:none;flex:1;flex-direction:column;overflow:hidden}
   #inboxPage.active{display:flex}
   .inbox-header{padding:22px 26px 16px;border-bottom:1px solid var(--border-light);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
@@ -400,6 +403,55 @@
   .email-modal-actions{padding:12px 20px 16px;border-top:1px solid var(--border-light);display:flex;gap:8px}
   .inbox-status{font-size:11px;color:var(--text-faint);font-family:'JetBrains Mono',monospace}
   @media(max-width:700px){.sidebar{display:none}.stats{display:none}.profile-cards{grid-template-columns:1fr 1fr}}
+  /* Scholar */
+  #scholarPage{display:none;flex-direction:column;overflow:hidden}
+  #scholarPage.active{display:flex}
+  .scholar-header{padding:22px 26px 16px;border-bottom:1px solid var(--border-light);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  .scholar-header-title{font-family:'Lora',serif;font-size:20px;font-weight:600}
+  .scholar-header-sub{font-size:12px;color:var(--text-faint);margin-top:3px}
+  .scholar-sync-btn{display:flex;align-items:center;gap:6px;padding:7px 15px;border-radius:8px;border:1.5px solid var(--scholar-border);background:var(--scholar-bg);color:var(--scholar-accent);font-family:'Instrument Sans',sans-serif;font-size:12.5px;font-weight:500;cursor:pointer;transition:all .18s}
+  .scholar-sync-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+  .scholar-sync-btn.spinning svg{animation:spin .8s linear infinite}
+  .scholar-status{font-size:11px;color:var(--text-faint);font-family:'JetBrains Mono',monospace}
+  .scholar-toolbar{padding:9px 26px;border-bottom:1px solid var(--border-light);display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .scholar-search-wrap{position:relative;flex:0 0 220px}
+  .scholar-si{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-faint);font-size:13px;pointer-events:none}
+  .scholar-search{width:100%;padding:7px 12px 7px 30px;background:var(--bg);border:1px solid var(--border);border-radius:6px;font-family:'Instrument Sans',sans-serif;font-size:13px;color:var(--text);outline:none;transition:border-color .16s}
+  .scholar-search:focus{border-color:var(--scholar-border)}
+  .scholar-topic-filter{display:flex;gap:4px;flex-wrap:wrap;flex:1}
+  .scholar-fb{padding:5px 9px;border-radius:16px;border:1.5px solid var(--border);background:transparent;font-family:'Instrument Sans',sans-serif;font-size:11.5px;font-weight:500;color:var(--text-muted);cursor:pointer;transition:all .14s}
+  .scholar-fb:hover{background:var(--surface2)}
+  .scholar-fb.on{background:var(--scholar-accent);color:#fff;border-color:var(--scholar-accent)}
+  .scholar-edit-btn{padding:6px 11px;border-radius:6px;border:1.5px solid var(--border);background:transparent;font-family:'Instrument Sans',sans-serif;font-size:11.5px;font-weight:500;color:var(--text-muted);cursor:pointer;transition:all .14s;white-space:nowrap;flex-shrink:0}
+  .scholar-edit-btn:hover{background:var(--surface2);color:var(--text)}
+  .scholar-settings-panel{padding:9px 26px;border-bottom:1px solid var(--border-light);background:var(--surface);display:flex;gap:8px;align-items:center}
+  .scholar-topics-input{flex:1;padding:8px 12px;background:var(--bg);border:1.5px solid var(--border);border-radius:7px;font-family:'Instrument Sans',sans-serif;font-size:13px;color:var(--text);outline:none;transition:border-color .16s}
+  .scholar-topics-input:focus{border-color:var(--scholar-border)}
+  .scholar-save-btn{padding:8px 15px;border-radius:7px;border:1.5px solid var(--scholar-border);background:var(--scholar-bg);color:var(--scholar-accent);font-family:'Instrument Sans',sans-serif;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .16s}
+  .scholar-save-btn:hover{background:var(--scholar-accent);color:#fff}
+  .scholar-area{flex:1;overflow-y:auto;padding:18px 26px}
+  .scholar-area::-webkit-scrollbar{width:5px}
+  .scholar-area::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+  .scholar-setup-card{background:var(--surface);border:1.5px solid var(--scholar-border);border-radius:12px;padding:26px;max-width:520px;margin:36px auto;text-align:center}
+  .scholar-setup-title{font-family:'Lora',serif;font-size:18px;font-weight:600;margin-bottom:8px}
+  .scholar-setup-sub{font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:16px}
+  .scholar-setup-input{width:100%;padding:10px 12px;background:var(--bg);border:1.5px solid var(--border);border-radius:7px;font-family:'Instrument Sans',sans-serif;font-size:14px;color:var(--text);outline:none;margin-bottom:10px;transition:border-color .16s}
+  .scholar-setup-input:focus{border-color:var(--scholar-border)}
+  .scholar-start-btn{width:100%;padding:11px;background:var(--scholar-accent);color:#fff;border:none;border-radius:8px;font-family:'Instrument Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .14s}
+  .scholar-start-btn:hover{opacity:.85}
+  .scholar-paper{background:var(--surface);border:1.5px solid var(--border-light);border-radius:8px;padding:13px 15px;margin-bottom:9px;display:flex;align-items:flex-start;gap:11px;transition:all .16s;animation:ci .22s ease both}
+  .scholar-paper:hover{box-shadow:var(--shadow-md)}
+  .scholar-paper-body{flex:1;min-width:0}
+  .scholar-paper-title{font-size:13.5px;font-weight:600;color:var(--text);margin-bottom:3px;line-height:1.4}
+  .scholar-paper-meta{font-size:11.5px;color:var(--text-muted);margin-bottom:3px;line-height:1.5}
+  .scholar-paper-abstract{font-size:12px;color:var(--text-faint);line-height:1.6;margin-top:4px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .scholar-paper-tags{margin-top:5px;display:flex;gap:4px;flex-wrap:wrap}
+  .scholar-topic-tag{display:inline-flex;padding:1px 6px;background:var(--scholar-bg);border:1px solid var(--scholar-border);border-radius:3px;font-size:10px;color:var(--scholar-accent);font-family:'Instrument Sans',sans-serif}
+  .scholar-paper-actions{display:flex;gap:5px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;min-width:120px}
+  .scholar-action-btn{padding:5px 9px;border-radius:5px;border:1px solid var(--border);background:none;font-family:'Instrument Sans',sans-serif;font-size:11px;font-weight:500;cursor:pointer;color:var(--text-muted);transition:all .14s;white-space:nowrap;text-decoration:none;display:inline-block}
+  .scholar-action-btn:hover{background:var(--surface2);color:var(--text)}
+  .scholar-action-btn.primary{background:var(--scholar-bg);border-color:var(--scholar-border);color:var(--scholar-accent)}
+  .scholar-action-btn.primary:hover{background:var(--scholar-accent);color:#fff}
 </style>
 </head>
 <body>
@@ -469,6 +521,7 @@
       <button class="ptab link-tab" id="tabLinks" onclick="switchPage('links')">🔗 Links</button>
       <button class="ptab zot-tab"  id="tabZot"   onclick="switchPage('zot')">📚 Zotero</button>
       <button class="ptab inbox-tab" id="tabInbox" onclick="switchPage('inbox')">📧 Inbox</button>
+      <button class="ptab scholar-tab" id="tabScholar" onclick="switchPage('scholar')">🎓 Scholar</button>
     </div>
 
     <!-- NOTES -->
@@ -599,6 +652,42 @@
         </div>
         <div id="inboxItemsContainer" style="display:none"></div>
         <div class="es" id="inboxEmpty" style="display:none"><div style="font-size:32px;opacity:.35">📭</div><div class="et">No emails found</div><div class="esub">Try a different folder or search term.</div></div>
+      </div>
+    </div>
+
+    <!-- SCHOLAR -->
+    <div id="scholarPage">
+      <div class="scholar-header">
+        <div><div class="scholar-header-title">Scholar Feed</div><div class="scholar-header-sub" id="scholarHeaderSub">Weekly papers matching your interests · powered by Semantic Scholar</div></div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="scholar-status" id="scholarStatus"></span>
+          <button class="scholar-sync-btn" id="scholarSyncBtn" onclick="fetchScholarPapers()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            Refresh
+          </button>
+        </div>
+      </div>
+      <div class="scholar-area" id="scholarArea">
+        <div class="scholar-setup-card" id="scholarSetupCard">
+          <div style="font-size:34px;margin-bottom:12px">🎓</div>
+          <div class="scholar-setup-title">Set Up Your Scholar Feed</div>
+          <div class="scholar-setup-sub">Enter your research topics and get up to 10 fresh papers per topic every week, automatically fetched from <strong>Semantic Scholar</strong>.</div>
+          <input class="scholar-setup-input" id="scholarTopicsSetup" placeholder="e.g. machine learning, crystal structures, DFT synthesis" onkeydown="if(event.key==='Enter')saveScholarTopics('setup')">
+          <button class="scholar-start-btn" onclick="saveScholarTopics('setup')">Start Feed</button>
+        </div>
+        <div id="scholarContent" style="display:none">
+          <div class="scholar-toolbar" style="padding:0 0 12px;border:none;flex-wrap:wrap">
+            <div class="scholar-search-wrap"><span class="scholar-si">⌕</span><input class="scholar-search" id="scholarSearch" placeholder="Search papers…" oninput="renderScholarPapers()"></div>
+            <div class="scholar-topic-filter" id="scholarTopicFilter"></div>
+            <button class="scholar-edit-btn" onclick="toggleScholarSettings()">⚙ Edit Topics</button>
+          </div>
+          <div class="scholar-settings-panel" id="scholarSettingsPanel" style="display:none;margin-bottom:12px;border-radius:8px;border:1.5px solid var(--scholar-border)">
+            <input class="scholar-topics-input" id="scholarTopicsEdit" placeholder="e.g. machine learning, crystal structures, DFT">
+            <button class="scholar-save-btn" onclick="saveScholarTopics('edit')">Save &amp; Refresh</button>
+          </div>
+          <div id="scholarItemsContainer"></div>
+          <div class="es" id="scholarEmpty" style="display:none"><div style="font-size:32px;opacity:.35">🎓</div><div class="et">No papers found</div><div class="esub">Try adjusting your search or topic filter.</div></div>
+        </div>
       </div>
     </div>
   </main>
@@ -733,6 +822,7 @@ let modalImages=[],expModalImages=[],featuredIdx=0,modalChecklistItems=[];
 let msalApp=null,outlookToken=null,emailMessages=[],openEmailData=null;
 let inboxClientId=null;
 let zotItems=[],zotCollections=[],zotUID=null,zotApiKey=null,zotUsername=null,zotTypeFilter='all';
+let scholarTopics=[],scholarPapers=[],scholarLastFetch=null,scholarFilterTopic='all';
 
 function init(){
   if(inited)return;inited=true;
@@ -755,6 +845,7 @@ function init(){
     document.getElementById('zotHeaderSub').textContent=(zotUsername||zotUID)+' · '+zotItems.length+' items cached';
   }
   setupPasteListener();
+  initScholar();
   document.addEventListener('keydown',e=>{
     const t=document.activeElement.tagName;
     if(t==='INPUT'||t==='TEXTAREA')return;
@@ -838,17 +929,18 @@ function stripHtml(html){try{const d=new DOMParser().parseFromString(html,'text/
 
 function switchPage(page){
   currentPage=page;
-  const tabMap={notes:'tabNotes',exp:'tabExp',links:'tabLinks',zot:'tabZot',inbox:'tabInbox'};
-  const pageMap={notes:'notesPage',exp:'expPage',links:'linksPage',zot:'zotPage',inbox:'inboxPage'};
-  ['notes','exp','links','zot','inbox'].forEach(p=>{
+  const tabMap={notes:'tabNotes',exp:'tabExp',links:'tabLinks',zot:'tabZot',inbox:'tabInbox',scholar:'tabScholar'};
+  const pageMap={notes:'notesPage',exp:'expPage',links:'linksPage',zot:'zotPage',inbox:'inboxPage',scholar:'scholarPage'};
+  ['notes','exp','links','zot','inbox','scholar'].forEach(p=>{
     document.getElementById(tabMap[p]).classList.toggle('active',p===page);
     document.getElementById(pageMap[p]).classList.toggle('active',p===page);
   });
 }
+function sortByRecent(a,b){return(b.updatedTs||b.ts)-(a.updatedTs||a.ts)}
 function renderAll(){renderEntries();renderSidebar();renderStats()}
 function renderSidebar(){
   const el=document.getElementById('sbList');
-  const all=[...entries.map(e=>({...e,_k:'entry'})),...experiences.map(e=>({...e,type:'experience',_k:'exp'})),...links.map(e=>({...e,type:'link',_k:'link'}))].sort((a,b)=>b.ts-a.ts).slice(0,22);
+  const all=[...entries.map(e=>({...e,_k:'entry'})),...experiences.map(e=>({...e,type:'experience',_k:'exp'})),...links.map(e=>({...e,type:'link',_k:'link'}))].sort(sortByRecent).slice(0,22);
   if(!all.length){el.innerHTML='<div class="sb-empty">No entries yet.</div>';return}
   el.innerHTML=all.map(e=>`<div class="sb-item ${e.type}" onclick="${e._k==='exp'?"switchPage('exp')":e._k==='link'?"switchPage('links')":`scrollCard('${e.id}')`}"><div class="sb-dot"></div><div><div class="sb-item-title">${escHtml(e.title||e.url||'Untitled')}</div><div class="sb-item-meta">${fs(e.ts)}</div></div></div>`).join('');
 }
@@ -861,7 +953,7 @@ function renderStats(){
 }
 function renderEntries(){
   const q=(document.getElementById('searchInput')?.value||'').toLowerCase();
-  const list=entries.filter(e=>{if(filter!=='all'&&e.type!==filter)return false;if(q)return(e.title+' '+e.body+' '+(e.tags||[]).join(' ')).toLowerCase().includes(q);return true}).sort((a,b)=>b.ts-a.ts);
+  const list=entries.filter(e=>{if(filter!=='all'&&e.type!==filter)return false;if(q)return(e.title+' '+e.body+' '+(e.tags||[]).join(' ')).toLowerCase().includes(q);return true}).sort(sortByRecent);
   const grid=document.getElementById('grid'),es=document.getElementById('emptyState');
   if(!list.length){grid.style.display='none';es.style.display='flex';es.innerHTML=entries.length?'<div class="ei">◎</div><div class="et">No results</div><div class="esub">Adjust your search or filter.</div>':'<div class="ei">✦</div><div class="et">Your notebook is empty</div><div class="esub">Add a note, comment, failure, or checklist.<br><small style="font-size:11px;opacity:.7">💡 Paste images with Ctrl+V over a card</small></div>';return}
   es.style.display='none';grid.style.display='grid';
@@ -882,7 +974,7 @@ function cardHTML(e){
     ${body}
     ${imgs?`<div class="card-images">${imgs}</div>`:''}
     <div class="paste-hint">💡 <button class="paste-card-btn" onclick="pasteImgToCard('${e.id}')">📋 Paste image</button> or drag to attach</div>
-    <div class="cf"><div class="ctags"></div><div class="ts">${fd(e.ts)}</div></div>
+    <div class="cf"><div class="ctags"></div><div><div class="ts">${fd(e.ts)}</div>${e.updatedTs?`<div class="ts-upd">Updated: ${fd(e.updatedTs)}</div>`:''}</div></div>
     <div class="trow" id="tr-${e.id}"></div>
   </div>`;
 }
@@ -893,14 +985,14 @@ function renderChecklistCard(e){
   const itemsHTML=items.length?items.map((item,i)=>`<label class="cl-item"><input type="checkbox" ${item.checked?'checked':''} onchange="toggleChecklistItem('${e.id}',${i})"><span class="cl-item-text${item.checked?' done':''}">${escHtml(item.text)}</span></label>`).join(''):'<div style="font-size:12px;color:var(--text-faint);font-style:italic;padding:2px 0">No items yet — add one below</div>';
   return `<div class="cl-items">${itemsHTML}</div><div class="cl-add"><input class="cl-add-input" placeholder="Add item…" onkeydown="if(event.key==='Enter')addItemToCard('${e.id}',this)"><button class="cl-add-btn" onclick="addItemToCard('${e.id}',this.previousElementSibling)">+</button></div>`;
 }
-function toggleChecklistItem(id,idx){const e=entries.find(x=>x.id===id);if(!e)return;const items=parseChecklist(e.body||'');if(idx<0||idx>=items.length)return;items[idx].checked=!items[idx].checked;e.body=serializeChecklist(items);save();const card=document.getElementById('card-'+id);if(card){const cbs=card.querySelectorAll('.cl-item input[type=checkbox]');if(cbs[idx]){const txt=cbs[idx].closest('.cl-item')?.querySelector('.cl-item-text');if(txt)txt.classList.toggle('done',items[idx].checked)}}}
-function addItemToCard(id,input){const text=input.value.trim();if(!text)return;const e=entries.find(x=>x.id===id);if(!e)return;const items=parseChecklist(e.body||'');items.push({text,checked:false});e.body=serializeChecklist(items);save();input.value='';renderEntries();requestAnimationFrame(buildTagRows)}
+function toggleChecklistItem(id,idx){const e=entries.find(x=>x.id===id);if(!e)return;const items=parseChecklist(e.body||'');if(idx<0||idx>=items.length)return;items[idx].checked=!items[idx].checked;e.body=serializeChecklist(items);e.updatedTs=Date.now();save();const card=document.getElementById('card-'+id);if(card){const cbs=card.querySelectorAll('.cl-item input[type=checkbox]');if(cbs[idx]){const txt=cbs[idx].closest('.cl-item')?.querySelector('.cl-item-text');if(txt)txt.classList.toggle('done',items[idx].checked)}}}
+function addItemToCard(id,input){const text=input.value.trim();if(!text)return;const e=entries.find(x=>x.id===id);if(!e)return;const items=parseChecklist(e.body||'');items.push({text,checked:false});e.body=serializeChecklist(items);e.updatedTs=Date.now();save();input.value='';renderEntries();requestAnimationFrame(buildTagRows)}
 function rz(el){el.style.height='auto';el.style.height=el.scrollHeight+'px'}
 function buildTagRows(){entries.forEach(e=>{const r=document.getElementById('tr-'+e.id);if(r)refreshTR(e,r)})}
 function refreshTR(e,row){if(!row)row=document.getElementById('tr-'+e.id);if(!row)return;row.innerHTML=(e.tags||[]).map(t=>`<span class="tag">${escHtml(t)}<button class="tr" onclick="rmTag('${e.id}','${escAttr(t)}')">×</button></span>`).join('')+`<input class="ti" placeholder="+ tag" onkeydown="addTag(event,'${e.id}',this)">`}
-function uf(id,field,val){const e=entries.find(x=>x.id===id);if(e){e[field]=val;save();renderSidebar()}}
-function rmTag(id,tag){const e=entries.find(x=>x.id===id);if(!e)return;e.tags=(e.tags||[]).filter(t=>t!==tag);save();refreshTR(e)}
-function addTag(event,id,input){if(event.key!=='Enter'&&event.key!==',')return;event.preventDefault();const tag=input.value.trim().replace(/,$/,'');if(!tag)return;const e=entries.find(x=>x.id===id);if(e){if(!e.tags)e.tags=[];if(!e.tags.includes(tag)){e.tags.push(tag);save();refreshTR(e)}}input.value=''}
+function uf(id,field,val){const e=entries.find(x=>x.id===id);if(e){e[field]=val;e.updatedTs=Date.now();save();renderSidebar()}}
+function rmTag(id,tag){const e=entries.find(x=>x.id===id);if(!e)return;e.tags=(e.tags||[]).filter(t=>t!==tag);e.updatedTs=Date.now();save();refreshTR(e)}
+function addTag(event,id,input){if(event.key!=='Enter'&&event.key!==',')return;event.preventDefault();const tag=input.value.trim().replace(/,$/,'');if(!tag)return;const e=entries.find(x=>x.id===id);if(e){if(!e.tags)e.tags=[];if(!e.tags.includes(tag)){e.tags.push(tag);e.updatedTs=Date.now();save();refreshTR(e)}}input.value=''}
 function del(id){entries=entries.filter(e=>e.id!==id);save();renderAll()}
 function fileToBase64(file){return new Promise(res=>{const r=new FileReader();r.onload=ev=>res(ev.target.result);r.readAsDataURL(file)})}
 let hoveredCardId=null;
@@ -917,8 +1009,8 @@ function setupPasteListener(){
   });
 }
 async function handlePasteIntoModal(e,which){const items=[...e.clipboardData.items].filter(i=>i.type.startsWith('image/'));if(!items.length)return;e.preventDefault();for(const item of items){const b64=await fileToBase64(item.getAsFile());if(which==='modal'){modalImages.push(b64);renderModalPreviews()}else{expModalImages.push(b64);renderExpPreviews()}}}
-function addImgToEntry(id,b64){const e=entries.find(x=>x.id===id);if(!e)return;if(!e.images)e.images=[];e.images.push(b64);save();renderEntries();requestAnimationFrame(buildTagRows)}
-function delImg(id,idx){const e=entries.find(x=>x.id===id);if(!e||!e.images)return;e.images.splice(idx,1);save();renderEntries();requestAnimationFrame(buildTagRows)}
+function addImgToEntry(id,b64){const e=entries.find(x=>x.id===id);if(!e)return;if(!e.images)e.images=[];e.images.push(b64);e.updatedTs=Date.now();save();renderEntries();requestAnimationFrame(buildTagRows)}
+function delImg(id,idx){const e=entries.find(x=>x.id===id);if(!e||!e.images)return;e.images.splice(idx,1);e.updatedTs=Date.now();save();renderEntries();requestAnimationFrame(buildTagRows)}
 function handleCardDrop(event,id){event.preventDefault();[...event.dataTransfer.files].filter(f=>f.type.startsWith('image/')).forEach(async f=>{const b64=await fileToBase64(f);addImgToEntry(id,b64)})}
 async function pasteFromClipboard(target,cardId){
   try{
@@ -970,7 +1062,7 @@ function saveEntry(){
   let body;
   if(curType==='checklist'){body=serializeChecklist(modalChecklistItems);if(!title&&!modalChecklistItems.length){document.getElementById('mTitle').focus();return}}
   else{body=document.getElementById('mBody').value.trim();if(!title&&!body){document.getElementById('mTitle').focus();return}}
-  if(editId){const e=entries.find(x=>x.id===editId);if(e){e.title=title;e.body=body;e.tags=tags;e.type=curType;e.images=[...modalImages]}}
+  if(editId){const e=entries.find(x=>x.id===editId);if(e){e.title=title;e.body=body;e.tags=tags;e.type=curType;e.images=[...modalImages];e.updatedTs=Date.now()}}
   else entries.push({id:gid(),type:curType,title,body,tags,images:[...modalImages],ts:Date.now()});
   save();renderAll();requestAnimationFrame(buildTagRows);closeModal();
 }
@@ -1303,6 +1395,140 @@ function importEmailToNote(){
   closeEmailModal();
   openModal('note');
   setTimeout(()=>{document.getElementById('mTitle').value=m.subject||'';document.getElementById('mBody').value=body},60);
+}
+
+/* ── Scholar Feed ── */
+function initScholar(){
+  scholarTopics=JSON.parse(localStorage.getItem('rnb_scholar_topics')||'[]');
+  scholarPapers=JSON.parse(localStorage.getItem('rnb_scholar_papers')||'[]');
+  scholarLastFetch=parseInt(localStorage.getItem('rnb_scholar_lastfetch')||'0')||null;
+  if(scholarTopics.length){
+    document.getElementById('scholarSetupCard').style.display='none';
+    document.getElementById('scholarContent').style.display='block';
+    document.getElementById('scholarTopicsEdit').value=scholarTopics.join(', ');
+    renderScholarTopicFilter();
+    renderScholarPapers();
+    const WEEK=7*24*60*60*1000;
+    if(!scholarLastFetch||Date.now()-scholarLastFetch>WEEK){fetchScholarPapers()}
+    else{const next=new Date(scholarLastFetch+WEEK);document.getElementById('scholarStatus').textContent='Next auto-refresh: '+next.toLocaleDateString('en-GB',{day:'2-digit',month:'short'})}
+  }
+}
+function saveScholarState(){
+  localStorage.setItem('rnb_scholar_topics',JSON.stringify(scholarTopics));
+  localStorage.setItem('rnb_scholar_papers',JSON.stringify(scholarPapers));
+  if(scholarLastFetch)localStorage.setItem('rnb_scholar_lastfetch',String(scholarLastFetch));
+}
+function saveScholarTopics(source){
+  const inputId=source==='setup'?'scholarTopicsSetup':'scholarTopicsEdit';
+  const raw=document.getElementById(inputId).value.trim();
+  if(!raw){showToast('Enter at least one topic');return}
+  scholarTopics=raw.split(',').map(t=>t.trim()).filter(Boolean);
+  saveScholarState();
+  document.getElementById('scholarSetupCard').style.display='none';
+  document.getElementById('scholarContent').style.display='block';
+  document.getElementById('scholarTopicsEdit').value=scholarTopics.join(', ');
+  document.getElementById('scholarSettingsPanel').style.display='none';
+  renderScholarTopicFilter();
+  renderScholarPapers();
+  fetchScholarPapers();
+}
+function toggleScholarSettings(){
+  const panel=document.getElementById('scholarSettingsPanel');
+  panel.style.display=panel.style.display==='none'?'flex':'none';
+}
+async function fetchScholarPapers(){
+  if(!scholarTopics.length){showToast('Add topics first');return}
+  const btn=document.getElementById('scholarSyncBtn');
+  btn.classList.add('spinning');
+  document.getElementById('scholarStatus').textContent='Fetching…';
+  const newPapers=[],seenIds=new Set();
+  try{
+    for(const topic of scholarTopics){
+      const q=encodeURIComponent(topic);
+      const res=await fetch(`https://api.semanticscholar.org/graph/v1/paper/search?query=${q}&fields=paperId,title,authors,year,abstract,url,externalIds,publicationDate&limit=10`);
+      if(!res.ok)throw new Error('Failed to fetch papers for "'+topic+'": HTTP '+res.status);
+      const data=await res.json();
+      for(const p of(data.data||[])){
+        if(!seenIds.has(p.paperId)){seenIds.add(p.paperId);newPapers.push({...p,_topic:topic,_fetchedAt:Date.now()})}
+      }
+      await new Promise(r=>setTimeout(r,350)); // respect Semantic Scholar rate limit (~1 req/sec)
+    }
+    scholarPapers=newPapers;
+    scholarLastFetch=Date.now();
+    saveScholarState();
+    const next=new Date(scholarLastFetch+7*24*60*60*1000);
+    document.getElementById('scholarStatus').textContent='✓ '+scholarPapers.length+' papers · next: '+next.toLocaleDateString('en-GB',{day:'2-digit',month:'short'});
+    document.getElementById('scholarHeaderSub').textContent='Last updated '+fd(scholarLastFetch)+' · powered by Semantic Scholar';
+    renderScholarTopicFilter();
+    renderScholarPapers();
+  }catch(e){document.getElementById('scholarStatus').textContent='Fetch failed.';showToast('Scholar fetch failed: '+e.message)}
+  btn.classList.remove('spinning');
+}
+function setScholarFilter(t){
+  scholarFilterTopic=t;
+  renderScholarTopicFilter();
+  renderScholarPapers();
+}
+function renderScholarTopicFilter(){
+  const c=document.getElementById('scholarTopicFilter');if(!c)return;
+  c.innerHTML=`<button class="scholar-fb${scholarFilterTopic==='all'?' on':''}" onclick="setScholarFilter('all')">All</button>`+
+    scholarTopics.map(t=>`<button class="scholar-fb${scholarFilterTopic===t?' on':''}" onclick="setScholarFilter('${escAttr(t)}')">${escHtml(t)}</button>`).join('');
+}
+function renderScholarPapers(){
+  const q=(document.getElementById('scholarSearch')?.value||'').toLowerCase();
+  const list=scholarPapers.filter(p=>{
+    if(scholarFilterTopic!=='all'&&p._topic!==scholarFilterTopic)return false;
+    if(q){const hay=((p.title||'')+' '+(p.abstract||'')+' '+(p.authors||[]).map(a=>a.name||'').join(' ')).toLowerCase();if(!hay.includes(q))return false}
+    return true;
+  });
+  const container=document.getElementById('scholarItemsContainer'),empty=document.getElementById('scholarEmpty');
+  if(!container)return;
+  if(!list.length){container.innerHTML='';empty.style.display='flex';return}
+  empty.style.display='none';
+  container.innerHTML=list.map(p=>{
+    const authors=(p.authors||[]).slice(0,3).map(a=>a.name||'').filter(Boolean).join(', ')+(p.authors?.length>3?' et al.':'');
+    const year=p.year||p.publicationDate?.slice(0,4)||'';
+    const doi=p.externalIds?.DOI?'https://doi.org/'+p.externalIds.DOI:p.url||'';
+    const rawAbstract=p.abstract||'';
+    const abstract=rawAbstract.slice(0,260)+(rawAbstract.length>260?'…':'');
+    const pid=escAttr(p.paperId||'');
+    return `<div class="scholar-paper">
+      <div class="scholar-paper-body">
+        <div class="scholar-paper-title">${escHtml(p.title||'Untitled')}</div>
+        <div class="scholar-paper-meta">${escHtml([authors,year].filter(Boolean).join(' · '))}</div>
+        ${abstract?`<div class="scholar-paper-abstract">${escHtml(abstract)}</div>`:''}
+        <div class="scholar-paper-tags"><span class="scholar-topic-tag">${escHtml(p._topic||'')}</span></div>
+      </div>
+      <div class="scholar-paper-actions">
+        ${doi?`<a href="${escHtml(doi)}" target="_blank" class="scholar-action-btn primary">Open ↗</a>`:''}
+        <button class="scholar-action-btn" onclick="importScholarToLinks('${pid}')">→ Links</button>
+        <button class="scholar-action-btn" onclick="importScholarToNote('${pid}')">→ Note</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function importScholarToNote(paperId){
+  const p=scholarPapers.find(x=>x.paperId===paperId);if(!p)return;
+  const authors=(p.authors||[]).map(a=>a.name||'').filter(Boolean).join(', ');
+  const year=p.year||p.publicationDate?.slice(0,4)||'';
+  const doi=p.externalIds?.DOI?'https://doi.org/'+p.externalIds.DOI:p.url||'';
+  const body=[authors+(year?' ('+year+')':''),doi,'',p.abstract||''].filter(Boolean).join('\n').trim();
+  openModal('note');
+  setTimeout(()=>{document.getElementById('mTitle').value=p.title||'';document.getElementById('mBody').value=body;document.getElementById('mTags').value=p._topic||''},60);
+}
+function importScholarToLinks(paperId){
+  const p=scholarPapers.find(x=>x.paperId===paperId);if(!p)return;
+  const authors=(p.authors||[]).map(a=>a.name||'').filter(Boolean).join(', ');
+  const year=p.year||p.publicationDate?.slice(0,4)||'';
+  const doi=p.externalIds?.DOI?'https://doi.org/'+p.externalIds.DOI:p.url||'';
+  document.getElementById('lUrl').value=doi;
+  document.getElementById('lTitle').value=p.title||'';
+  document.getElementById('lNote').value=authors+(year?' ('+year+')':'');
+  document.getElementById('lCat').value='Papers';
+  document.getElementById('lTags').value=p._topic||'';
+  document.getElementById('linkModalHead').textContent='Save from Scholar';
+  editLinkId=null;
+  document.getElementById('linkOv').classList.add('open');
 }
 
 if(sessionStorage.getItem(SESSION_KEY)){
