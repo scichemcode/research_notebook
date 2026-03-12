@@ -350,6 +350,41 @@
   /* Outlook Inbox */
   .ptab.inbox-tab.active{color:#0072c6;border-bottom-color:#0072c6}
   .ptab.scholar-tab.active{color:var(--scholar-accent);border-bottom-color:var(--scholar-accent)}
+  .ptab.scnews-tab.active{color:var(--scnews-accent);border-bottom-color:var(--scnews-accent)}
+  #scnewsPage{display:none;flex:1;flex-direction:column;overflow:hidden}
+  #scnewsPage.active{display:flex}
+  .scnews-header{padding:22px 26px 16px;border-bottom:1px solid var(--border-light);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  .scnews-header-title{font-family:'Lora',serif;font-size:20px;font-weight:600}
+  .scnews-header-sub{font-size:12px;color:var(--text-faint);margin-top:3px}
+  .scnews-sync-btn{display:flex;align-items:center;gap:6px;padding:7px 15px;border-radius:8px;border:1.5px solid var(--scnews-border);background:var(--scnews-bg);color:var(--scnews-accent);font-family:'Instrument Sans',sans-serif;font-size:12.5px;font-weight:500;cursor:pointer;transition:all .18s}
+  .scnews-sync-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+  .scnews-sync-btn.spinning svg{animation:spin .8s linear infinite}
+  .scnews-status{font-size:11px;color:var(--text-faint);font-family:'JetBrains Mono',monospace}
+  .scnews-toolbar{padding:9px 26px;border-bottom:1px solid var(--border-light);display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .scnews-search-wrap{position:relative;flex:0 0 220px}
+  .scnews-si{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-faint);font-size:13px;pointer-events:none}
+  .scnews-search{width:100%;padding:7px 12px 7px 30px;background:var(--bg);border:1px solid var(--border);border-radius:6px;font-family:'Instrument Sans',sans-serif;font-size:13px;color:var(--text);outline:none;transition:border-color .16s}
+  .scnews-search:focus{border-color:var(--scnews-border)}
+  .scnews-cat-filter{display:flex;gap:4px;flex-wrap:wrap;flex:1}
+  .scnews-fb{padding:5px 9px;border-radius:16px;border:1.5px solid var(--border);background:transparent;font-family:'Instrument Sans',sans-serif;font-size:11.5px;font-weight:500;color:var(--text-muted);cursor:pointer;transition:all .14s}
+  .scnews-fb:hover{background:var(--surface2)}
+  .scnews-fb.on{background:var(--scnews-accent);color:#fff;border-color:var(--scnews-accent)}
+  .scnews-area{flex:1;overflow-y:auto;padding:18px 26px}
+  .scnews-area::-webkit-scrollbar{width:5px}
+  .scnews-area::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+  .scnews-article{background:var(--surface);border:1.5px solid var(--border-light);border-radius:8px;padding:13px 15px;margin-bottom:9px;display:flex;align-items:flex-start;gap:11px;transition:all .16s;animation:ci .22s ease both}
+  .scnews-article:hover{box-shadow:var(--shadow-md)}
+  .scnews-article-body{flex:1;min-width:0}
+  .scnews-article-title{font-size:13.5px;font-weight:600;color:var(--text);margin-bottom:3px;line-height:1.4}
+  .scnews-article-meta{font-size:11.5px;color:var(--text-muted);margin-bottom:3px;line-height:1.5}
+  .scnews-article-summary{font-size:12px;color:var(--text-faint);line-height:1.6;margin-top:4px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .scnews-article-tags{margin-top:5px;display:flex;gap:4px;flex-wrap:wrap}
+  .scnews-cat-tag{display:inline-flex;padding:1px 6px;background:var(--scnews-bg);border:1px solid var(--scnews-border);border-radius:3px;font-size:10px;color:var(--scnews-accent);font-family:'Instrument Sans',sans-serif}
+  .scnews-article-actions{display:flex;gap:5px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;min-width:120px}
+  .scnews-action-btn{padding:5px 9px;border-radius:5px;border:1px solid var(--border);background:none;font-family:'Instrument Sans',sans-serif;font-size:11px;font-weight:500;cursor:pointer;color:var(--text-muted);transition:all .14s;white-space:nowrap;text-decoration:none;display:inline-block}
+  .scnews-action-btn:hover{background:var(--surface2);color:var(--text)}
+  .scnews-action-btn.primary{background:var(--scnews-bg);border-color:var(--scnews-border);color:var(--scnews-accent)}
+  .scnews-action-btn.primary:hover{background:var(--scnews-accent);color:#fff}
   #inboxPage{display:none;flex:1;flex-direction:column;overflow:hidden}
   #inboxPage.active{display:flex}
   .inbox-header{padding:22px 26px 16px;border-bottom:1px solid var(--border-light);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
@@ -523,6 +558,7 @@
       <button class="ptab zot-tab"  id="tabZot"   onclick="switchPage('zot')">📚 Zotero</button>
       <button class="ptab inbox-tab" id="tabInbox" onclick="switchPage('inbox')">📧 Inbox</button>
       <button class="ptab scholar-tab" id="tabScholar" onclick="switchPage('scholar')">🎓 Scholar</button>
+      <button class="ptab scnews-tab" id="tabScnews" onclick="switchPage('scnews')">📰 Science News</button>
     </div>
 
     <!-- NOTES -->
@@ -691,6 +727,28 @@
         </div>
       </div>
     </div>
+
+    <!-- SCIENCE NEWS -->
+    <div id="scnewsPage">
+      <div class="scnews-header">
+        <div><div class="scnews-header-title">Science News</div><div class="scnews-header-sub" id="scnewsHeaderSub">Recent scientific developments · powered by arXiv</div></div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="scnews-status" id="scnewsStatus"></span>
+          <button class="scnews-sync-btn" id="scnewsSyncBtn" onclick="fetchSciNews()" aria-label="Refresh science news articles">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            Refresh
+          </button>
+        </div>
+      </div>
+      <div class="scnews-toolbar">
+        <div class="scnews-search-wrap"><span class="scnews-si">⌕</span><input class="scnews-search" id="scnewsSearch" placeholder="Search articles…" aria-label="Search science news articles" oninput="renderSciNews()"></div>
+        <div class="scnews-cat-filter" id="scnewsCatFilter"></div>
+      </div>
+      <div class="scnews-area">
+        <div id="scnewsItemsContainer"></div>
+        <div class="es" id="scnewsEmpty" style="display:none"><div style="font-size:32px;opacity:.35">📰</div><div class="et">No articles found</div><div class="esub">Try adjusting your search or category filter.</div></div>
+      </div>
+    </div>
   </main>
 </div>
 </div>
@@ -847,6 +905,7 @@ function init(){
   }
   setupPasteListener();
   initScholar();
+  initSciNews();
   document.addEventListener('keydown',e=>{
     const t=document.activeElement.tagName;
     if(t==='INPUT'||t==='TEXTAREA')return;
@@ -930,9 +989,9 @@ function stripHtml(html){try{const d=new DOMParser().parseFromString(html,'text/
 
 function switchPage(page){
   currentPage=page;
-  const tabMap={notes:'tabNotes',exp:'tabExp',links:'tabLinks',zot:'tabZot',inbox:'tabInbox',scholar:'tabScholar'};
-  const pageMap={notes:'notesPage',exp:'expPage',links:'linksPage',zot:'zotPage',inbox:'inboxPage',scholar:'scholarPage'};
-  ['notes','exp','links','zot','inbox','scholar'].forEach(p=>{
+  const tabMap={notes:'tabNotes',exp:'tabExp',links:'tabLinks',zot:'tabZot',inbox:'tabInbox',scholar:'tabScholar',scnews:'tabScnews'};
+  const pageMap={notes:'notesPage',exp:'expPage',links:'linksPage',zot:'zotPage',inbox:'inboxPage',scholar:'scholarPage',scnews:'scnewsPage'};
+  ['notes','exp','links','zot','inbox','scholar','scnews'].forEach(p=>{
     document.getElementById(tabMap[p]).classList.toggle('active',p===page);
     document.getElementById(pageMap[p]).classList.toggle('active',p===page);
   });
@@ -1535,6 +1594,138 @@ function importScholarToLinks(paperId){
   document.getElementById('lCat').value='Papers';
   document.getElementById('lTags').value=p._topic||'';
   document.getElementById('linkModalHead').textContent='Save from Scholar';
+  editLinkId=null;
+  document.getElementById('linkOv').classList.add('open');
+}
+
+/* ── Science News (arXiv) ── */
+const SCNEWS_CATS=[
+  {id:'physics',label:'Physics',q:'cat:physics OR cat:cond-mat OR cat:quant-ph OR cat:astro-ph OR cat:gr-qc OR cat:hep-th'},
+  {id:'cs',label:'CS',q:'cat:cs.AI OR cat:cs.LG OR cat:cs.CV OR cat:cs.CL'},
+  {id:'biology',label:'Biology',q:'cat:q-bio'},
+  {id:'math',label:'Math',q:'cat:math'},
+  {id:'stats',label:'Stats',q:'cat:stat'},
+  {id:'econ',label:'Econ',q:'cat:econ'}
+];
+let scnewsArticles=[],scnewsLastFetch=null,scnewsFilterCat='all';
+function initSciNews(){
+  scnewsArticles=JSON.parse(localStorage.getItem('rnb_scnews_articles')||'[]');
+  scnewsLastFetch=parseInt(localStorage.getItem('rnb_scnews_lastfetch')||'0')||null;
+  renderSciNewsCatFilter();
+  renderSciNews();
+  const WEEK=7*24*60*60*1000;
+  if(!scnewsLastFetch||Date.now()-scnewsLastFetch>WEEK){fetchSciNews()}
+  else{const next=new Date(scnewsLastFetch+WEEK);document.getElementById('scnewsStatus').textContent='Next auto-refresh: '+next.toLocaleDateString('en-GB',{day:'2-digit',month:'short'})}
+}
+function saveSciNewsState(){
+  localStorage.setItem('rnb_scnews_articles',JSON.stringify(scnewsArticles));
+  if(scnewsLastFetch)localStorage.setItem('rnb_scnews_lastfetch',String(scnewsLastFetch));
+}
+async function fetchSciNews(){
+  const btn=document.getElementById('scnewsSyncBtn');
+  btn.classList.add('spinning');
+  document.getElementById('scnewsStatus').textContent='Fetching…';
+  const newArticles=[],seenIds=new Set(),failed=[];
+  for(const cat of SCNEWS_CATS){
+    try{
+      const res=await fetch(`https://export.arxiv.org/api/query?search_query=${encodeURIComponent(cat.q)}&sortBy=lastUpdatedDate&sortOrder=descending&max_results=8`);
+      if(!res.ok)throw new Error('HTTP '+res.status);
+      const xml=await res.text();
+      const doc=new DOMParser().parseFromString(xml,'application/xml');
+      for(const entry of doc.querySelectorAll('entry')){
+        const id=entry.querySelector('id')?.textContent?.trim()||'';
+        if(!seenIds.has(id)){
+          seenIds.add(id);
+          const authors=[...entry.querySelectorAll('author name')].map(n=>n.textContent.trim());
+          newArticles.push({
+            id,
+            title:entry.querySelector('title')?.textContent?.trim()||'',
+            summary:(entry.querySelector('summary')?.textContent||'').replace(/\s+/g,' ').trim(),
+            authors,
+            published:entry.querySelector('published')?.textContent?.trim()||'',
+            updated:entry.querySelector('updated')?.textContent?.trim()||'',
+            link:entry.querySelector('link[rel="alternate"]')?.getAttribute('href')||id,
+            _cat:cat.id,
+            _catLabel:cat.label,
+            _fetchedAt:Date.now()
+          });
+        }
+      }
+    }catch(e){failed.push(cat.label);console.error('SciNews fetch failed for cat "'+cat.id+'":',e)}
+    await new Promise(r=>setTimeout(r,300));
+  }
+  const allFailed=failed.length>0&&failed.length===SCNEWS_CATS.length;
+  if(!allFailed){
+    scnewsArticles=newArticles;
+    scnewsLastFetch=Date.now();
+    saveSciNewsState();
+    const next=new Date(scnewsLastFetch+7*24*60*60*1000);
+    document.getElementById('scnewsStatus').textContent='✓ '+scnewsArticles.length+' articles · next: '+next.toLocaleDateString('en-GB',{day:'2-digit',month:'short'});
+    document.getElementById('scnewsHeaderSub').textContent='Last updated '+fd(scnewsLastFetch)+' · powered by arXiv';
+    if(failed.length)showToast('Fetch failed for: '+failed.join(', '));
+  }else{
+    document.getElementById('scnewsStatus').textContent='Fetch failed.';
+    showToast('Science News fetch failed: could not reach arXiv');
+  }
+  renderSciNewsCatFilter();
+  renderSciNews();
+  btn.classList.remove('spinning');
+}
+function setSciNewsFilter(c){scnewsFilterCat=c;renderSciNewsCatFilter();renderSciNews()}
+function renderSciNewsCatFilter(){
+  const c=document.getElementById('scnewsCatFilter');if(!c)return;
+  c.innerHTML=`<button class="scnews-fb${scnewsFilterCat==='all'?' on':''}" onclick="setSciNewsFilter('all')">All</button>`+
+    SCNEWS_CATS.map(cat=>`<button class="scnews-fb${scnewsFilterCat===cat.id?' on':''}" onclick="setSciNewsFilter('${escAttr(cat.id)}')">${escHtml(cat.label)}</button>`).join('');
+}
+function renderSciNews(){
+  const q=(document.getElementById('scnewsSearch')?.value||'').toLowerCase();
+  const list=scnewsArticles.filter(a=>{
+    if(scnewsFilterCat!=='all'&&a._cat!==scnewsFilterCat)return false;
+    if(q){const hay=((a.title||'')+' '+(a.summary||'')+' '+(a.authors||[]).join(' ')).toLowerCase();if(!hay.includes(q))return false}
+    return true;
+  });
+  const container=document.getElementById('scnewsItemsContainer'),empty=document.getElementById('scnewsEmpty');
+  if(!container)return;
+  if(!list.length){container.innerHTML='';empty.style.display='flex';return}
+  empty.style.display='none';
+  container.innerHTML=list.map(a=>{
+    const auths=a.authors||[];
+    const authors=auths.slice(0,3).join(', ')+(auths.length>3?' et al.':'');
+    const date=a.updated||a.published?new Date(a.updated||a.published).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}):'';
+    const summary=(a.summary||'').slice(0,280)+((a.summary||'').length>280?'…':'');
+    const aid=escAttr(a.id||'');
+    return `<div class="scnews-article">
+      <div class="scnews-article-body">
+        <div class="scnews-article-title">${escHtml(a.title||'Untitled')}</div>
+        <div class="scnews-article-meta">${escHtml([authors,date].filter(Boolean).join(' · '))}</div>
+        ${summary?`<div class="scnews-article-summary">${escHtml(summary)}</div>`:''}
+        <div class="scnews-article-tags"><span class="scnews-cat-tag">${escHtml(a._catLabel||a._cat||'')}</span></div>
+      </div>
+      <div class="scnews-article-actions">
+        ${a.link?`<a href="${escHtml(a.link)}" target="_blank" class="scnews-action-btn primary">Open ↗</a>`:''}
+        <button class="scnews-action-btn" onclick="importSciNewsToLinks('${aid}')">→ Links</button>
+        <button class="scnews-action-btn" onclick="importSciNewsToNote('${aid}')">→ Note</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function importSciNewsToNote(id){
+  const a=scnewsArticles.find(x=>x.id===id);if(!a)return;
+  const authors=(a.authors||[]).join(', ');
+  const date=a.updated||a.published?new Date(a.updated||a.published).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}):'';
+  const body=[authors,date,a.link||'','',a.summary||''].filter(Boolean).join('\n').trim();
+  openModal('note');
+  setTimeout(()=>{document.getElementById('mTitle').value=a.title||'';document.getElementById('mBody').value=body;document.getElementById('mTags').value=a._catLabel||a._cat||''},60);
+}
+function importSciNewsToLinks(id){
+  const a=scnewsArticles.find(x=>x.id===id);if(!a)return;
+  const authors=(a.authors||[]).slice(0,3).join(', ')+((a.authors||[]).length>3?' et al.':'');
+  document.getElementById('lUrl').value=a.link||'';
+  document.getElementById('lTitle').value=a.title||'';
+  document.getElementById('lNote').value=authors;
+  document.getElementById('lCat').value='Papers';
+  document.getElementById('lTags').value=a._catLabel||a._cat||'';
+  document.getElementById('linkModalHead').textContent='Save from Science News';
   editLinkId=null;
   document.getElementById('linkOv').classList.add('open');
 }
