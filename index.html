@@ -151,6 +151,7 @@
   .tr{background:none;border:none;cursor:pointer;color:var(--text-faint);font-size:11px;padding:0 1px;line-height:1}
   .tr:hover{color:var(--failure-accent)}
   .ts{font-size:10px;color:var(--text-faint);font-family:'JetBrains Mono',monospace;white-space:nowrap}
+  .ts-upd{font-size:10px;color:var(--text-faint);font-family:'JetBrains Mono',monospace;white-space:nowrap;display:block;margin-top:2px}
   .trow{padding:0 14px 9px;display:flex;gap:4px;flex-wrap:wrap;align-items:center}
   .ti{font-size:11px;padding:3px 8px;background:var(--bg);border:1px solid var(--border);border-radius:4px;color:var(--text);outline:none;width:82px;font-family:'Instrument Sans',sans-serif}
   .ti::placeholder{color:var(--text-faint)}
@@ -848,7 +849,7 @@ function switchPage(page){
 function renderAll(){renderEntries();renderSidebar();renderStats()}
 function renderSidebar(){
   const el=document.getElementById('sbList');
-  const all=[...entries.map(e=>({...e,_k:'entry'})),...experiences.map(e=>({...e,type:'experience',_k:'exp'})),...links.map(e=>({...e,type:'link',_k:'link'}))].sort((a,b)=>b.ts-a.ts).slice(0,22);
+  const all=[...entries.map(e=>({...e,_k:'entry'})),...experiences.map(e=>({...e,type:'experience',_k:'exp'})),...links.map(e=>({...e,type:'link',_k:'link'}))].sort((a,b)=>(b.updatedTs||b.ts)-(a.updatedTs||a.ts)).slice(0,22);
   if(!all.length){el.innerHTML='<div class="sb-empty">No entries yet.</div>';return}
   el.innerHTML=all.map(e=>`<div class="sb-item ${e.type}" onclick="${e._k==='exp'?"switchPage('exp')":e._k==='link'?"switchPage('links')":`scrollCard('${e.id}')`}"><div class="sb-dot"></div><div><div class="sb-item-title">${escHtml(e.title||e.url||'Untitled')}</div><div class="sb-item-meta">${fs(e.ts)}</div></div></div>`).join('');
 }
@@ -861,7 +862,7 @@ function renderStats(){
 }
 function renderEntries(){
   const q=(document.getElementById('searchInput')?.value||'').toLowerCase();
-  const list=entries.filter(e=>{if(filter!=='all'&&e.type!==filter)return false;if(q)return(e.title+' '+e.body+' '+(e.tags||[]).join(' ')).toLowerCase().includes(q);return true}).sort((a,b)=>b.ts-a.ts);
+  const list=entries.filter(e=>{if(filter!=='all'&&e.type!==filter)return false;if(q)return(e.title+' '+e.body+' '+(e.tags||[]).join(' ')).toLowerCase().includes(q);return true}).sort((a,b)=>(b.updatedTs||b.ts)-(a.updatedTs||a.ts));
   const grid=document.getElementById('grid'),es=document.getElementById('emptyState');
   if(!list.length){grid.style.display='none';es.style.display='flex';es.innerHTML=entries.length?'<div class="ei">◎</div><div class="et">No results</div><div class="esub">Adjust your search or filter.</div>':'<div class="ei">✦</div><div class="et">Your notebook is empty</div><div class="esub">Add a note, comment, failure, or checklist.<br><small style="font-size:11px;opacity:.7">💡 Paste images with Ctrl+V over a card</small></div>';return}
   es.style.display='none';grid.style.display='grid';
@@ -882,7 +883,7 @@ function cardHTML(e){
     ${body}
     ${imgs?`<div class="card-images">${imgs}</div>`:''}
     <div class="paste-hint">💡 <button class="paste-card-btn" onclick="pasteImgToCard('${e.id}')">📋 Paste image</button> or drag to attach</div>
-    <div class="cf"><div class="ctags"></div><div class="ts">${fd(e.ts)}</div></div>
+    <div class="cf"><div class="ctags"></div><div><div class="ts">${fd(e.ts)}</div>${e.updatedTs?`<div class="ts-upd">Updated: ${fd(e.updatedTs)}</div>`:''}</div></div>
     <div class="trow" id="tr-${e.id}"></div>
   </div>`;
 }
@@ -893,14 +894,14 @@ function renderChecklistCard(e){
   const itemsHTML=items.length?items.map((item,i)=>`<label class="cl-item"><input type="checkbox" ${item.checked?'checked':''} onchange="toggleChecklistItem('${e.id}',${i})"><span class="cl-item-text${item.checked?' done':''}">${escHtml(item.text)}</span></label>`).join(''):'<div style="font-size:12px;color:var(--text-faint);font-style:italic;padding:2px 0">No items yet — add one below</div>';
   return `<div class="cl-items">${itemsHTML}</div><div class="cl-add"><input class="cl-add-input" placeholder="Add item…" onkeydown="if(event.key==='Enter')addItemToCard('${e.id}',this)"><button class="cl-add-btn" onclick="addItemToCard('${e.id}',this.previousElementSibling)">+</button></div>`;
 }
-function toggleChecklistItem(id,idx){const e=entries.find(x=>x.id===id);if(!e)return;const items=parseChecklist(e.body||'');if(idx<0||idx>=items.length)return;items[idx].checked=!items[idx].checked;e.body=serializeChecklist(items);save();const card=document.getElementById('card-'+id);if(card){const cbs=card.querySelectorAll('.cl-item input[type=checkbox]');if(cbs[idx]){const txt=cbs[idx].closest('.cl-item')?.querySelector('.cl-item-text');if(txt)txt.classList.toggle('done',items[idx].checked)}}}
-function addItemToCard(id,input){const text=input.value.trim();if(!text)return;const e=entries.find(x=>x.id===id);if(!e)return;const items=parseChecklist(e.body||'');items.push({text,checked:false});e.body=serializeChecklist(items);save();input.value='';renderEntries();requestAnimationFrame(buildTagRows)}
+function toggleChecklistItem(id,idx){const e=entries.find(x=>x.id===id);if(!e)return;const items=parseChecklist(e.body||'');if(idx<0||idx>=items.length)return;items[idx].checked=!items[idx].checked;e.body=serializeChecklist(items);e.updatedTs=Date.now();save();const card=document.getElementById('card-'+id);if(card){const cbs=card.querySelectorAll('.cl-item input[type=checkbox]');if(cbs[idx]){const txt=cbs[idx].closest('.cl-item')?.querySelector('.cl-item-text');if(txt)txt.classList.toggle('done',items[idx].checked)}}}
+function addItemToCard(id,input){const text=input.value.trim();if(!text)return;const e=entries.find(x=>x.id===id);if(!e)return;const items=parseChecklist(e.body||'');items.push({text,checked:false});e.body=serializeChecklist(items);e.updatedTs=Date.now();save();input.value='';renderEntries();requestAnimationFrame(buildTagRows)}
 function rz(el){el.style.height='auto';el.style.height=el.scrollHeight+'px'}
 function buildTagRows(){entries.forEach(e=>{const r=document.getElementById('tr-'+e.id);if(r)refreshTR(e,r)})}
 function refreshTR(e,row){if(!row)row=document.getElementById('tr-'+e.id);if(!row)return;row.innerHTML=(e.tags||[]).map(t=>`<span class="tag">${escHtml(t)}<button class="tr" onclick="rmTag('${e.id}','${escAttr(t)}')">×</button></span>`).join('')+`<input class="ti" placeholder="+ tag" onkeydown="addTag(event,'${e.id}',this)">`}
-function uf(id,field,val){const e=entries.find(x=>x.id===id);if(e){e[field]=val;save();renderSidebar()}}
-function rmTag(id,tag){const e=entries.find(x=>x.id===id);if(!e)return;e.tags=(e.tags||[]).filter(t=>t!==tag);save();refreshTR(e)}
-function addTag(event,id,input){if(event.key!=='Enter'&&event.key!==',')return;event.preventDefault();const tag=input.value.trim().replace(/,$/,'');if(!tag)return;const e=entries.find(x=>x.id===id);if(e){if(!e.tags)e.tags=[];if(!e.tags.includes(tag)){e.tags.push(tag);save();refreshTR(e)}}input.value=''}
+function uf(id,field,val){const e=entries.find(x=>x.id===id);if(e){e[field]=val;e.updatedTs=Date.now();save();renderSidebar()}}
+function rmTag(id,tag){const e=entries.find(x=>x.id===id);if(!e)return;e.tags=(e.tags||[]).filter(t=>t!==tag);e.updatedTs=Date.now();save();refreshTR(e)}
+function addTag(event,id,input){if(event.key!=='Enter'&&event.key!==',')return;event.preventDefault();const tag=input.value.trim().replace(/,$/,'');if(!tag)return;const e=entries.find(x=>x.id===id);if(e){if(!e.tags)e.tags=[];if(!e.tags.includes(tag)){e.tags.push(tag);e.updatedTs=Date.now();save();refreshTR(e)}}input.value=''}
 function del(id){entries=entries.filter(e=>e.id!==id);save();renderAll()}
 function fileToBase64(file){return new Promise(res=>{const r=new FileReader();r.onload=ev=>res(ev.target.result);r.readAsDataURL(file)})}
 let hoveredCardId=null;
@@ -917,8 +918,8 @@ function setupPasteListener(){
   });
 }
 async function handlePasteIntoModal(e,which){const items=[...e.clipboardData.items].filter(i=>i.type.startsWith('image/'));if(!items.length)return;e.preventDefault();for(const item of items){const b64=await fileToBase64(item.getAsFile());if(which==='modal'){modalImages.push(b64);renderModalPreviews()}else{expModalImages.push(b64);renderExpPreviews()}}}
-function addImgToEntry(id,b64){const e=entries.find(x=>x.id===id);if(!e)return;if(!e.images)e.images=[];e.images.push(b64);save();renderEntries();requestAnimationFrame(buildTagRows)}
-function delImg(id,idx){const e=entries.find(x=>x.id===id);if(!e||!e.images)return;e.images.splice(idx,1);save();renderEntries();requestAnimationFrame(buildTagRows)}
+function addImgToEntry(id,b64){const e=entries.find(x=>x.id===id);if(!e)return;if(!e.images)e.images=[];e.images.push(b64);e.updatedTs=Date.now();save();renderEntries();requestAnimationFrame(buildTagRows)}
+function delImg(id,idx){const e=entries.find(x=>x.id===id);if(!e||!e.images)return;e.images.splice(idx,1);e.updatedTs=Date.now();save();renderEntries();requestAnimationFrame(buildTagRows)}
 function handleCardDrop(event,id){event.preventDefault();[...event.dataTransfer.files].filter(f=>f.type.startsWith('image/')).forEach(async f=>{const b64=await fileToBase64(f);addImgToEntry(id,b64)})}
 async function pasteFromClipboard(target,cardId){
   try{
@@ -970,7 +971,7 @@ function saveEntry(){
   let body;
   if(curType==='checklist'){body=serializeChecklist(modalChecklistItems);if(!title&&!modalChecklistItems.length){document.getElementById('mTitle').focus();return}}
   else{body=document.getElementById('mBody').value.trim();if(!title&&!body){document.getElementById('mTitle').focus();return}}
-  if(editId){const e=entries.find(x=>x.id===editId);if(e){e.title=title;e.body=body;e.tags=tags;e.type=curType;e.images=[...modalImages]}}
+  if(editId){const e=entries.find(x=>x.id===editId);if(e){e.title=title;e.body=body;e.tags=tags;e.type=curType;e.images=[...modalImages];e.updatedTs=Date.now()}}
   else entries.push({id:gid(),type:curType,title,body,tags,images:[...modalImages],ts:Date.now()});
   save();renderAll();requestAnimationFrame(buildTagRows);closeModal();
 }
