@@ -1675,6 +1675,23 @@ function saveSciNewsState(){
   localStorage.setItem('rnb_scnews_articles',JSON.stringify(scnewsArticles));
   if(scnewsLastFetch)localStorage.setItem('rnb_scnews_lastfetch',String(scnewsLastFetch));
 }
+async function fetchSciNewsXml(url){
+  const sources=[
+    url,
+    `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`
+  ];
+  let lastErr=null;
+  for(const src of sources){
+    try{
+      const res=await fetch(src);
+      if(!res.ok)throw new Error('HTTP '+res.status);
+      const text=await res.text();
+      if(!text.trim())throw new Error('Empty response');
+      return text;
+    }catch(e){lastErr=e}
+  }
+  throw lastErr||new Error('Fetch failed');
+}
 async function fetchSciNews(){
   const btn=document.getElementById('scnewsSyncBtn');
   btn.classList.add('spinning');
@@ -1683,9 +1700,7 @@ async function fetchSciNews(){
   for(const cat of SCNEWS_CATS){
     try{
       const q=encodeURIComponent(cat.q).replace(/%3A/gi,':').replace(/%20/g,'+');
-      const res=await fetch(`https://export.arxiv.org/api/query?search_query=${q}&sortBy=lastUpdatedDate&sortOrder=descending&max_results=8`);
-      if(!res.ok)throw new Error('HTTP '+res.status);
-      const xml=await res.text();
+      const xml=await fetchSciNewsXml(`https://export.arxiv.org/api/query?search_query=${q}&sortBy=lastUpdatedDate&sortOrder=descending&max_results=8`);
       const doc=new DOMParser().parseFromString(xml,'application/xml');
       if(doc.querySelector('parsererror'))throw new Error('XML parse error');
       for(const entry of doc.querySelectorAll('entry')){
