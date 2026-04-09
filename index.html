@@ -1688,9 +1688,11 @@ async function fetchSciNewsXml(url){
       const text=await res.text();
       if(!text.trim())throw new Error('Empty response');
       return text;
-    }catch(e){lastErr=e}
+    }catch(e){lastErr=e;console.warn('SciNews fetch attempt failed:',src,e)}
   }
-  throw lastErr||new Error('Fetch failed');
+  const err=new Error('All fetch attempts failed');
+  err.cause=lastErr||null;
+  throw err;
 }
 async function fetchSciNews(){
   const btn=document.getElementById('scnewsSyncBtn');
