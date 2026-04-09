@@ -41,7 +41,8 @@
   .lock-btn{width:100%;padding:12px;background:var(--text);color:var(--bg);border:none;border-radius:8px;font-family:'Instrument Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .14s;margin-bottom:18px}
   .lock-btn:hover{opacity:.84}
   .lock-hint{font-size:11px;color:var(--text-faint);font-family:'JetBrains Mono',monospace;line-height:1.7}
-  .lock-hint a{color:var(--text-faint);text-decoration:underline;cursor:pointer}
+  .lock-hint a,.lock-hint button{color:var(--text-faint);text-decoration:underline;cursor:pointer}
+  .lock-link{background:none;border:none;padding:0;font:inherit}
   .cpform{display:none;margin-top:20px;border-top:1px solid var(--border-light);padding-top:20px;text-align:left}
   .cpform.open{display:block}
   .cp-label{display:block;font-size:10.5px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--text-faint);margin-bottom:5px}
@@ -330,6 +331,11 @@
   .cl-item input[type=checkbox]{margin-top:3px;accent-color:var(--checklist-accent);cursor:pointer;flex-shrink:0;width:14px;height:14px}
   .cl-item-text{font-family:'Instrument Sans',sans-serif;font-size:13.5px;color:var(--text-muted);line-height:1.5;word-break:break-word;flex:1;user-select:none}
   .cl-item-text.done{text-decoration:line-through;color:var(--text-faint)}
+  .cl-item-text[contenteditable="true"]{user-select:text;cursor:text}
+  .cl-item-text[contenteditable="true"]:focus{outline:1px dashed var(--checklist-border);border-radius:4px}
+  .cl-modal-input{flex:1;padding:4px 7px;background:var(--bg);border:1px solid var(--border);border-radius:6px;font-family:'Instrument Sans',sans-serif;font-size:13px;color:var(--text);outline:none}
+  .cl-modal-input:focus{border-color:var(--checklist-border)}
+  .cl-modal-input.done{text-decoration:line-through;color:var(--text-faint)}
   .cl-add{display:flex;gap:6px;padding:0 14px 9px}
   .cl-add-input{flex:1;padding:5px 9px;background:var(--bg);border:1.5px solid var(--border);border-radius:6px;font-family:'Instrument Sans',sans-serif;font-size:12.5px;color:var(--text);outline:none;transition:border-color .16s}
   .cl-add-input:focus{border-color:var(--checklist-border)}
@@ -503,7 +509,7 @@
     </div>
     <div class="lock-err" id="lockErr"></div>
     <button class="lock-btn" onclick="unlock()">Unlock</button>
-    <div class="lock-hint">Default password: <strong>research</strong><br><a onclick="toggleCP()">Change password</a></div>
+    <div class="lock-hint">Default password: <strong>research</strong><br><button type="button" class="lock-link" onclick="toggleCP()">Change password</button> · <button type="button" class="lock-link" onclick="forgotPassword()">Forgot password?</button></div>
     <div class="cpform" id="cpForm">
       <label class="cp-label">Current password</label><input type="password" class="cp-input" id="cpCur" autocomplete="current-password">
       <label class="cp-label">New password</label><input type="password" class="cp-input" id="cpNew" autocomplete="new-password">
@@ -872,6 +878,19 @@ function changePassword(){
   const el=document.getElementById('cpErr');el.style.color='var(--note-accent)';el.textContent='✓ Updated!';
   setTimeout(()=>{toggleCP();el.style.color=''},1600);
 }
+function forgotPassword(){
+  const ok=confirm('Reset password to the default? This will allow anyone with access to this browser to open your notebook.');
+  if(!ok)return;
+  localStorage.removeItem(PW_KEY);
+  sessionStorage.removeItem(SESSION_KEY);
+  document.getElementById('cpForm').classList.remove('open');
+  ['cpCur','cpNew','cpCon'].forEach(id=>document.getElementById(id).value='');
+  const el=document.getElementById('lockErr');
+  el.style.color='var(--note-accent)';
+  el.textContent='Password reset. Use "research" to unlock.';
+  document.getElementById('lockInput').value='';
+  setTimeout(()=>{el.style.color=''},2400);
+}
 const ICONS={note:'◈',comment:'◎',failure:'◇',checklist:'☑'};
 const LABELS={note:'Note',comment:'Comment',failure:'Failure',checklist:'Checklist'};
 const PH={note:'Write your observations, findings, or ideas…',comment:'Add context, caveats, or reflections…',failure:'Describe what went wrong, error details, and next steps…',checklist:''};
@@ -1040,10 +1059,36 @@ function cardHTML(e){
 }
 function parseChecklist(body){return(body||'').split('\n').filter(l=>l.trim()).map(l=>l.startsWith('[x] ')?{text:l.slice(4),checked:true}:l.startsWith('[ ] ')?{text:l.slice(4),checked:false}:{text:l,checked:false})}
 function serializeChecklist(items){return items.map(i=>(i.checked?'[x] ':'[ ] ')+i.text).join('\n')}
+function setChecklistEditOrigin(el){el.dataset.orig=el.textContent}
+function handleChecklistEditKey(e,el){
+  if(e.key==='Enter'){e.preventDefault();el.blur()}
+  if(e.key==='Escape'){
+    e.preventDefault();
+    const orig=el.dataset.orig;
+    if(typeof orig!=='undefined')el.textContent=orig;
+    el.blur();
+  }
+}
+function updateChecklistItemText(id,idx,el){
+  const e=entries.find(x=>x.id===id);if(!e)return;
+  const items=parseChecklist(e.body||'');if(idx<0||idx>=items.length)return;
+  const original=items[idx].text;
+  const clean=stripHtml(el.textContent||'').trim();
+  if(!clean){el.textContent=original;return}
+  if(clean===original)return;
+  items[idx].text=clean;
+  e.body=serializeChecklist(items);
+  e.updatedTs=Date.now();
+  save();renderAll();requestAnimationFrame(buildTagRows);
+}
+function renderChecklistItem(id,item,i){
+  const safeId=escAttr(id);
+  return `<div class="cl-item"><input type="checkbox" ${item.checked?'checked':''} aria-label="Toggle checklist item" onchange="toggleChecklistItem('${safeId}',${i})"><span class="cl-item-text${item.checked?' done':''}" contenteditable="true" role="textbox" aria-label="Edit checklist item" aria-multiline="false" spellcheck="false" onfocus="setChecklistEditOrigin(this)" onkeydown="handleChecklistEditKey(event,this)" onblur="updateChecklistItemText('${safeId}',${i},this)">${escHtml(item.text)}</span></div>`;
+}
 function renderChecklistCard(e){
   const items=parseChecklist(e.body||'');
-  const itemsHTML=items.length?items.map((item,i)=>`<label class="cl-item"><input type="checkbox" ${item.checked?'checked':''} onchange="toggleChecklistItem('${e.id}',${i})"><span class="cl-item-text${item.checked?' done':''}">${escHtml(item.text)}</span></label>`).join(''):'<div style="font-size:12px;color:var(--text-faint);font-style:italic;padding:2px 0">No items yet — add one below</div>';
-  return `<div class="cl-items">${itemsHTML}</div><div class="cl-add"><input class="cl-add-input" placeholder="Add item…" onkeydown="if(event.key==='Enter')addItemToCard('${e.id}',this)"><button class="cl-add-btn" onclick="addItemToCard('${e.id}',this.previousElementSibling)">+</button></div>`;
+  const itemsHtml=items.length?items.map((item,i)=>renderChecklistItem(e.id,item,i)).join(''):'<div style="font-size:12px;color:var(--text-faint);font-style:italic;padding:2px 0">No items yet — add one below</div>';
+  return `<div class="cl-items">${itemsHtml}</div><div class="cl-add"><input class="cl-add-input" placeholder="Add item…" onkeydown="if(event.key==='Enter')addItemToCard('${e.id}',this)"><button class="cl-add-btn" onclick="addItemToCard('${e.id}',this.previousElementSibling)">+</button></div>`;
 }
 function toggleChecklistItem(id,idx){const e=entries.find(x=>x.id===id);if(!e)return;const items=parseChecklist(e.body||'');if(idx<0||idx>=items.length)return;items[idx].checked=!items[idx].checked;e.body=serializeChecklist(items);e.updatedTs=Date.now();save();const card=document.getElementById('card-'+id);if(card){const cbs=card.querySelectorAll('.cl-item input[type=checkbox]');if(cbs[idx]){const txt=cbs[idx].closest('.cl-item')?.querySelector('.cl-item-text');if(txt)txt.classList.toggle('done',items[idx].checked)}}}
 function addItemToCard(id,input){const text=input.value.trim();if(!text)return;const e=entries.find(x=>x.id===id);if(!e)return;const items=parseChecklist(e.body||'');items.push({text,checked:false});e.body=serializeChecklist(items);e.updatedTs=Date.now();save();input.value='';renderEntries();requestAnimationFrame(buildTagRows)}
@@ -1105,8 +1150,17 @@ function renderExpPreviews(){document.getElementById('expImgPreviews').innerHTML
 function renderModalChecklistItems(){
   const c=document.getElementById('mChecklistItems');if(!c)return;
   c.innerHTML=modalChecklistItems.length
-    ?modalChecklistItems.map((item,i)=>`<div style="display:flex;align-items:center;gap:8px;padding:3px 0"><input type="checkbox" ${item.checked?'checked':''} onchange="modalChecklistItems[${i}].checked=this.checked" style="accent-color:var(--checklist-accent);cursor:pointer;width:14px;height:14px;flex-shrink:0"><span style="flex:1;font-size:13px;color:var(--text-muted);${item.checked?'text-decoration:line-through;color:var(--text-faint)':''}">${escHtml(item.text)}</span><button onclick="modalChecklistItems.splice(${i},1);renderModalChecklistItems()" style="background:none;border:none;cursor:pointer;color:var(--text-faint);font-size:15px;padding:0 3px;border-radius:3px;line-height:1;flex-shrink:0">×</button></div>`).join('')
+    ?modalChecklistItems.map((item,i)=>renderModalChecklistItem(item,i)).join('')
     :'<div style="font-size:12px;color:var(--text-faint);font-style:italic">No items yet — add one above</div>';
+}
+function renderModalChecklistItem(item,i){
+  return `<div style="display:flex;align-items:center;gap:8px;padding:3px 0"><input type="checkbox" ${item.checked?'checked':''} aria-label="Toggle checklist item" onchange="toggleModalChecklistItem(${i},this)" style="accent-color:var(--checklist-accent);cursor:pointer;width:14px;height:14px;flex-shrink:0"><input class="cl-modal-input${item.checked?' done':''}" aria-label="Edit checklist item" value="${escHtml(item.text)}" oninput="modalChecklistItems[${i}].text=stripHtml(this.value).trim()" onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}"><button aria-label="Delete item" onclick="modalChecklistItems.splice(${i},1);renderModalChecklistItems()" style="background:none;border:none;cursor:pointer;color:var(--text-faint);font-size:15px;padding:0 3px;border-radius:3px;line-height:1;flex-shrink:0">×</button></div>`;
+}
+function toggleModalChecklistItem(idx,el){
+  if(!modalChecklistItems[idx])return;
+  modalChecklistItems[idx].checked=el.checked;
+  const input=el.closest('div')?.querySelector('.cl-modal-input');
+  if(input)input.classList.toggle('done',el.checked);
 }
 function addChecklistModalItem(e){if(e&&e.type==='keydown'&&e.key!=='Enter')return;if(e&&e.preventDefault)e.preventDefault();const input=document.getElementById('mChecklistInput');const text=input.value.trim();if(!text)return;modalChecklistItems.push({text,checked:false});input.value='';renderModalChecklistItems()}
 function openLightbox(src){document.getElementById('lightboxImg').src=src;document.getElementById('lightbox').classList.add('open')}
