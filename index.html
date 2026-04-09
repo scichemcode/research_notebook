@@ -41,7 +41,8 @@
   .lock-btn{width:100%;padding:12px;background:var(--text);color:var(--bg);border:none;border-radius:8px;font-family:'Instrument Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .14s;margin-bottom:18px}
   .lock-btn:hover{opacity:.84}
   .lock-hint{font-size:11px;color:var(--text-faint);font-family:'JetBrains Mono',monospace;line-height:1.7}
-  .lock-hint a{color:var(--text-faint);text-decoration:underline;cursor:pointer}
+  .lock-hint a,.lock-hint button{color:var(--text-faint);text-decoration:underline;cursor:pointer}
+  .lock-link{background:none;border:none;padding:0;font:inherit}
   .cpform{display:none;margin-top:20px;border-top:1px solid var(--border-light);padding-top:20px;text-align:left}
   .cpform.open{display:block}
   .cp-label{display:block;font-size:10.5px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--text-faint);margin-bottom:5px}
@@ -508,7 +509,7 @@
     </div>
     <div class="lock-err" id="lockErr"></div>
     <button class="lock-btn" onclick="unlock()">Unlock</button>
-    <div class="lock-hint">Default password: <strong>research</strong><br><a role="button" tabindex="0" onkeydown="handleLinkKey(event,toggleCP)" onclick="toggleCP()">Change password</a> · <a role="button" tabindex="0" onkeydown="handleLinkKey(event,forgotPassword)" onclick="forgotPassword()">Forgot password?</a></div>
+    <div class="lock-hint">Default password: <strong>research</strong><br><button type="button" class="lock-link" onclick="toggleCP()">Change password</button> · <button type="button" class="lock-link" onclick="forgotPassword()">Forgot password?</button></div>
     <div class="cpform" id="cpForm">
       <label class="cp-label">Current password</label><input type="password" class="cp-input" id="cpCur" autocomplete="current-password">
       <label class="cp-label">New password</label><input type="password" class="cp-input" id="cpNew" autocomplete="new-password">
@@ -867,7 +868,6 @@ function unlock(){
 function lockApp(){sessionStorage.removeItem(SESSION_KEY);document.getElementById('app').style.display='none';document.getElementById('lockScreen').style.display='flex';setTimeout(()=>document.getElementById('lockInput').focus(),100)}
 function toggleEye(){const i=document.getElementById('lockInput');i.type=i.type==='password'?'text':'password'}
 function showErr(id,msg){document.getElementById(id).textContent=msg}
-function handleLinkKey(e,handler){if(e.key==='Enter'||e.key===' '||e.key==='Space'){e.preventDefault();handler()}}
 function toggleCP(){document.getElementById('cpForm').classList.toggle('open');['cpCur','cpNew','cpCon'].forEach(id=>document.getElementById(id).value='');document.getElementById('cpErr').textContent=''}
 function changePassword(){
   const cur=document.getElementById('cpCur').value,nw=document.getElementById('cpNew').value,con=document.getElementById('cpCon').value;
@@ -1083,7 +1083,7 @@ function updateChecklistItemText(id,idx,el){
 }
 function renderChecklistItem(id,item,i){
   const safeId=escAttr(id);
-  return `<div class="cl-item"><input type="checkbox" ${item.checked?'checked':''} aria-label="Toggle checklist item" onchange="toggleChecklistItem('${safeId}',${i})"><span class="cl-item-text${item.checked?' done':''}" contenteditable="true" role="textbox" aria-label="Edit checklist item" aria-multiline="false" spellcheck="false" onfocus="setChecklistEditOrigin(this)" onkeydown="handleChecklistEditKey(event,this)" onblur="updateChecklistItemText('${safeId}',${i},this)">${escHtml(stripHtml(item.text))}</span></div>`;
+  return `<div class="cl-item"><input type="checkbox" ${item.checked?'checked':''} aria-label="Toggle checklist item" onchange="toggleChecklistItem('${safeId}',${i})"><span class="cl-item-text${item.checked?' done':''}" contenteditable="true" role="textbox" aria-label="Edit checklist item" aria-multiline="false" spellcheck="false" onfocus="setChecklistEditOrigin(this)" onkeydown="handleChecklistEditKey(event,this)" onblur="updateChecklistItemText('${safeId}',${i},this)">${escHtml(item.text)}</span></div>`;
 }
 function renderChecklistCard(e){
   const items=parseChecklist(e.body||'');
@@ -1154,7 +1154,7 @@ function renderModalChecklistItems(){
     :'<div style="font-size:12px;color:var(--text-faint);font-style:italic">No items yet — add one above</div>';
 }
 function renderModalChecklistItem(item,i){
-  return `<div style="display:flex;align-items:center;gap:8px;padding:3px 0"><input type="checkbox" ${item.checked?'checked':''} aria-label="Toggle checklist item" onchange="toggleModalChecklistItem(${i},this)" style="accent-color:var(--checklist-accent);cursor:pointer;width:14px;height:14px;flex-shrink:0"><input class="cl-modal-input${item.checked?' done':''}" value="${escHtml(stripHtml(item.text))}" oninput="modalChecklistItems[${i}].text=stripHtml(this.value).trim()" onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}"><button aria-label="Delete item" onclick="modalChecklistItems.splice(${i},1);renderModalChecklistItems()" style="background:none;border:none;cursor:pointer;color:var(--text-faint);font-size:15px;padding:0 3px;border-radius:3px;line-height:1;flex-shrink:0">×</button></div>`;
+  return `<div style="display:flex;align-items:center;gap:8px;padding:3px 0"><input type="checkbox" ${item.checked?'checked':''} aria-label="Toggle checklist item" onchange="toggleModalChecklistItem(${i},this)" style="accent-color:var(--checklist-accent);cursor:pointer;width:14px;height:14px;flex-shrink:0"><input class="cl-modal-input${item.checked?' done':''}" aria-label="Edit checklist item" value="${escHtml(item.text)}" oninput="modalChecklistItems[${i}].text=stripHtml(this.value).trim()" onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}"><button aria-label="Delete item" onclick="modalChecklistItems.splice(${i},1);renderModalChecklistItems()" style="background:none;border:none;cursor:pointer;color:var(--text-faint);font-size:15px;padding:0 3px;border-radius:3px;line-height:1;flex-shrink:0">×</button></div>`;
 }
 function toggleModalChecklistItem(idx,el){
   if(!modalChecklistItems[idx])return;
