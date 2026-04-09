@@ -1676,9 +1676,9 @@ function saveSciNewsState(){
   if(scnewsLastFetch)localStorage.setItem('rnb_scnews_lastfetch',String(scnewsLastFetch));
 }
 async function fetchSciNewsXml(url,label){
-  // Optional proxy base/URL template in localStorage (use "{url}" placeholder or a base ending with "?url=").
+  // Optional proxy base/URL template in localStorage (use "{url}" placeholder or a base ending with "?url="); external proxies can see request data.
   const proxyBase=localStorage.getItem('rnb_scnews_proxy')||'https://api.allorigins.win/raw?url=';
-  const proxyUrl=proxyBase.includes('{url}')?proxyBase.replace('{url}',encodeURIComponent(url)):proxyBase+encodeURIComponent(url);
+  const proxyUrl=proxyBase.includes('{url}')?proxyBase.replaceAll('{url}',encodeURIComponent(url)):proxyBase+encodeURIComponent(url);
   const sources=[
     {label:'direct',url},
     {label:'proxy',url:proxyUrl}
@@ -1695,7 +1695,10 @@ async function fetchSciNewsXml(url,label){
     }
   }
   const attemptedSources=sources.map(source=>source.label).join(', ');
-  const targetLabel=label||url.split('?')[0];
+  let targetLabel=label;
+  if(!targetLabel){
+    try{targetLabel=new URL(url).hostname}catch{targetLabel='unknown source'}
+  }
   const err=new Error(`Failed to fetch Science News XML for category ${targetLabel} after trying: ${attemptedSources}`);
   err.cause=lastError;
   throw err;
