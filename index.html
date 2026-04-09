@@ -1675,6 +1675,34 @@ function saveSciNewsState(){
   localStorage.setItem('rnb_scnews_articles',JSON.stringify(scnewsArticles));
   if(scnewsLastFetch)localStorage.setItem('rnb_scnews_lastfetch',String(scnewsLastFetch));
 }
+async function fetchSciNewsXml(url,label){
+  // WARNING: default proxy uses a third-party service; set rnb_scnews_proxy to a self-hosted proxy or empty to avoid external exposure.
+  const proxyBase=localStorage.getItem('rnb_scnews_proxy')||'https://api.allorigins.win/raw?url=';
+  const proxyUrl=proxyBase.includes('{url}')?proxyBase.replaceAll('{url}',encodeURIComponent(url)):proxyBase+encodeURIComponent(url);
+  const sources=[
+    {label:'direct',url},
+    {label:'proxy',url:proxyUrl}
+  ];
+  let lastError=null;
+  for(const source of sources){
+    try{
+      const response=await fetch(source.url);
+      if(!response.ok)throw new Error('HTTP '+response.status);
+      return await response.text();
+    }catch(error){
+      lastError=error;
+      console.warn('SciNews fetch attempt failed:',source.label,error);
+    }
+  }
+  const attemptedSources=sources.map(source=>source.label).join(', ');
+  let targetLabel=label;
+  if(!targetLabel){
+    try{targetLabel=new URL(url).hostname}catch(error){targetLabel=url}
+  }
+  const err=new Error(`Failed to fetch Science News XML for category ${targetLabel} after trying: ${attemptedSources}`);
+  err.cause=lastError;
+  throw err;
+}
 async function fetchSciNews(){
   const btn=document.getElementById('scnewsSyncBtn');
   btn.classList.add('spinning');
@@ -1683,9 +1711,7 @@ async function fetchSciNews(){
   for(const cat of SCNEWS_CATS){
     try{
       const q=encodeURIComponent(cat.q).replace(/%3A/gi,':').replace(/%20/g,'+');
-      const res=await fetch(`https://export.arxiv.org/api/query?search_query=${q}&sortBy=lastUpdatedDate&sortOrder=descending&max_results=8`);
-      if(!res.ok)throw new Error('HTTP '+res.status);
-      const xml=await res.text();
+      const xml=await fetchSciNewsXml(`https://export.arxiv.org/api/query?search_query=${q}&sortBy=lastUpdatedDate&sortOrder=descending&max_results=8`,cat.label);
       const doc=new DOMParser().parseFromString(xml,'application/xml');
       if(doc.querySelector('parsererror'))throw new Error('XML parse error');
       for(const entry of doc.querySelectorAll('entry')){
