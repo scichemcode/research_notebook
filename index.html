@@ -1680,21 +1680,21 @@ async function fetchSciNewsXml(url){
     url,
     `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`
   ];
-  let lastErr=null;
-  for(const src of sources){
+  let lastError=null;
+  for(const source of sources){
     try{
-      const res=await fetch(src);
-      if(!res.ok)throw new Error('HTTP '+res.status);
-      const text=await res.text();
+      const response=await fetch(source);
+      if(!response.ok)throw new Error('HTTP '+response.status);
+      const text=await response.text();
       if(!text.trim())throw new Error('Empty response');
       return text;
-    }catch(e){
-      lastErr=e;
-      console.warn('SciNews fetch attempt failed:',src,e);
+    }catch(error){
+      lastError=error;
+      console.warn('SciNews fetch attempt failed:',source,error);
     }
   }
   const err=new Error('All fetch attempts failed');
-  err.cause=lastErr;
+  err.cause=lastError;
   throw err;
 }
 async function fetchSciNews(){
