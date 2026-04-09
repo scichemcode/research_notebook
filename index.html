@@ -1685,8 +1685,7 @@ async function fetchSciNewsXml(url){
     try{
       const response=await fetch(source.url);
       if(!response.ok)throw new Error('HTTP '+response.status);
-      const text=await response.text();
-      return text;
+      return await response.text();
     }catch(error){
       lastError=error;
       console.warn('SciNews fetch attempt failed:',source.label,error);
