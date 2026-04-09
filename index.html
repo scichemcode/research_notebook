@@ -1692,7 +1692,7 @@ async function fetchSciNewsXml(url){
       console.warn('SciNews fetch attempt failed:',source.label,error);
     }
   }
-  const err=new Error('All fetch attempts failed');
+  const err=new Error('Failed to fetch Science News XML after trying direct and proxy sources');
   err.cause=lastError;
   throw err;
 }
