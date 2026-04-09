@@ -1680,6 +1680,7 @@ async function fetchSciNewsXml(url){
     {label:'direct',url},
     {label:'proxy',url:`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`}
   ];
+  const attemptedSources=sources.map(source=>source.label).join(', ');
   let lastError=null;
   for(const source of sources){
     try{
@@ -1692,7 +1693,7 @@ async function fetchSciNewsXml(url){
       console.warn('SciNews fetch attempt failed:',source.label,error);
     }
   }
-  const err=new Error('Failed to fetch Science News XML after trying direct and proxy sources');
+  const err=new Error(`Failed to fetch Science News XML after trying: ${attemptedSources}`);
   err.cause=lastError;
   throw err;
 }
