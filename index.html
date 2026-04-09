@@ -1059,12 +1059,15 @@ function cardHTML(e){
 function parseChecklist(body){return(body||'').split('\n').filter(l=>l.trim()).map(l=>l.startsWith('[x] ')?{text:l.slice(4),checked:true}:l.startsWith('[ ] ')?{text:l.slice(4),checked:false}:{text:l,checked:false})}
 function serializeChecklist(items){return items.map(i=>(i.checked?'[x] ':'[ ] ')+i.text).join('\n')}
 function setChecklistEditOrigin(el){el.dataset.orig=el.textContent}
-function handleChecklistEditKey(e,el){if(e.key==='Enter'){e.preventDefault();el.blur()}if(e.key==='Escape'){e.preventDefault();el.textContent=el.dataset.orig||el.textContent;el.blur()}}
+function handleChecklistEditKey(e,el){
+  if(e.key==='Enter'){e.preventDefault();el.blur()}
+  if(e.key==='Escape'){e.preventDefault();el.textContent=el.dataset.orig||el.textContent;el.blur()}
+}
 function updateChecklistItemText(id,idx,el){
   const e=entries.find(x=>x.id===id);if(!e)return;
   const items=parseChecklist(e.body||'');if(idx<0||idx>=items.length)return;
   const original=items[idx].text;
-  const clean=stripHtml(el.textContent||'').replace(/\s+/g,' ').trim();
+  const clean=stripHtml(el.textContent||'').trim();
   if(!clean){el.textContent=original;return}
   if(clean===original)return;
   items[idx].text=clean;
@@ -1073,7 +1076,7 @@ function updateChecklistItemText(id,idx,el){
   save();renderAll();requestAnimationFrame(buildTagRows);
 }
 function renderChecklistItem(id,item,i){
-  return `<label class="cl-item"><input type="checkbox" ${item.checked?'checked':''} onchange="toggleChecklistItem('${id}',${i})"><span class="cl-item-text${item.checked?' done':''}" contenteditable="true" role="textbox" aria-label="Edit checklist item" spellcheck="false" onfocus="setChecklistEditOrigin(this)" onkeydown="handleChecklistEditKey(event,this)" onblur="updateChecklistItemText('${id}',${i},this)">${escHtml(item.text)}</span></label>`;
+  return `<div class="cl-item"><input type="checkbox" ${item.checked?'checked':''} aria-label="Toggle checklist item" onchange="toggleChecklistItem('${id}',${i})"><span class="cl-item-text${item.checked?' done':''}" contenteditable="true" role="textbox" aria-label="Edit checklist item" spellcheck="false" onfocus="setChecklistEditOrigin(this)" onkeydown="handleChecklistEditKey(event,this)" onblur="updateChecklistItemText('${id}',${i},this)">${escHtml(item.text)}</span></div>`;
 }
 function renderChecklistCard(e){
   const items=parseChecklist(e.body||'');
@@ -1144,7 +1147,7 @@ function renderModalChecklistItems(){
     :'<div style="font-size:12px;color:var(--text-faint);font-style:italic">No items yet — add one above</div>';
 }
 function renderModalChecklistItem(item,i){
-  return `<div style="display:flex;align-items:center;gap:8px;padding:3px 0"><input type="checkbox" ${item.checked?'checked':''} onchange="toggleModalChecklistItem(${i},this)" style="accent-color:var(--checklist-accent);cursor:pointer;width:14px;height:14px;flex-shrink:0"><input class="cl-modal-input${item.checked?' done':''}" value="${escHtml(item.text)}" oninput="modalChecklistItems[${i}].text=stripHtml(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}"><button aria-label="Delete item" onclick="modalChecklistItems.splice(${i},1);renderModalChecklistItems()" style="background:none;border:none;cursor:pointer;color:var(--text-faint);font-size:15px;padding:0 3px;border-radius:3px;line-height:1;flex-shrink:0">×</button></div>`;
+  return `<div style="display:flex;align-items:center;gap:8px;padding:3px 0"><input type="checkbox" ${item.checked?'checked':''} aria-label="Toggle checklist item" onchange="toggleModalChecklistItem(${i},this)" style="accent-color:var(--checklist-accent);cursor:pointer;width:14px;height:14px;flex-shrink:0"><input class="cl-modal-input${item.checked?' done':''}" value="${escHtml(item.text)}" oninput="modalChecklistItems[${i}].text=stripHtml(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}"><button aria-label="Delete item" onclick="modalChecklistItems.splice(${i},1);renderModalChecklistItems()" style="background:none;border:none;cursor:pointer;color:var(--text-faint);font-size:15px;padding:0 3px;border-radius:3px;line-height:1;flex-shrink:0">×</button></div>`;
 }
 function toggleModalChecklistItem(idx,el){
   if(!modalChecklistItems[idx])return;
