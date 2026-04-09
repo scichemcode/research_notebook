@@ -1676,9 +1676,11 @@ function saveSciNewsState(){
   if(scnewsLastFetch)localStorage.setItem('rnb_scnews_lastfetch',String(scnewsLastFetch));
 }
 async function fetchSciNewsXml(url){
+  const proxyBase=localStorage.getItem('rnb_scnews_proxy')||'https://api.allorigins.win/raw?url=';
+  const proxyUrl=proxyBase.includes('{url}')?proxyBase.replace('{url}',encodeURIComponent(url)):proxyBase+encodeURIComponent(url);
   const sources=[
     {label:'direct',url},
-    {label:'proxy',url:`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`}
+    {label:'proxy',url:proxyUrl}
   ];
   let lastError=null;
   for(const source of sources){
@@ -1692,7 +1694,7 @@ async function fetchSciNewsXml(url){
     }
   }
   const attemptedSources=sources.map(source=>source.label).join(', ');
-  const err=new Error(`Failed to fetch Science News XML after trying: ${attemptedSources}`);
+  const err=new Error(`Failed to fetch Science News XML for ${url} after trying: ${attemptedSources}`);
   err.cause=lastError;
   throw err;
 }
