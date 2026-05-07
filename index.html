@@ -524,7 +524,7 @@ function updateLatexPreview(){
       if(typeof window.MathJax.typesetClear==='function')window.MathJax.typesetClear([out]);
       window.MathJax.typesetPromise([out]).catch(err=>{console.debug('MathJax typeset failed:',err);});
     }
-  },120);
+  },450);
 }
 
 function init(){
@@ -805,7 +805,7 @@ function openModal(type){
 }
 function openEditModal(id){const e=entries.find(x=>x.id===id);if(!e)return;editId=id;curType=e.type;buildTS(e.type);document.getElementById('mTitle').value=e.title||'';document.getElementById('mTags').value=(e.tags||[]).join(', ');document.getElementById('modalHead').textContent='Edit Entry';modalImages=[...(e.images||[])];renderModalPreviews();const isCL=e.type==='checklist';document.getElementById('mBodySection').style.display=isCL?'none':'';document.getElementById('mChecklistSection').style.display=isCL?'':'none';if(isCL){modalChecklistItems=parseChecklist(e.body||'');renderModalChecklistItems()}else{document.getElementById('mBody').value=e.body||'';document.getElementById('mBody').placeholder=PH[e.type]||''}updateLatexPreview();document.getElementById('ov').classList.add('open')}
 function closeModal(){saveDraft();document.getElementById('ov').classList.remove('open');editId=null;modalImages=[];renderModalPreviews();modalChecklistItems=[];updateLatexPreview()}
-function selType(t){curType=t;buildTS(t);const isCL=t==='checklist';document.getElementById('mBodySection').style.display=isCL?'none':'';document.getElementById('mChecklistSection').style.display=isCL?'':'none';if(!isCL)document.getElementById('mBody').placeholder=PH[t]||'';if(isCL)renderModalChecklistItems();updateLatexPreview()}
+function selType(t){curType=t;buildTS(t);const isCL=t==='checklist';document.getElementById('mBodySection').style.display=isCL?'none':'';document.getElementById('mChecklistSection').style.display=isCL?'':'none';if(!isCL){document.getElementById('mBody').placeholder=PH[t]||'';updateLatexPreview()}if(isCL){renderModalChecklistItems();const wrap=document.getElementById('latexPreviewWrap'),out=document.getElementById('latexPreview');if(wrap)wrap.style.display='none';if(out)out.textContent='';}}
 function saveEntry(){
   const title=document.getElementById('mTitle').value.trim(),tags=document.getElementById('mTags').value.split(',').map(t=>t.trim()).filter(Boolean);
   let body;
