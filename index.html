@@ -478,7 +478,7 @@ function triggerAutosave(){clearTimeout(_autosaveDraftTimer);_autosaveDraftTimer
 function clearDraft(){sessionStorage.removeItem(DRAFT_KEY);}
 let _deletedEntry=null,_undoTimer=null;
 let _lastClosedModalType=null,_modalUndoTimer=null,_mathTypesetTimer=null;
-function persistOpenDraftSafely(){if(document.getElementById('ov').classList.contains('open'))saveDraft();}
+function saveDraftIfModalOpen(){if(document.getElementById('ov').classList.contains('open'))saveDraft();}
 function modalHasDraftableContent(){
   const title=(document.getElementById('mTitle')?.value||'').trim();
   const body=(document.getElementById('mBody')?.value||'').trim();
@@ -513,15 +513,16 @@ function closeModalByBackdrop(event){
 function updateLatexPreview(){
   const wrap=document.getElementById('latexPreviewWrap'),out=document.getElementById('latexPreview');
   if(!wrap||!out)return;
-  const text=document.getElementById('mBody')?.value||'';
+  const bodyEl=document.getElementById('mBody');
+  const text=bodyEl?bodyEl.value:'';
   if(curType==='checklist'||!text.trim()){wrap.style.display='none';out.textContent='';return}
   wrap.style.display='block';
   out.textContent=text;
   clearTimeout(_mathTypesetTimer);
   _mathTypesetTimer=setTimeout(()=>{
     if(window.MathJax&&typeof window.MathJax.typesetPromise==='function'){
-      window.MathJax.typesetClear?.([out]);
-      window.MathJax.typesetPromise([out]).catch(()=>{});
+      if(typeof window.MathJax.typesetClear==='function')window.MathJax.typesetClear([out]);
+      window.MathJax.typesetPromise([out]).catch(err=>{console.debug('MathJax typeset failed:',err);});
     }
   },120);
 }
@@ -533,9 +534,9 @@ function init(){
   document.getElementById('sbDate').textContent=new Date().toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'long',year:'numeric'});
   renderAll();renderExp();
   setupPasteListener();
-  window.addEventListener('beforeunload',persistOpenDraftSafely);
-  window.addEventListener('pagehide',persistOpenDraftSafely);
-  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')persistOpenDraftSafely()});
+  window.addEventListener('beforeunload',saveDraftIfModalOpen);
+  window.addEventListener('pagehide',saveDraftIfModalOpen);
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')saveDraftIfModalOpen()});
   document.addEventListener('keydown',e=>{
     const t=document.activeElement.tagName;
     if(t==='INPUT'||t==='TEXTAREA')return;
