@@ -17,7 +17,6 @@
     --link-accent:#5a7e9a;--link-bg:#eef3f8;--link-border:#a4c0d4;
 
     --checklist-accent:#5a7e8a;--checklist-bg:#eef3f5;--checklist-border:#a0bfc8;
-    --scholar-accent:#5a6ea0;--scholar-bg:#eef0f8;--scholar-border:#b0bce0;
 
     --shadow:0 1px 4px rgba(44,40,32,.08);--shadow-md:0 4px 16px rgba(44,40,32,.12);--radius:8px;
   }
@@ -197,8 +196,6 @@
   .exp-card-btn{background:none;border:none;cursor:pointer;color:var(--text-faint);font-size:13px;padding:3px 5px;border-radius:4px;transition:color .14s}
   .exp-card-btn:hover{color:var(--text);background:var(--surface2)}
   .exp-card-btn.del:hover{color:var(--failure-accent)}
-  /* Zotero @keyframes (used by inbox/scholar spinning) */
-  @keyframes spin{to{transform:rotate(360deg)}}
   /* Modals */
   .ov{display:none;position:fixed;inset:0;background:rgba(44,40,32,.35);backdrop-filter:blur(3px);z-index:200;align-items:center;justify-content:center;animation:fi .2s ease}
   .ov.open{display:flex}
@@ -265,113 +262,15 @@
   .paste-from-cb:hover{border-color:var(--note-border);background:var(--note-bg);color:var(--note-accent)}
   .paste-card-btn{background:none;border:none;cursor:pointer;color:var(--text-faint);font-size:10.5px;font-style:italic;padding:0;text-decoration:underline dotted;font-family:'Instrument Sans',sans-serif;transition:color .14s}
   .paste-card-btn:hover{color:var(--note-accent)}
-  /* Outlook Inbox */
-  .ptab.inbox-tab.active{color:#0072c6;border-bottom-color:#0072c6}
-  .ptab.scholar-tab.active{color:var(--scholar-accent);border-bottom-color:var(--scholar-accent)}
-  #inboxPage{display:none;flex:1;flex-direction:column;overflow:hidden}
-  #inboxPage.active{display:flex}
-  .inbox-header{padding:22px 26px 16px;border-bottom:1px solid var(--border-light);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
-  .inbox-header-title{font-family:'Lora',serif;font-size:20px;font-weight:600}
-  .inbox-header-sub{font-size:12px;color:var(--text-faint);margin-top:3px}
-  .inbox-sync-btn{display:flex;align-items:center;gap:6px;padding:7px 15px;border-radius:8px;border:1.5px solid #c8dff0;background:#edf4fb;color:#0072c6;font-family:'Instrument Sans',sans-serif;font-size:12.5px;font-weight:500;cursor:pointer;transition:all .18s}
-  .inbox-sync-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
-  .inbox-sync-btn.spinning svg{animation:spin .8s linear infinite}
-  .inbox-toolbar{padding:9px 26px;border-bottom:1px solid var(--border-light);display:flex;align-items:center;gap:9px;flex-wrap:wrap}
-  .inbox-search-wrap{position:relative;flex:1;max-width:280px}
-  .inbox-si{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-faint);font-size:13px;pointer-events:none}
-  .inbox-search{width:100%;padding:7px 12px 7px 30px;background:var(--bg);border:1px solid var(--border);border-radius:6px;font-family:'Instrument Sans',sans-serif;font-size:13px;color:var(--text);outline:none;transition:border-color .16s}
-  .inbox-search:focus{border-color:#c8dff0}
-  .inbox-folder-sel{padding:7px 10px;background:var(--bg);border:1px solid var(--border);border-radius:6px;font-family:'Instrument Sans',sans-serif;font-size:12.5px;color:var(--text);outline:none;cursor:pointer}
-  .inbox-area{flex:1;overflow-y:auto;padding:0 26px 22px}
-  .inbox-area::-webkit-scrollbar{width:5px}
-  .inbox-area::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
-  .inbox-connect-card{background:var(--surface);border:1.5px solid #c8dff0;border-radius:12px;padding:26px;max-width:480px;margin:36px auto;text-align:center}
-  .inbox-connect-title{font-family:'Lora',serif;font-size:18px;font-weight:600;margin-bottom:8px}
-  .inbox-connect-sub{font-size:13px;color:var(--text-muted);line-height:1.65;margin-bottom:18px}
-  .inbox-connect-link{color:#0072c6;text-decoration:none}
-  .inbox-connect-link:hover{text-decoration:underline}
-  .inbox-connect-input{width:100%;padding:10px 12px;background:var(--bg);border:1.5px solid var(--border);border-radius:7px;font-family:'Instrument Sans',sans-serif;font-size:14px;color:var(--text);outline:none;margin-bottom:10px;transition:border-color .16s}
-  .inbox-connect-input:focus{border-color:#c8dff0}
-  .inbox-connect-btn{width:100%;padding:11px;background:#0072c6;color:#fff;border:none;border-radius:8px;font-family:'Instrument Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .14s;margin-bottom:8px}
-  .inbox-connect-btn:hover{opacity:.85}
-  .inbox-disconnect-btn{background:none;border:1.5px solid var(--border);border-radius:7px;padding:8px 18px;font-family:'Instrument Sans',sans-serif;font-size:12.5px;font-weight:500;color:var(--text-muted);cursor:pointer;transition:all .14s}
-  .inbox-disconnect-btn:hover{border-color:var(--failure-border);color:var(--failure-accent)}
-  .email-item{background:var(--surface);border:1.5px solid var(--border-light);border-radius:8px;padding:13px 15px;margin-bottom:8px;display:flex;align-items:flex-start;gap:11px;cursor:pointer;transition:all .16s;animation:ci .22s ease both;margin-top:8px}
-  .email-item:hover{box-shadow:var(--shadow-md)}
-  .email-item.unread{border-left:3px solid #0072c6}
-  .email-item-avatar{width:34px;height:34px;border-radius:50%;background:#e0eefa;color:#0072c6;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0;font-family:'Instrument Sans',sans-serif}
-  .email-item-body{flex:1;min-width:0}
-  .email-item-from{font-size:12.5px;font-weight:500;color:var(--text-muted);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .email-item-subject{font-size:13px;color:var(--text);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .email-item-subject.unread{font-weight:700}
-  .email-item-preview{font-size:11.5px;color:var(--text-faint);line-height:1.5;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
-  .email-item-date{font-size:10px;color:var(--text-faint);font-family:'JetBrains Mono',monospace;white-space:nowrap;flex-shrink:0;margin-top:1px}
-  .email-item-actions{display:flex;gap:4px;opacity:0;transition:opacity .14s;flex-shrink:0;align-items:center}
-  .email-item:hover .email-item-actions{opacity:1}
-  .email-action-btn{background:none;border:none;cursor:pointer;color:var(--text-faint);font-size:11.5px;padding:4px 7px;border-radius:4px;transition:color .14s;font-family:'Instrument Sans',sans-serif;font-weight:500;white-space:nowrap}
-  .email-action-btn:hover{color:var(--text);background:var(--surface2)}
-  .email-modal-ov{display:none;position:fixed;inset:0;background:rgba(44,40,32,.35);backdrop-filter:blur(3px);z-index:300;align-items:center;justify-content:center;animation:fi .2s ease}
-  .email-modal-ov.open{display:flex}
-  .email-modal{background:var(--surface);border-radius:12px;border:1px solid var(--border);box-shadow:0 20px 60px rgba(44,40,32,.18);width:90%;max-width:680px;max-height:88vh;overflow-y:auto;animation:mi .22s ease}
-  .email-modal::-webkit-scrollbar{width:4px}
-  .email-modal::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
-  .email-modal-head{padding:16px 20px 12px;border-bottom:1px solid var(--border-light);display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
-  .email-modal-subject{font-family:'Lora',serif;font-size:16px;font-weight:600;line-height:1.4;flex:1}
-  .email-modal-meta{padding:10px 20px;border-bottom:1px solid var(--border-light);font-size:12px;color:var(--text-muted);line-height:1.6}
-  .email-modal-body{padding:18px 22px;font-size:13.5px;line-height:1.75;color:var(--text-muted);white-space:pre-wrap;word-break:break-word}
-  .email-modal-actions{padding:12px 20px 16px;border-top:1px solid var(--border-light);display:flex;gap:8px}
-  .inbox-status{font-size:11px;color:var(--text-faint);font-family:'JetBrains Mono',monospace}
   @media(max-width:700px){.sidebar{display:none}.stats{display:none}.profile-cards{grid-template-columns:1fr 1fr}}
-  /* Scholar */
-  #scholarPage{display:none;flex-direction:column;overflow:hidden}
-  #scholarPage.active{display:flex}
-  .scholar-header{padding:22px 26px 16px;border-bottom:1px solid var(--border-light);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
-  .scholar-header-title{font-family:'Lora',serif;font-size:20px;font-weight:600}
-  .scholar-header-sub{font-size:12px;color:var(--text-faint);margin-top:3px}
-  .scholar-sync-btn{display:flex;align-items:center;gap:6px;padding:7px 15px;border-radius:8px;border:1.5px solid var(--scholar-border);background:var(--scholar-bg);color:var(--scholar-accent);font-family:'Instrument Sans',sans-serif;font-size:12.5px;font-weight:500;cursor:pointer;transition:all .18s}
-  .scholar-sync-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
-  .scholar-sync-btn.spinning svg{animation:spin .8s linear infinite}
-  .scholar-status{font-size:11px;color:var(--text-faint);font-family:'JetBrains Mono',monospace}
-  .scholar-toolbar{padding:9px 26px;border-bottom:1px solid var(--border-light);display:flex;align-items:center;gap:9px;flex-wrap:wrap}
-  .scholar-search-wrap{position:relative;flex:0 0 220px}
-  .scholar-si{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-faint);font-size:13px;pointer-events:none}
-  .scholar-search{width:100%;padding:7px 12px 7px 30px;background:var(--bg);border:1px solid var(--border);border-radius:6px;font-family:'Instrument Sans',sans-serif;font-size:13px;color:var(--text);outline:none;transition:border-color .16s}
-  .scholar-search:focus{border-color:var(--scholar-border)}
-  .scholar-topic-filter{display:flex;gap:4px;flex-wrap:wrap;flex:1}
-  .scholar-fb{padding:5px 9px;border-radius:16px;border:1.5px solid var(--border);background:transparent;font-family:'Instrument Sans',sans-serif;font-size:11.5px;font-weight:500;color:var(--text-muted);cursor:pointer;transition:all .14s}
-  .scholar-fb:hover{background:var(--surface2)}
-  .scholar-fb.on{background:var(--scholar-accent);color:#fff;border-color:var(--scholar-accent)}
-  .scholar-edit-btn{padding:6px 11px;border-radius:6px;border:1.5px solid var(--border);background:transparent;font-family:'Instrument Sans',sans-serif;font-size:11.5px;font-weight:500;color:var(--text-muted);cursor:pointer;transition:all .14s;white-space:nowrap;flex-shrink:0}
-  .scholar-edit-btn:hover{background:var(--surface2);color:var(--text)}
-  .scholar-settings-panel{padding:9px 26px;border-bottom:1px solid var(--border-light);background:var(--surface);display:flex;gap:8px;align-items:center}
-  .scholar-topics-input{flex:1;padding:8px 12px;background:var(--bg);border:1.5px solid var(--border);border-radius:7px;font-family:'Instrument Sans',sans-serif;font-size:13px;color:var(--text);outline:none;transition:border-color .16s}
-  .scholar-topics-input:focus{border-color:var(--scholar-border)}
-  .scholar-save-btn{padding:8px 15px;border-radius:7px;border:1.5px solid var(--scholar-border);background:var(--scholar-bg);color:var(--scholar-accent);font-family:'Instrument Sans',sans-serif;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .16s}
-  .scholar-save-btn:hover{background:var(--scholar-accent);color:#fff}
-  .scholar-area{flex:1;overflow-y:auto;padding:18px 26px}
-  .scholar-area::-webkit-scrollbar{width:5px}
-  .scholar-area::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
-  .scholar-setup-card{background:var(--surface);border:1.5px solid var(--scholar-border);border-radius:12px;padding:26px;max-width:520px;margin:36px auto;text-align:center}
-  .scholar-setup-title{font-family:'Lora',serif;font-size:18px;font-weight:600;margin-bottom:8px}
-  .scholar-setup-sub{font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:16px}
-  .scholar-setup-input{width:100%;padding:10px 12px;background:var(--bg);border:1.5px solid var(--border);border-radius:7px;font-family:'Instrument Sans',sans-serif;font-size:14px;color:var(--text);outline:none;margin-bottom:10px;transition:border-color .16s}
-  .scholar-setup-input:focus{border-color:var(--scholar-border)}
-  .scholar-start-btn{width:100%;padding:11px;background:var(--scholar-accent);color:#fff;border:none;border-radius:8px;font-family:'Instrument Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .14s}
-  .scholar-start-btn:hover{opacity:.85}
-  .scholar-paper{background:var(--surface);border:1.5px solid var(--border-light);border-radius:8px;padding:13px 15px;margin-bottom:9px;display:flex;align-items:flex-start;gap:11px;transition:all .16s;animation:ci .22s ease both}
-  .scholar-paper:hover{box-shadow:var(--shadow-md)}
-  .scholar-paper-body{flex:1;min-width:0}
-  .scholar-paper-title{font-size:13.5px;font-weight:600;color:var(--text);margin-bottom:3px;line-height:1.4}
-  .scholar-paper-meta{font-size:11.5px;color:var(--text-muted);margin-bottom:3px;line-height:1.5}
-  .scholar-paper-abstract{font-size:12px;color:var(--text-faint);line-height:1.6;margin-top:4px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-  .scholar-paper-tags{margin-top:5px;display:flex;gap:4px;flex-wrap:wrap}
-  .scholar-topic-tag{display:inline-flex;padding:1px 6px;background:var(--scholar-bg);border:1px solid var(--scholar-border);border-radius:3px;font-size:10px;color:var(--scholar-accent);font-family:'Instrument Sans',sans-serif}
-  .scholar-paper-actions{display:flex;gap:5px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;min-width:120px}
-  .scholar-action-btn{padding:5px 9px;border-radius:5px;border:1px solid var(--border);background:none;font-family:'Instrument Sans',sans-serif;font-size:11px;font-weight:500;cursor:pointer;color:var(--text-muted);transition:all .14s;white-space:nowrap;text-decoration:none;display:inline-block}
-  .scholar-action-btn:hover{background:var(--surface2);color:var(--text)}
-  .scholar-action-btn.primary{background:var(--scholar-bg);border-color:var(--scholar-border);color:var(--scholar-accent)}
-  .scholar-action-btn.primary:hover{background:var(--scholar-accent);color:#fff}
 </style>
+<script>
+window.MathJax={
+  tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']]},
+  options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
 
@@ -425,8 +324,6 @@
     <div class="page-tabs">
       <button class="ptab active"   id="tabNotes" onclick="switchPage('notes')">◈ Notes</button>
       <button class="ptab exp-tab"  id="tabExp"   onclick="switchPage('exp')">✦ Experiences</button>
-      <button class="ptab inbox-tab" id="tabInbox" onclick="switchPage('inbox')">📧 Inbox</button>
-      <button class="ptab scholar-tab" id="tabScholar" onclick="switchPage('scholar')">🎓 Scholar</button>
     </div>
 
     <!-- NOTES -->
@@ -462,106 +359,21 @@
       </div>
     </div>
 
-    <!-- INBOX -->
-    <div id="inboxPage">
-      <div class="inbox-header">
-        <div><div class="inbox-header-title">Outlook Inbox</div><div class="inbox-header-sub" id="inboxHeaderSub">Connect your Microsoft account below</div></div>
-        <div style="display:flex;gap:8px;align-items:center">
-          <span class="inbox-status" id="inboxStatus"></span>
-          <button class="inbox-sync-btn" id="inboxSyncBtn" onclick="fetchOutlookEmails()">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-            Refresh
-          </button>
-        </div>
-      </div>
-      <div class="inbox-toolbar" id="inboxToolbar" style="display:none">
-        <div class="inbox-search-wrap"><span class="inbox-si">⌕</span><input class="inbox-search" id="inboxSearch" placeholder="Search emails…" oninput="renderEmailList()"></div>
-        <select class="inbox-folder-sel" id="inboxFolderSel" onchange="fetchOutlookEmails()">
-          <option value="inbox">Inbox</option>
-          <option value="sentitems">Sent</option>
-          <option value="drafts">Drafts</option>
-          <option value="deleteditems">Deleted</option>
-        </select>
-        <button class="inbox-disconnect-btn" onclick="disconnectOutlook()">Disconnect</button>
-      </div>
-      <div class="inbox-area" id="inboxArea">
-        <div class="inbox-connect-card" id="inboxConnectCard">
-          <div style="font-size:34px;margin-bottom:12px">📧</div>
-          <div class="inbox-connect-title">Connect Outlook</div>
-          <div class="inbox-connect-sub">Enter your Azure AD Application (Client) ID to connect your Microsoft 365 / Outlook account.<br><br>
-            <strong>Setup:</strong> Register an app at <a class="inbox-connect-link" href="https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationsListBlade" target="_blank">portal.azure.com</a>, set platform to <em>Single-page application</em>, and add this page's URL as a redirect URI.</div>
-          <input class="inbox-connect-input" id="inboxClientIdInput" placeholder="Azure AD Client ID (e.g. xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)" onkeydown="if(event.key==='Enter')connectOutlook()">
-          <button class="inbox-connect-btn" onclick="connectOutlook()">Connect with Microsoft</button>
-          <div style="font-size:11px;color:var(--text-faint);margin-top:8px;font-family:'JetBrains Mono',monospace" id="inboxConnectErr"></div>
-        </div>
-        <div id="inboxItemsContainer" style="display:none"></div>
-        <div class="es" id="inboxEmpty" style="display:none"><div style="font-size:32px;opacity:.35">📭</div><div class="et">No emails found</div><div class="esub">Try a different folder or search term.</div></div>
-      </div>
-    </div>
-
-    <!-- SCHOLAR -->
-    <div id="scholarPage">
-      <div class="scholar-header">
-        <div><div class="scholar-header-title">Scholar Feed</div><div class="scholar-header-sub" id="scholarHeaderSub">Weekly papers matching your interests · powered by Semantic Scholar</div></div>
-        <div style="display:flex;gap:8px;align-items:center">
-          <span class="scholar-status" id="scholarStatus"></span>
-          <button class="scholar-sync-btn" id="scholarSyncBtn" onclick="fetchScholarPapers()">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-            Refresh
-          </button>
-        </div>
-      </div>
-      <div class="scholar-area" id="scholarArea">
-        <div class="scholar-setup-card" id="scholarSetupCard">
-          <div style="font-size:34px;margin-bottom:12px">🎓</div>
-          <div class="scholar-setup-title">Set Up Your Scholar Feed</div>
-          <div class="scholar-setup-sub">Enter your research topics and get up to 10 fresh papers per topic every week, automatically fetched from <strong>Semantic Scholar</strong>.</div>
-          <input class="scholar-setup-input" id="scholarTopicsSetup" placeholder="e.g. machine learning, crystal structures, DFT synthesis" onkeydown="if(event.key==='Enter')saveScholarTopics('setup')">
-          <button class="scholar-start-btn" onclick="saveScholarTopics('setup')">Start Feed</button>
-        </div>
-        <div id="scholarContent" style="display:none">
-          <div class="scholar-toolbar" style="padding:0 0 12px;border:none;flex-wrap:wrap">
-            <div class="scholar-search-wrap"><span class="scholar-si">⌕</span><input class="scholar-search" id="scholarSearch" placeholder="Search papers…" oninput="renderScholarPapers()"></div>
-            <div class="scholar-topic-filter" id="scholarTopicFilter"></div>
-            <button class="scholar-edit-btn" onclick="toggleScholarSettings()">⚙ Edit Topics</button>
-          </div>
-          <div class="scholar-settings-panel" id="scholarSettingsPanel" style="display:none;margin-bottom:12px;border-radius:8px;border:1.5px solid var(--scholar-border)">
-            <input class="scholar-topics-input" id="scholarTopicsEdit" placeholder="e.g. machine learning, crystal structures, DFT">
-            <button class="scholar-save-btn" onclick="saveScholarTopics('edit')">Save &amp; Refresh</button>
-          </div>
-          <div id="scholarItemsContainer"></div>
-          <div class="es" id="scholarEmpty" style="display:none"><div style="font-size:32px;opacity:.35">🎓</div><div class="et">No papers found</div><div class="esub">Try adjusting your search or topic filter.</div></div>
-        </div>
-      </div>
-    </div>
-
   </main>
 </div>
 </div>
 
-<!-- Email detail modal -->
-<div class="email-modal-ov" id="emailModalOv" onclick="if(event.target===this)closeEmailModal()">
-  <div class="email-modal">
-    <div class="email-modal-head">
-      <div class="email-modal-subject" id="emailModalSubject"></div>
-      <button class="mx" onclick="closeEmailModal()">×</button>
-    </div>
-    <div class="email-modal-meta" id="emailModalMeta"></div>
-    <div class="email-modal-body" id="emailModalBody"></div>
-    <div class="email-modal-actions">
-      <button class="bsave" onclick="importEmailToNote()">→ Import as Note</button>
-      <button class="bcancel" onclick="closeEmailModal()">Close</button>
-    </div>
-  </div>
-</div>
-
 <!-- Notes Modal -->
-<div class="ov" id="ov" onclick="if(event.target===this)closeModal()">
+<div class="ov" id="ov" onclick="closeModalByBackdrop(event)">
   <div class="modal">
     <div class="mh"><span class="mt" id="modalHead">New Entry</span><span id="autosaveInd" style="font-size:11px;color:var(--note-accent);font-family:'JetBrains Mono',monospace;opacity:0;transition:opacity .4s;margin-right:auto;margin-left:10px"></span><button class="mx" onclick="closeModal()">×</button></div>
     <div class="ts2" id="typeSelect"></div>
     <div class="mf"><label class="ml">Title</label><input class="mi" id="mTitle" placeholder="Entry title…" oninput="triggerAutosave()"></div>
-    <div class="mf" id="mBodySection"><label class="ml">Content</label><textarea class="mta" id="mBody" rows="5" oninput="triggerAutosave()"></textarea></div>
+    <div class="mf" id="mBodySection"><label class="ml">Content</label><textarea class="mta" id="mBody" rows="5" oninput="triggerAutosave();updateLatexPreview()"></textarea></div>
+    <div id="latexPreviewWrap" style="display:none;padding:0 20px 10px">
+      <label class="ml" style="display:block;margin-bottom:6px">LaTeX Preview</label>
+      <div id="latexPreview" style="min-height:48px;padding:10px 12px;border:1px solid var(--border-light);border-radius:8px;background:var(--surface2);font-size:13px;color:var(--text-muted);line-height:1.7;white-space:pre-wrap;word-break:break-word"></div>
+    </div>
     <div id="mChecklistSection" style="display:none">
       <div class="mf"><label class="ml">Checklist Items</label></div>
       <div id="mChecklistItems" style="padding:0 20px 7px;display:flex;flex-direction:column;gap:6px"></div>
@@ -653,8 +465,6 @@ const PH={note:'Write your observations, findings, or ideas…',comment:'Add con
 let entries=[],experiences=[],filter='all',editId=null,curType='note',inited=false;
 let editExpId=null,currentPage='notes';
 let modalImages=[],expModalImages=[],featuredIdx=0,modalChecklistItems=[];
-let msalApp=null,outlookToken=null,emailMessages=[],openEmailData=null;
-let inboxClientId=null;
 let _autosaveDraftTimer=null;
 const DRAFT_KEY='rnb_modal_draft';
 const AUTOSAVE_DELAY_MS=800;
@@ -667,18 +477,66 @@ function saveDraft(){
 function triggerAutosave(){clearTimeout(_autosaveDraftTimer);_autosaveDraftTimer=setTimeout(saveDraft,AUTOSAVE_DELAY_MS);}
 function clearDraft(){sessionStorage.removeItem(DRAFT_KEY);}
 let _deletedEntry=null,_undoTimer=null;
-let scholarTopics=[],scholarPapers=[],scholarLastFetch=null,scholarFilterTopic='all';
+let _lastClosedModalType=null,_modalUndoTimer=null,_mathTypesetTimer=null;
+function saveDraftIfModalOpen(){if(document.getElementById('ov').classList.contains('open'))saveDraft();}
+function modalHasDraftableContent(){
+  const title=(document.getElementById('mTitle')?.value||'').trim();
+  const body=(document.getElementById('mBody')?.value||'').trim();
+  const tags=(document.getElementById('mTags')?.value||'').trim();
+  return Boolean(title||body||tags||modalChecklistItems.length||modalImages.length);
+}
+function showModalUndoToast(msg){
+  let t=document.getElementById('toast');
+  if(!t){t=document.createElement('div');t.id='toast';t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:9px 18px;border-radius:8px;font-size:13px;z-index:999;opacity:0;transition:opacity .2s;font-family:Instrument Sans,sans-serif';document.body.appendChild(t)}
+  t.innerHTML=`${escHtml(msg)} <button onclick="reopenLastClosedModal()" style="margin-left:10px;background:none;border:1px solid rgba(255,255,255,.4);color:inherit;padding:2px 8px;border-radius:5px;font-size:12px;cursor:pointer;font-family:inherit">Undo</button>`;
+  t.style.pointerEvents='auto';t.style.opacity=1;clearTimeout(t._tid);t._tid=setTimeout(()=>{t.style.opacity=0;t.style.pointerEvents='none'},UNDO_TIMEOUT_MS);
+}
+function reopenLastClosedModal(){
+  if(!_lastClosedModalType)return;
+  const t=_lastClosedModalType;
+  clearTimeout(_modalUndoTimer);
+  _lastClosedModalType=null;
+  openModal(t);
+}
+function closeModalByBackdrop(event){
+  if(event.target!==event.currentTarget)return;
+  const hadData=modalHasDraftableContent();
+  const wasType=curType;
+  closeModal();
+  if(hadData){
+    _lastClosedModalType=wasType;
+    clearTimeout(_modalUndoTimer);
+    showModalUndoToast('Editor closed.');
+    _modalUndoTimer=setTimeout(()=>{_lastClosedModalType=null},UNDO_TIMEOUT_MS);
+  }
+}
+function updateLatexPreview(){
+  const wrap=document.getElementById('latexPreviewWrap'),out=document.getElementById('latexPreview');
+  if(!wrap||!out)return;
+  const bodyEl=document.getElementById('mBody');
+  const text=bodyEl?bodyEl.value:'';
+  if(curType==='checklist'||!text.trim()){wrap.style.display='none';out.textContent='';return}
+  wrap.style.display='block';
+  out.textContent=text;
+  clearTimeout(_mathTypesetTimer);
+  _mathTypesetTimer=setTimeout(()=>{
+    if(window.MathJax&&typeof window.MathJax.typesetPromise==='function'){
+      if(typeof window.MathJax.typesetClear==='function')window.MathJax.typesetClear([out]);
+      window.MathJax.typesetPromise([out]).catch(err=>{console.debug('MathJax typeset failed:',err);});
+    }
+  },450);
+}
 
 function init(){
   if(inited)return;inited=true;
   entries=JSON.parse(localStorage.getItem('rnb_entries')||'[]');
   experiences=JSON.parse(localStorage.getItem('rnb_exp')||'[]');
-  inboxClientId=localStorage.getItem('rnb_inbox_clientid')||null;
-  if(inboxClientId){initMSAL(inboxClientId).then(()=>tryRestoreOutlookSession()).catch(()=>{})}
   document.getElementById('sbDate').textContent=new Date().toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'long',year:'numeric'});
   renderAll();renderExp();
   setupPasteListener();
-  initScholar();
+  window.addEventListener('beforeunload',saveDraftIfModalOpen);
+  window.addEventListener('pagehide',saveDraftIfModalOpen);
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')saveDraftIfModalOpen()});
   document.addEventListener('keydown',e=>{
     const t=document.activeElement.tagName;
     if(t==='INPUT'||t==='TEXTAREA')return;
@@ -739,9 +597,9 @@ function stripHtml(html){try{const d=new DOMParser().parseFromString(html,'text/
 
 function switchPage(page){
   currentPage=page;
-  const tabMap={notes:'tabNotes',exp:'tabExp',inbox:'tabInbox',scholar:'tabScholar'};
-  const pageMap={notes:'notesPage',exp:'expPage',inbox:'inboxPage',scholar:'scholarPage'};
-  ['notes','exp','inbox','scholar'].forEach(p=>{
+  const tabMap={notes:'tabNotes',exp:'tabExp'};
+  const pageMap={notes:'notesPage',exp:'expPage'};
+  ['notes','exp'].forEach(p=>{
     document.getElementById(tabMap[p]).classList.toggle('active',p===page);
     document.getElementById(pageMap[p]).classList.toggle('active',p===page);
   });
@@ -932,6 +790,7 @@ function openModal(type){
         document.getElementById('mBody').placeholder=PH[type]||'';
         if(isCL&&Array.isArray(d.checklistItems)){modalChecklistItems=d.checklistItems;}
         if(isCL)renderModalChecklistItems();
+        updateLatexPreview();
         document.getElementById('ov').classList.add('open');
         const ind=document.getElementById('autosaveInd');if(ind){ind.textContent='Draft restored';ind.style.opacity='1';clearTimeout(ind._t);ind._t=setTimeout(()=>ind.style.opacity='0',2000);}
         setTimeout(()=>document.getElementById('mTitle').focus(),80);return;
@@ -941,11 +800,12 @@ function openModal(type){
   document.getElementById('mTitle').value='';document.getElementById('mBody').value='';document.getElementById('mTags').value='';
   document.getElementById('mBody').placeholder=PH[type]||'';
   if(isCL)renderModalChecklistItems();
+  updateLatexPreview();
   document.getElementById('ov').classList.add('open');setTimeout(()=>document.getElementById('mTitle').focus(),80);
 }
-function openEditModal(id){const e=entries.find(x=>x.id===id);if(!e)return;editId=id;curType=e.type;buildTS(e.type);document.getElementById('mTitle').value=e.title||'';document.getElementById('mTags').value=(e.tags||[]).join(', ');document.getElementById('modalHead').textContent='Edit Entry';modalImages=[...(e.images||[])];renderModalPreviews();const isCL=e.type==='checklist';document.getElementById('mBodySection').style.display=isCL?'none':'';document.getElementById('mChecklistSection').style.display=isCL?'':'none';if(isCL){modalChecklistItems=parseChecklist(e.body||'');renderModalChecklistItems()}else{document.getElementById('mBody').value=e.body||'';document.getElementById('mBody').placeholder=PH[e.type]||''}document.getElementById('ov').classList.add('open')}
-function closeModal(){saveDraft();document.getElementById('ov').classList.remove('open');editId=null;modalImages=[];renderModalPreviews();modalChecklistItems=[]}
-function selType(t){curType=t;buildTS(t);const isCL=t==='checklist';document.getElementById('mBodySection').style.display=isCL?'none':'';document.getElementById('mChecklistSection').style.display=isCL?'':'none';if(!isCL)document.getElementById('mBody').placeholder=PH[t]||'';if(isCL)renderModalChecklistItems()}
+function openEditModal(id){const e=entries.find(x=>x.id===id);if(!e)return;editId=id;curType=e.type;buildTS(e.type);document.getElementById('mTitle').value=e.title||'';document.getElementById('mTags').value=(e.tags||[]).join(', ');document.getElementById('modalHead').textContent='Edit Entry';modalImages=[...(e.images||[])];renderModalPreviews();const isCL=e.type==='checklist';document.getElementById('mBodySection').style.display=isCL?'none':'';document.getElementById('mChecklistSection').style.display=isCL?'':'none';if(isCL){modalChecklistItems=parseChecklist(e.body||'');renderModalChecklistItems()}else{document.getElementById('mBody').value=e.body||'';document.getElementById('mBody').placeholder=PH[e.type]||''}updateLatexPreview();document.getElementById('ov').classList.add('open')}
+function closeModal(){saveDraft();document.getElementById('ov').classList.remove('open');editId=null;modalImages=[];renderModalPreviews();modalChecklistItems=[];updateLatexPreview()}
+function selType(t){curType=t;buildTS(t);const isCL=t==='checklist';document.getElementById('mBodySection').style.display=isCL?'none':'';document.getElementById('mChecklistSection').style.display=isCL?'':'none';if(!isCL){document.getElementById('mBody').placeholder=PH[t]||'';updateLatexPreview()}if(isCL){renderModalChecklistItems();const wrap=document.getElementById('latexPreviewWrap'),out=document.getElementById('latexPreview');if(wrap)wrap.style.display='none';if(out)out.textContent='';}}
 function saveEntry(){
   const title=document.getElementById('mTitle').value.trim(),tags=document.getElementById('mTags').value.split(',').map(t=>t.trim()).filter(Boolean);
   let body;
@@ -982,280 +842,6 @@ function saveExp(){
   saveExps();renderSidebar();renderExp();closeExpModal();
 }
 function delExp(id){experiences=experiences.filter(e=>e.id!==id);featuredIdx=0;saveExps();renderSidebar();renderExp()}
-
-/* ── Outlook Inbox ── */
-async function loadMSAL(){
-  if(window.msal)return;
-  return new Promise((res,rej)=>{
-    const s=document.createElement('script');
-    s.src='https://alcdn.msauth.net/browser/2.38.3/js/msal-browser.min.js';
-    s.onload=()=>res();s.onerror=()=>rej(new Error('Failed to load MSAL library'));
-    document.head.appendChild(s);
-  });
-}
-async function initMSAL(clientId){
-  await loadMSAL();
-  msalApp=new msal.PublicClientApplication({
-    auth:{clientId,authority:'https://login.microsoftonline.com/common',redirectUri:window.location.href.split('?')[0].split('#')[0]},
-    cache:{cacheLocation:'localStorage',storeAuthStateInCookie:false}
-  });
-  await msalApp.initialize();
-}
-async function tryRestoreOutlookSession(){
-  if(!msalApp)return;
-  const accounts=msalApp.getAllAccounts();
-  if(!accounts.length)return;
-  try{
-    const resp=await msalApp.acquireTokenSilent({scopes:['Mail.Read','Mail.ReadWrite'],account:accounts[0]});
-    outlookToken=resp.accessToken;
-    showInboxConnected(accounts[0].username||accounts[0].name);
-    await fetchOutlookEmails();
-  }catch(e){console.debug('[Outlook] Silent session restore failed:',e.message)}
-}
-async function connectOutlook(){
-  const clientId=document.getElementById('inboxClientIdInput').value.trim();
-  if(!clientId){document.getElementById('inboxConnectErr').textContent='Please enter your Azure AD Client ID.';return}
-  document.getElementById('inboxConnectErr').textContent='Loading…';
-  try{
-    await initMSAL(clientId);
-    inboxClientId=clientId;
-    localStorage.setItem('rnb_inbox_clientid',clientId);
-    const resp=await msalApp.loginPopup({scopes:['Mail.Read','Mail.ReadWrite'],prompt:'select_account'});
-    outlookToken=resp.accessToken;
-    showInboxConnected(resp.account.username||resp.account.name||'Connected');
-    await fetchOutlookEmails();
-  }catch(e){
-    const msg=e.message||String(e);
-    if(msg.includes('popup'))document.getElementById('inboxConnectErr').textContent='Popup blocked — please allow popups for this page.';
-    else if(msg.includes('MSAL'))document.getElementById('inboxConnectErr').textContent='Failed to load authentication library. Check your connection.';
-    else document.getElementById('inboxConnectErr').textContent='Connection failed: '+msg.slice(0,80);
-  }
-}
-function showInboxConnected(user){
-  document.getElementById('inboxConnectCard').style.display='none';
-  document.getElementById('inboxItemsContainer').style.display='block';
-  document.getElementById('inboxToolbar').style.display='flex';
-  document.getElementById('inboxHeaderSub').textContent=user;
-}
-function disconnectOutlook(){
-  outlookToken=null;msalApp=null;emailMessages=[];
-  localStorage.removeItem('rnb_inbox_clientid');inboxClientId=null;
-  document.getElementById('inboxConnectCard').style.display='';
-  document.getElementById('inboxItemsContainer').style.display='none';
-  document.getElementById('inboxToolbar').style.display='none';
-  document.getElementById('inboxHeaderSub').textContent='Connect your Microsoft account below';
-  document.getElementById('inboxConnectErr').textContent='';
-  document.getElementById('inboxConnectCard').style.display='';
-}
-async function fetchOutlookEmails(){
-  if(!outlookToken){showToast('Connect your Outlook account first');return}
-  const btn=document.getElementById('inboxSyncBtn');
-  btn.classList.add('spinning');document.getElementById('inboxStatus').textContent='Loading…';
-  try{
-    if(msalApp){
-      const accounts=msalApp.getAllAccounts();
-      if(accounts.length){
-        try{const r=await msalApp.acquireTokenSilent({scopes:['Mail.Read','Mail.ReadWrite'],account:accounts[0]});outlookToken=r.accessToken}catch(e){}
-      }
-    }
-    const folder=document.getElementById('inboxFolderSel')?.value||'inbox';
-    const res=await fetch(`https://graph.microsoft.com/v1.0/me/mailFolders/${folder}/messages?$top=50&$select=id,subject,from,receivedDateTime,isRead,bodyPreview,body&$orderby=receivedDateTime desc`,
-      {headers:{Authorization:'Bearer '+outlookToken}});
-    if(!res.ok){
-      if(res.status===401){outlookToken=null;showToast('Session expired — please reconnect');disconnectOutlook();return}
-      throw new Error('HTTP '+res.status);
-    }
-    const data=await res.json();
-    emailMessages=data.value||[];
-    const unread=emailMessages.filter(m=>!m.isRead).length;
-    document.getElementById('inboxStatus').textContent=emailMessages.length+' messages'+(unread?' · '+unread+' unread':'');
-    renderEmailList();
-  }catch(e){document.getElementById('inboxStatus').textContent='Error: '+e.message.slice(0,40);showToast('Failed to load emails: '+e.message)}
-  btn.classList.remove('spinning');
-}
-function renderEmailList(){
-  const q=(document.getElementById('inboxSearch')?.value||'').toLowerCase();
-  const list=q?emailMessages.filter(m=>((m.subject||'')+(m.from?.emailAddress?.name||'')+(m.bodyPreview||'')).toLowerCase().includes(q)):emailMessages;
-  const container=document.getElementById('inboxItemsContainer'),empty=document.getElementById('inboxEmpty');
-  if(!list.length){container.innerHTML='';empty.style.display='flex';return}
-  empty.style.display='none';
-  container.innerHTML=list.map(m=>{
-    const from=m.from?.emailAddress?.name||m.from?.emailAddress?.address||'Unknown';
-    const initial=(from[0]||'?').toUpperCase();
-    const date=new Date(m.receivedDateTime);
-    const dateStr=date.toLocaleDateString('en-GB',{day:'2-digit',month:'short'})+' '+date.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
-    return `<div class="email-item${m.isRead?'':' unread'}" onclick="openEmail('${escAttr(m.id)}')">
-      <div class="email-item-avatar">${escHtml(initial)}</div>
-      <div class="email-item-body">
-        <div class="email-item-from">${escHtml(from)}</div>
-        <div class="email-item-subject${m.isRead?'':' unread'}">${escHtml(m.subject||'(no subject)')}</div>
-        <div class="email-item-preview">${escHtml(m.bodyPreview||'')}</div>
-      </div>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0">
-        <div class="email-item-date">${dateStr}</div>
-        <div class="email-item-actions">
-          ${!m.isRead?`<button class="email-action-btn" onclick="event.stopPropagation();markEmailRead('${escAttr(m.id)}')">Mark read</button>`:''}
-          <button class="email-action-btn" onclick="event.stopPropagation();openEmail('${escAttr(m.id)}')">Open</button>
-        </div>
-      </div>
-    </div>`;
-  }).join('');
-}
-function openEmail(id){
-  const m=emailMessages.find(x=>x.id===id);if(!m)return;
-  openEmailData=m;
-  document.getElementById('emailModalSubject').textContent=m.subject||'(no subject)';
-  const from=m.from?.emailAddress?.name?`${m.from.emailAddress.name} <${m.from.emailAddress.address}>`:m.from?.emailAddress?.address||'Unknown';
-  const date=new Date(m.receivedDateTime).toLocaleString('en-GB',{weekday:'short',day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
-  document.getElementById('emailModalMeta').innerHTML=`<strong>From:</strong> ${escHtml(from)}<br><strong>Date:</strong> ${escHtml(date)}`;
-  const body=m.body?.content||m.bodyPreview||'';
-  document.getElementById('emailModalBody').textContent=stripHtml(body).replace(/\s{2,}/g,' ').trim();
-  document.getElementById('emailModalOv').classList.add('open');
-  if(!m.isRead)markEmailRead(id);
-}
-function closeEmailModal(){document.getElementById('emailModalOv').classList.remove('open');openEmailData=null}
-async function markEmailRead(id){
-  const m=emailMessages.find(x=>x.id===id);if(!m||m.isRead)return;
-  m.isRead=true;renderEmailList();
-  if(!outlookToken)return;
-  try{await fetch(`https://graph.microsoft.com/v1.0/me/messages/${id}`,{method:'PATCH',headers:{Authorization:'Bearer '+outlookToken,'Content-Type':'application/json'},body:JSON.stringify({isRead:true})})}catch(e){}
-}
-function importEmailToNote(){
-  if(!openEmailData)return;
-  const m=openEmailData;
-  const from=m.from?.emailAddress?.name?`${m.from.emailAddress.name} <${m.from.emailAddress.address}>`:m.from?.emailAddress?.address||'';
-  const date=new Date(m.receivedDateTime).toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
-  const body=`From: ${from}\nDate: ${date}\n\n${stripHtml(m.body?.content||m.bodyPreview||'').replace(/\s{2,}/g,' ').trim()}`;
-  closeEmailModal();
-  openModal('note');
-  setTimeout(()=>{document.getElementById('mTitle').value=m.subject||'';document.getElementById('mBody').value=body},60);
-}
-
-/* ── Scholar Feed ── */
-function initScholar(){
-  scholarTopics=JSON.parse(localStorage.getItem('rnb_scholar_topics')||'[]');
-  scholarPapers=JSON.parse(localStorage.getItem('rnb_scholar_papers')||'[]');
-  scholarLastFetch=parseInt(localStorage.getItem('rnb_scholar_lastfetch')||'0')||null;
-  if(scholarTopics.length){
-    document.getElementById('scholarSetupCard').style.display='none';
-    document.getElementById('scholarContent').style.display='block';
-    document.getElementById('scholarTopicsEdit').value=scholarTopics.join(', ');
-    renderScholarTopicFilter();
-    renderScholarPapers();
-    const WEEK=7*24*60*60*1000;
-    if(!scholarLastFetch||Date.now()-scholarLastFetch>WEEK){fetchScholarPapers()}
-    else{const next=new Date(scholarLastFetch+WEEK);document.getElementById('scholarStatus').textContent='Next auto-refresh: '+next.toLocaleDateString('en-GB',{day:'2-digit',month:'short'})}
-  }
-}
-function saveScholarState(){
-  localStorage.setItem('rnb_scholar_topics',JSON.stringify(scholarTopics));
-  localStorage.setItem('rnb_scholar_papers',JSON.stringify(scholarPapers));
-  if(scholarLastFetch)localStorage.setItem('rnb_scholar_lastfetch',String(scholarLastFetch));
-}
-function saveScholarTopics(source){
-  const inputId=source==='setup'?'scholarTopicsSetup':'scholarTopicsEdit';
-  const raw=document.getElementById(inputId).value.trim();
-  if(!raw){showToast('Enter at least one topic');return}
-  scholarTopics=raw.split(',').map(t=>t.trim()).filter(Boolean);
-  saveScholarState();
-  document.getElementById('scholarSetupCard').style.display='none';
-  document.getElementById('scholarContent').style.display='block';
-  document.getElementById('scholarTopicsEdit').value=scholarTopics.join(', ');
-  document.getElementById('scholarSettingsPanel').style.display='none';
-  renderScholarTopicFilter();
-  renderScholarPapers();
-  fetchScholarPapers();
-}
-function toggleScholarSettings(){
-  const panel=document.getElementById('scholarSettingsPanel');
-  panel.style.display=panel.style.display==='none'?'flex':'none';
-}
-async function fetchScholarPapers(){
-  if(!scholarTopics.length){showToast('Add topics first');return}
-  const btn=document.getElementById('scholarSyncBtn');
-  btn.classList.add('spinning');
-  document.getElementById('scholarStatus').textContent='Fetching…';
-  const newPapers=[],seenIds=new Set(),failed=[];
-  for(const topic of scholarTopics){
-    try{
-      const q=encodeURIComponent(topic);
-      const res=await fetch(`https://api.semanticscholar.org/graph/v1/paper/search?query=${q}&fields=paperId,title,authors,year,abstract,url,externalIds,publicationDate&limit=10`);
-      if(!res.ok)throw new Error('HTTP '+res.status);
-      const data=await res.json();
-      for(const p of(data.data||[])){
-        if(!seenIds.has(p.paperId)){seenIds.add(p.paperId);newPapers.push({...p,_topic:topic,_fetchedAt:Date.now()})}
-      }
-    }catch(e){failed.push(topic);console.error('Scholar fetch failed for topic "'+topic+'":',e)}
-    await new Promise(r=>setTimeout(r,350)); // respect Semantic Scholar rate limit (~1 req/sec)
-  }
-  const allFailed=failed.length>0&&failed.length===scholarTopics.length;
-  if(!allFailed){
-    scholarPapers=newPapers;
-    scholarLastFetch=Date.now();
-    saveScholarState();
-    const next=new Date(scholarLastFetch+7*24*60*60*1000);
-    document.getElementById('scholarStatus').textContent='✓ '+scholarPapers.length+' papers · next: '+next.toLocaleDateString('en-GB',{day:'2-digit',month:'short'});
-    document.getElementById('scholarHeaderSub').textContent='Last updated '+fd(scholarLastFetch)+' · powered by Semantic Scholar';
-    if(failed.length)showToast('Fetch failed for: '+failed.join(', '));
-  }else{
-    document.getElementById('scholarStatus').textContent='Fetch failed.';
-    showToast('Scholar fetch failed: could not reach Semantic Scholar');
-  }
-  renderScholarTopicFilter();
-  renderScholarPapers();
-  btn.classList.remove('spinning');
-}
-function setScholarFilter(t){
-  scholarFilterTopic=t;
-  renderScholarTopicFilter();
-  renderScholarPapers();
-}
-function renderScholarTopicFilter(){
-  const c=document.getElementById('scholarTopicFilter');if(!c)return;
-  c.innerHTML=`<button class="scholar-fb${scholarFilterTopic==='all'?' on':''}" onclick="setScholarFilter('all')">All</button>`+
-    scholarTopics.map(t=>`<button class="scholar-fb${scholarFilterTopic===t?' on':''}" onclick="setScholarFilter('${escAttr(t)}')">${escHtml(t)}</button>`).join('');
-}
-function renderScholarPapers(){
-  const q=(document.getElementById('scholarSearch')?.value||'').toLowerCase();
-  const list=scholarPapers.filter(p=>{
-    if(scholarFilterTopic!=='all'&&p._topic!==scholarFilterTopic)return false;
-    if(q){const hay=((p.title||'')+' '+(p.abstract||'')+' '+(p.authors||[]).map(a=>a.name||'').join(' ')).toLowerCase();if(!hay.includes(q))return false}
-    return true;
-  });
-  const container=document.getElementById('scholarItemsContainer'),empty=document.getElementById('scholarEmpty');
-  if(!container)return;
-  if(!list.length){container.innerHTML='';empty.style.display='flex';return}
-  empty.style.display='none';
-  container.innerHTML=list.map(p=>{
-    const authors=(p.authors||[]).slice(0,3).map(a=>a.name||'').filter(Boolean).join(', ')+(p.authors?.length>3?' et al.':'');
-    const year=p.year||p.publicationDate?.slice(0,4)||'';
-    const doi=p.externalIds?.DOI?'https://doi.org/'+p.externalIds.DOI:p.url||'';
-    const rawAbstract=p.abstract||'';
-    const abstract=rawAbstract.slice(0,260)+(rawAbstract.length>260?'…':'');
-    const pid=escAttr(p.paperId||'');
-    return `<div class="scholar-paper">
-      <div class="scholar-paper-body">
-        <div class="scholar-paper-title">${escHtml(p.title||'Untitled')}</div>
-        <div class="scholar-paper-meta">${escHtml([authors,year].filter(Boolean).join(' · '))}</div>
-        ${abstract?`<div class="scholar-paper-abstract">${escHtml(abstract)}</div>`:''}
-        <div class="scholar-paper-tags"><span class="scholar-topic-tag">${escHtml(p._topic||'')}</span></div>
-      </div>
-      <div class="scholar-paper-actions">
-        ${doi?`<a href="${escHtml(doi)}" target="_blank" class="scholar-action-btn primary">Open ↗</a>`:''}
-        <button class="scholar-action-btn" onclick="importScholarToNote('${pid}')">→ Note</button>
-      </div>
-    </div>`;
-  }).join('');
-}
-function importScholarToNote(paperId){
-  const p=scholarPapers.find(x=>x.paperId===paperId);if(!p)return;
-  const authors=(p.authors||[]).map(a=>a.name||'').filter(Boolean).join(', ');
-  const year=p.year||p.publicationDate?.slice(0,4)||'';
-  const doi=p.externalIds?.DOI?'https://doi.org/'+p.externalIds.DOI:p.url||'';
-  const body=[authors+(year?' ('+year+')':''),doi,'',p.abstract||''].filter(Boolean).join('\n').trim();
-  openModal('note');
-  setTimeout(()=>{document.getElementById('mTitle').value=p.title||'';document.getElementById('mBody').value=body;document.getElementById('mTags').value=p._topic||''},60);
-}
 
 if(sessionStorage.getItem(SESSION_KEY)){
   document.getElementById('lockScreen').style.display='none';
