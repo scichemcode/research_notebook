@@ -24,6 +24,7 @@ try{const t=localStorage.getItem('rnb_theme');if(t==='dark'||t==='light')documen
     --failure-accent:#a5554f;--failure-bg:#f6e8e5;--failure-border:#dcb1ab;
     --checklist-accent:#4b7887;--checklist-bg:#e7eff2;--checklist-border:#a7c4ce;
     --exp-accent:#6b5e9e;--exp-bg:#eeebf8;--exp-border:#c2bbe3;
+    --rec-accent:#3d68a8;--rec-bg:#e8eef8;--rec-border:#adc2e3;
     --scrim:rgba(42,37,29,.38);
     --shadow:0 1px 2px rgba(42,37,29,.05),0 1px 4px rgba(42,37,29,.05);
     --shadow-md:0 2px 6px rgba(42,37,29,.06),0 8px 24px rgba(42,37,29,.09);
@@ -42,6 +43,7 @@ try{const t=localStorage.getItem('rnb_theme');if(t==='dark'||t==='light')documen
       --failure-accent:#e2928a;--failure-bg:rgba(226,146,138,.10);--failure-border:rgba(226,146,138,.32);
       --checklist-accent:#8cbccb;--checklist-bg:rgba(140,188,203,.10);--checklist-border:rgba(140,188,203,.32);
       --exp-accent:#b3a6e6;--exp-bg:rgba(179,166,230,.10);--exp-border:rgba(179,166,230,.32);
+      --rec-accent:#93b4e8;--rec-bg:rgba(147,180,232,.10);--rec-border:rgba(147,180,232,.32);
       --scrim:rgba(0,0,0,.55);
       --shadow:0 1px 2px rgba(0,0,0,.25);--shadow-md:0 4px 18px rgba(0,0,0,.35);--shadow-lg:0 24px 64px rgba(0,0,0,.5);
       color-scheme:dark;
@@ -56,6 +58,7 @@ try{const t=localStorage.getItem('rnb_theme');if(t==='dark'||t==='light')documen
     --failure-accent:#e2928a;--failure-bg:rgba(226,146,138,.10);--failure-border:rgba(226,146,138,.32);
     --checklist-accent:#8cbccb;--checklist-bg:rgba(140,188,203,.10);--checklist-border:rgba(140,188,203,.32);
     --exp-accent:#b3a6e6;--exp-bg:rgba(179,166,230,.10);--exp-border:rgba(179,166,230,.32);
+    --rec-accent:#93b4e8;--rec-bg:rgba(147,180,232,.10);--rec-border:rgba(147,180,232,.32);
     --scrim:rgba(0,0,0,.55);
     --shadow:0 1px 2px rgba(0,0,0,.25);--shadow-md:0 4px 18px rgba(0,0,0,.35);--shadow-lg:0 24px 64px rgba(0,0,0,.5);
     color-scheme:dark;
@@ -126,6 +129,7 @@ try{const t=localStorage.getItem('rnb_theme');if(t==='dark'||t==='light')documen
   .new-btn.comment .sym{background:var(--comment-bg);color:var(--comment-accent)}
   .new-btn.failure .sym{background:var(--failure-bg);color:var(--failure-accent)}
   .new-btn.checklist .sym{background:var(--checklist-bg);color:var(--checklist-accent)}
+  .new-btn.recording .sym{background:var(--rec-bg);color:var(--rec-accent)}
   .new-btn.experience .sym{background:var(--exp-bg);color:var(--exp-accent)}
   .sb-list{flex:1;overflow-y:auto;padding:0 10px 12px;border-top:1px solid var(--border-light);margin-top:6px}
   .sb-list-head{position:sticky;top:0;background:var(--surface);padding:12px 10px 6px;font-size:10px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--text-faint)}
@@ -136,6 +140,7 @@ try{const t=localStorage.getItem('rnb_theme');if(t==='dark'||t==='light')documen
   .sb-item.comment .sb-dot{background:var(--comment-accent)}
   .sb-item.failure .sb-dot{background:var(--failure-accent)}
   .sb-item.checklist .sb-dot{background:var(--checklist-accent)}
+  .sb-item.recording .sb-dot{background:var(--rec-accent)}
   .sb-item.experience .sb-dot{background:var(--exp-accent)}
   .sb-item-title{font-size:12.5px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0}
   .sb-item-meta{font-size:10px;color:var(--text-faint);font-family:var(--mono);flex-shrink:0}
@@ -175,6 +180,7 @@ try{const t=localStorage.getItem('rnb_theme');if(t==='dark'||t==='light')documen
   .fb.note.on{background:var(--note-bg);color:var(--note-accent);border-color:var(--note-border)}
   .fb.comment.on{background:var(--comment-bg);color:var(--comment-accent);border-color:var(--comment-border)}
   .fb.failure.on{background:var(--failure-bg);color:var(--failure-accent);border-color:var(--failure-border)}
+  .fb.recording.on{background:var(--rec-bg);color:var(--rec-accent);border-color:var(--rec-border)}
   .fb.checklist.on{background:var(--checklist-bg);color:var(--checklist-accent);border-color:var(--checklist-border)}
 
   .ea{flex:1;overflow-y:auto;padding:8px 24px 96px}
@@ -193,12 +199,14 @@ try{const t=localStorage.getItem('rnb_theme');if(t==='dark'||t==='light')documen
   .card.comment{--accent:var(--comment-accent);--accent-bg:var(--comment-bg)}
   .card.failure{--accent:var(--failure-accent);--accent-bg:var(--failure-bg)}
   .card.checklist{--accent:var(--checklist-accent);--accent-bg:var(--checklist-bg)}
+  .card.recording{--accent:var(--rec-accent);--accent-bg:var(--rec-bg)}
   .ch{padding:13px 10px 4px 16px;display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:40px}
   .badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;font-size:10px;font-weight:600;letter-spacing:.6px;text-transform:uppercase}
   .badge.note{background:var(--note-bg);color:var(--note-accent)}
   .badge.comment{background:var(--comment-bg);color:var(--comment-accent)}
   .badge.failure{background:var(--failure-bg);color:var(--failure-accent)}
   .badge.checklist{background:var(--checklist-bg);color:var(--checklist-accent)}
+  .badge.recording{background:var(--rec-bg);color:var(--rec-accent)}
   .ca{display:flex;gap:1px;transition:opacity .16s}
   @media (hover:hover){.ca{opacity:0}.card:hover .ca,.card:focus-within .ca{opacity:1}}
   .cb{display:grid;place-items:center;background:none;border:none;cursor:pointer;color:var(--text-faint);padding:6px;border-radius:6px;transition:color .14s,background .14s}
@@ -249,6 +257,32 @@ try{const t=localStorage.getItem('rnb_theme');if(t==='dark'||t==='light')documen
   .cl-add-input::placeholder{color:var(--text-faint)}
   .cl-add-btn{display:grid;place-items:center;padding:0 9px;border-radius:7px;border:1px solid var(--checklist-border);background:var(--checklist-bg);color:var(--checklist-accent);cursor:pointer;transition:all .14s}
   .cl-add-btn:hover{background:var(--checklist-accent);color:var(--surface)}
+
+  /* Recordings */
+  .rec-meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:2px 16px 6px}
+  .rec-open{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:7px;background:var(--rec-bg);color:var(--rec-accent);border:1px solid var(--rec-border);font-size:12.5px;font-weight:600;text-decoration:none;transition:background .14s,color .14s}
+  .rec-open:hover{background:var(--rec-accent);color:var(--surface)}
+  .rec-pass{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border-radius:7px;border:1px dashed var(--border);background:none;font-family:var(--mono);font-size:11.5px;color:var(--text-muted);cursor:pointer;max-width:100%}
+  .rec-pass:hover{border-color:var(--rec-accent);color:var(--text)}
+  .rec-pass .ic{width:13px;height:13px}
+  .rec-pass span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .rec-missing{font-size:12px;color:var(--text-faint);font-style:italic}
+  .rec-info{padding:0 16px 8px;font-size:11.5px;color:var(--text-faint);line-height:1.5}
+  .rec-tx{margin:0 16px 12px;border:1px solid var(--border-light);border-radius:8px;background:var(--bg)}
+  .rec-tx summary{cursor:pointer;padding:7px 10px;font-size:12px;font-weight:500;color:var(--text-muted);list-style:none;display:flex;align-items:center;gap:7px;user-select:none}
+  .rec-tx summary::-webkit-details-marker{display:none}
+  .rec-tx summary::before{content:'▸';font-size:10px;transition:transform .15s}
+  .rec-tx[open] summary::before{transform:rotate(90deg)}
+  .rec-tx-body{max-height:280px;overflow:auto;padding:8px 12px 10px;font-size:12.5px;line-height:1.65;color:var(--text-muted);border-top:1px solid var(--border-light)}
+  .tx-line{margin-bottom:4px}
+  .tx-ts{font-family:var(--mono);font-size:10.5px;color:var(--text-faint);margin-right:6px}
+  .tx-sp{color:var(--text);font-weight:600}
+  .rec-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .rec-grid .full{grid-column:1/-1}
+  .rec-tip{font-size:11.5px;color:var(--text-faint);margin-top:6px;line-height:1.5}
+  .tx-bar{display:flex;align-items:center;gap:12px;margin-bottom:6px;flex-wrap:wrap}
+  .tx-count{font-size:11px;color:var(--text-faint);font-family:var(--mono)}
+  .mta.tx{min-height:90px;font-size:12.5px}
 
   /* Empty state */
   .es{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--text-faint);gap:10px;padding:80px 20px}
@@ -312,6 +346,7 @@ try{const t=localStorage.getItem('rnb_theme');if(t==='dark'||t==='light')documen
   .to.comment.sel{border-color:var(--comment-accent);background:var(--comment-bg);color:var(--comment-accent)}
   .to.failure.sel{border-color:var(--failure-accent);background:var(--failure-bg);color:var(--failure-accent)}
   .to.checklist.sel{border-color:var(--checklist-accent);background:var(--checklist-bg);color:var(--checklist-accent)}
+  .to.recording.sel{border-color:var(--rec-accent);background:var(--rec-bg);color:var(--rec-accent)}
   .mf{padding:8px 22px}
   .ml{display:flex;align-items:baseline;gap:8px;font-size:10.5px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--text-faint);margin-bottom:6px}
   .ml-hint{font-size:11px;letter-spacing:0;text-transform:none;font-weight:400}
@@ -378,6 +413,7 @@ try{const t=localStorage.getItem('rnb_theme');if(t==='dark'||t==='light')documen
     @keyframes sheet{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
     .mf,.ts2{padding-left:16px;padding-right:16px}
     .ts2{display:grid;grid-template-columns:1fr 1fr}
+    .rec-grid{grid-template-columns:1fr}
     .ma{padding:12px 16px calc(14px + env(safe-area-inset-bottom))}
     .kbd-hint{display:none}
     .fab{display:grid;place-items:center;position:absolute;right:18px;bottom:calc(18px + env(safe-area-inset-bottom));width:54px;height:54px;border-radius:16px;border:none;background:var(--text);color:var(--bg);box-shadow:var(--shadow-lg);cursor:pointer;z-index:50}
@@ -433,6 +469,7 @@ window.MathJax={
       <button class="new-btn comment"    onclick="openModal('comment')"><span class="sym">◎</span>Comment<kbd>C</kbd></button>
       <button class="new-btn failure"    onclick="openModal('failure')"><span class="sym">◇</span>Failure<kbd>F</kbd></button>
       <button class="new-btn checklist"  onclick="openModal('checklist')"><span class="sym">☑</span>Checklist<kbd>K</kbd></button>
+      <button class="new-btn recording"  onclick="openModal('recording')"><span class="sym">▶</span>Recording<kbd>R</kbd></button>
       <button class="new-btn experience" onclick="openExpModal()"><span class="sym">✦</span>Experience<kbd>E</kbd></button>
     </nav>
     <div class="sb-list" id="sbListWrap"><div class="sb-list-head">Recent</div><div id="sbList"></div></div>
@@ -465,6 +502,7 @@ window.MathJax={
           <button class="fb comment" data-f="comment" onclick="setFilter('comment')">Comments <span class="n"></span></button>
           <button class="fb failure" data-f="failure" onclick="setFilter('failure')">Failures <span class="n"></span></button>
           <button class="fb checklist" data-f="checklist" onclick="setFilter('checklist')">Checklists <span class="n"></span></button>
+          <button class="fb recording" data-f="recording" onclick="setFilter('recording')">Recordings <span class="n"></span></button>
         </div>
       </div>
       <div class="ea" id="notesScroll">
@@ -501,11 +539,25 @@ window.MathJax={
     <div class="mbody">
       <div class="ts2" id="typeSelect"></div>
       <div class="mf"><label class="ml" for="mTitle">Title</label><input class="mi mi-title" id="mTitle" placeholder="Entry title…" oninput="triggerAutosave()"></div>
+      <div class="mf" id="mRecSection" hidden>
+        <div class="rec-grid">
+          <div class="full"><label class="ml" for="mRecUrl">Zoom recording link</label><input class="mi" id="mRecUrl" type="url" placeholder="https://unt.zoom.us/rec/share/…" oninput="triggerAutosave()" onpaste="handleRecPaste(event)">
+            <div class="rec-tip">Tip: in Zoom, click <b>Share</b> on a recording → <b>Copy</b>, then paste the whole message here. The topic, date and passcode fill in automatically.</div></div>
+          <div><label class="ml" for="mRecPass">Passcode</label><input class="mi" id="mRecPass" placeholder="Access passcode" autocomplete="off" oninput="triggerAutosave()"></div>
+          <div><label class="ml" for="mRecDate">Meeting date</label><input class="mi" id="mRecDate" type="datetime-local" oninput="triggerAutosave()"></div>
+          <div class="full"><label class="ml" for="mRecAtt">Attendees</label><input class="mi" id="mRecAtt" placeholder="e.g. Dr. Smith, lab group" oninput="triggerAutosave()"></div>
+        </div>
+      </div>
       <div class="mf" id="mBodySection"><label class="ml" for="mBody">Content <span class="ml-hint">supports LaTeX: $…$ and $$…$$</span></label><textarea class="mta" id="mBody" rows="6" oninput="triggerAutosave();updateLatexPreview()"></textarea></div>
       <div class="mf" id="latexPreviewWrap" hidden>
         <div class="ml">Preview</div>
         <div id="latexPreview" class="latex-preview"></div>
         <div id="latexBuffer" class="latex-preview latex-buffer" aria-hidden="true"></div>
+      </div>
+      <div class="mf" id="mTxSection" hidden>
+        <div class="tx-bar"><label class="ml" for="mRecTx" style="margin:0">Transcript</label><button class="link-btn" type="button" onclick="$('mTxFile').click()" data-ic="upload">Import .vtt / .txt</button><span class="tx-count" id="mTxCount"></span></div>
+        <textarea class="mta tx" id="mRecTx" rows="4" placeholder="Import Zoom's transcript file (Recordings → Audio transcript → download) or paste text here…" oninput="triggerAutosave();updateTxCount()"></textarea>
+        <input type="file" id="mTxFile" accept=".vtt,.txt,.srt,text/vtt,text/plain" hidden onchange="importTranscript(event)">
       </div>
       <div class="mf" id="mChecklistSection" hidden>
         <div class="ml">Items</div>
@@ -571,6 +623,8 @@ const ICON_PATHS={
   shuffle:'<path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/>',
   eye:'<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
   clipboard:'<rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 4h6v3H9z"/>',
+  video:'<rect x="3" y="6" width="13" height="12" rx="2"/><path d="m16 10 5-3v10l-5-3"/>',
+  copy:'<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/>',
   paperclip:'<path d="m20 11-8.5 8.5a5 5 0 0 1-7-7L13 4a3.5 3.5 0 0 1 5 5l-8.5 8.5a2 2 0 0 1-3-3L14 7"/>'
 };
 function ic(n){return `<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">${ICON_PATHS[n]||''}</svg>`}
@@ -628,9 +682,9 @@ function forgotPassword(){
 }
 
 /* ---------- State ---------- */
-const ICONS={note:'◈',comment:'◎',failure:'◇',checklist:'☑'};
-const LABELS={note:'Note',comment:'Comment',failure:'Failure',checklist:'Checklist'};
-const PH={note:'Write your observations, findings, or ideas…',comment:'Add context, caveats, or reflections…',failure:'Describe what went wrong, error details, and next steps…',checklist:''};
+const ICONS={note:'◈',comment:'◎',failure:'◇',checklist:'☑',recording:'▶'};
+const LABELS={note:'Note',comment:'Comment',failure:'Failure',checklist:'Checklist',recording:'Recording'};
+const PH={note:'Write your observations, findings, or ideas…',comment:'Add context, caveats, or reflections…',failure:'Describe what went wrong, error details, and next steps…',checklist:'',recording:'Meeting notes, decisions, action items…'};
 let entries=[],experiences=[],filter='all',editId=null,curType='note',inited=false;
 let editExpId=null,currentPage='notes';
 let modalImages=[],expModalImages=[],featuredIdx=0,modalChecklistItems=[];
@@ -673,6 +727,7 @@ function normalizeList(list,isExp){
       images:Array.isArray(x.images)?x.images.filter(s=>typeof s==='string'&&SAFE_IMG.test(s)):[]};
     if(x.updatedTs)o.updatedTs=Number(x.updatedTs)||undefined;
     if(!isExp)o.type=LABELS[x.type]?x.type:'note';
+    if(o.type==='recording')o.rec=normRec(x.rec);else delete o.rec;
     return o;
   });
 }
@@ -709,7 +764,7 @@ function onKeydown(e){
   const a=document.activeElement;
   if(e.ctrlKey||e.metaKey||e.altKey||anyModalOpen())return;
   if(a&&(a.isContentEditable||/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)))return;
-  const map={n:'note',c:'comment',f:'failure',k:'checklist'};
+  const map={n:'note',c:'comment',f:'failure',k:'checklist',r:'recording'};
   const k=e.key.toLowerCase();
   if(map[k]){e.preventDefault();openModal(map[k])}
   else if(k==='e'){e.preventDefault();openExpModal()}
@@ -825,20 +880,21 @@ let _searchTimer=null;
 function searchSoon(){clearTimeout(_searchTimer);_searchTimer=setTimeout(renderEntries,120)}
 function emptyStateHTML(){
   if(entries.length)return '<div class="ei">⌕</div><div class="et">No matches</div><div class="esub">Try a different search or filter.</div>';
-  return `<div class="ei">✦</div><div class="et">Your notebook is empty</div><div class="esub">Capture a note, leave a comment, log a failure, or start a checklist. Press <kbd>N</kbd> any time for a new note.</div>
+  return `<div class="ei">✦</div><div class="et">Your notebook is empty</div><div class="esub">Capture a note, log a failure, start a checklist, or save a meeting recording. Press <kbd>N</kbd> any time for a new note.</div>
   <div class="es-actions"><button class="btn primary" onclick="openModal('note')">${ic('plus')}New note</button><button class="btn" onclick="openModal('checklist')">New checklist</button></div>`;
 }
+function searchText(e){return(e.title+' '+e.body+' '+(e.tags||[]).join(' ')+(e.rec?' '+e.rec.attendees+' '+e.rec.transcript:'')).toLowerCase()}
 function renderEntries(){
   const q=($('searchInput')?.value||'').trim().toLowerCase();
-  const list=entries.filter(e=>{if(filter!=='all'&&e.type!==filter)return false;if(q)return(e.title+' '+e.body+' '+(e.tags||[]).join(' ')).toLowerCase().includes(q);return true}).sort(sortByRecent);
+  const list=entries.filter(e=>{if(filter!=='all'&&e.type!==filter)return false;if(q)return searchText(e).includes(q);return true}).sort(sortByRecent);
   const grid=$('grid'),es=$('emptyState');
   if(!list.length){grid.innerHTML='';grid.hidden=true;es.hidden=false;es.innerHTML=emptyStateHTML();return}
   es.hidden=true;grid.hidden=false;
   // Only animate cards that weren't on screen before, so re-renders don't flicker.
-  grid.innerHTML=list.map(e=>{const fresh=!seenCards.has(e.id);seenCards.add(e.id);return cardHTML(e,fresh)}).join('');
+  grid.innerHTML=list.map(e=>{const fresh=!seenCards.has(e.id);seenCards.add(e.id);return cardHTML(e,fresh,q)}).join('');
   sizeTextareas(grid);
 }
-function cardHTML(e,fresh){
+function cardHTML(e,fresh,q){
   const id=e.id;
   const imgs=(e.images||[]).map((src,i)=>`<figure class="card-img"><img src="${src}" alt="" loading="lazy" decoding="async" onclick="openLightbox(this.src)"><button class="img-del" title="Remove image" aria-label="Remove image" onclick="delImg('${id}',${i})">${ic('x')}</button></figure>`).join('');
   const body=e.type==='checklist'
@@ -849,7 +905,9 @@ function cardHTML(e,fresh){
     <header class="ch"><span class="badge ${e.type}">${ICONS[e.type]} ${LABELS[e.type]}</span>
       <div class="ca"><button class="cb" title="Attach image" aria-label="Attach image" onclick="attachToCard('${id}')">${ic('image')}</button><button class="cb" title="Edit" aria-label="Edit" onclick="openEditModal('${id}')">${ic('edit')}</button><button class="cb del" title="Delete" aria-label="Delete" onclick="del('${id}')">${ic('trash')}</button></div></header>
     <textarea class="ct" rows="1" placeholder="Untitled" aria-label="Title" oninput="rz(this);uf('${id}','title',this.value)">${escHtml(e.title||'')}</textarea>
+    ${e.type==='recording'?recMetaHTML(e):''}
     ${body}
+    ${e.type==='recording'?recTranscriptHTML(e,q):''}
     ${imgs?`<div class="card-images">${imgs}</div>`:''}
     <footer class="cf"><div class="trow" id="tr-${id}">${tagRowHTML(e)}</div><time class="ts" title="${escHtml(edited)}">${fd(e.ts)}${e.updatedTs?' ·&nbsp;edited':''}</time></footer>
   </article>`;
@@ -1038,12 +1096,12 @@ let _autosaveDraftTimer=null,_lastClosed=null;
 function flashIndicator(msg,ms){const ind=$('autosaveInd');ind.textContent=msg;ind.classList.add('show');clearTimeout(ind._t);ind._t=setTimeout(()=>ind.classList.remove('show'),ms||1800)}
 function modalHasDraftableContent(){
   const v=id=>($(id)?.value||'').trim();
-  return Boolean(v('mTitle')||v('mBody')||v('mTags')||modalChecklistItems.length||modalImages.length);
+  return Boolean(v('mTitle')||v('mBody')||v('mTags')||modalChecklistItems.length||modalImages.length||(curType==='recording'&&(v('mRecUrl')||v('mRecTx'))));
 }
 function saveDraft(){
   clearTimeout(_autosaveDraftTimer);
   if(!modalHasDraftableContent()){clearDraft();return}
-  const draft={editId,type:curType,title:$('mTitle').value,body:$('mBody').value,tags:$('mTags').value,checklistItems:curType==='checklist'?modalChecklistItems.map(i=>({...i})):null,savedAt:Date.now()};
+  const draft={editId,type:curType,title:$('mTitle').value,body:$('mBody').value,tags:$('mTags').value,checklistItems:curType==='checklist'?modalChecklistItems.map(i=>({...i})):null,rec:curType==='recording'?readRecFields():null,savedAt:Date.now()};
   try{sessionStorage.setItem(DRAFT_KEY,JSON.stringify(draft))}catch(e){return}
   if($('ov').classList.contains('open'))flashIndicator('✓ Draft saved');
 }
@@ -1070,15 +1128,19 @@ function applyTypeLayout(t){
   const isCL=t==='checklist';
   $('mBodySection').hidden=isCL;
   $('mChecklistSection').hidden=!isCL;
+  $('mRecSection').hidden=$('mTxSection').hidden=t!=='recording';
   $('mBody').placeholder=PH[t]||'';
   if(isCL)renderModalChecklistItems();
   updateLatexPreview();
 }
-function buildTS(sel){$('typeSelect').innerHTML=['note','comment','failure','checklist'].map(t=>`<button class="to ${t}${sel===t?' sel':''}" onclick="selType('${t}')">${ICONS[t]} ${LABELS[t]}</button>`).join('')}
+function buildTS(sel){$('typeSelect').innerHTML=['note','comment','failure','checklist','recording'].map(t=>`<button class="to ${t}${sel===t?' sel':''}" onclick="selType('${t}')">${ICONS[t]} ${LABELS[t]}</button>`).join('')}
 function selType(t){curType=t;buildTS(t);applyTypeLayout(t);triggerAutosave()}
-function fillModal({title='',body='',tags='',items=[]}){
+function fillModal({title='',body='',tags='',items=[],rec=null}){
   $('mTitle').value=title;$('mBody').value=body;$('mTags').value=tags;
   modalChecklistItems=items;
+  const r=normRec(rec);
+  $('mRecUrl').value=r.url;$('mRecPass').value=r.passcode;$('mRecDate').value=r.date;$('mRecAtt').value=r.attendees;$('mRecTx').value=r.transcript;
+  updateTxCount();
 }
 function releaseFocus(ov){const a=document.activeElement;if(a&&ov.contains(a))a.blur()}
 function focusIn(ov,id){const ov_=$(ov);requestAnimationFrame(()=>{if(!ov_.contains(document.activeElement))$(id).focus()})}
@@ -1089,7 +1151,7 @@ function openModal(type,skipDraft){
   modalImages=[];renderModalPreviews();
   const d=skipDraft?null:readDraft();
   const useDraft=d&&!d.editId&&d.type===type;
-  if(useDraft)fillModal({title:d.title||'',body:d.body||'',tags:d.tags||'',items:Array.isArray(d.checklistItems)?d.checklistItems:[]});
+  if(useDraft)fillModal({title:d.title||'',body:d.body||'',tags:d.tags||'',items:Array.isArray(d.checklistItems)?d.checklistItems:[],rec:d.rec});
   else fillModal({});
   $('discardDraftBtn').hidden=!useDraft;
   applyTypeLayout(type);
@@ -1101,8 +1163,8 @@ function openEditModal(id,useDraft){
   const e=entries.find(x=>x.id===id);if(!e)return;
   editId=id;curType=e.type;
   const d=useDraft?readDraft():null;
-  if(d&&d.editId===id){curType=d.type;fillModal({title:d.title||'',body:d.body||'',tags:d.tags||'',items:Array.isArray(d.checklistItems)?d.checklistItems:parseChecklist(e.body)})}
-  else fillModal({title:e.title||'',body:e.type==='checklist'?'':e.body||'',tags:(e.tags||[]).join(', '),items:e.type==='checklist'?parseChecklist(e.body||''):[]});
+  if(d&&d.editId===id){curType=d.type;fillModal({title:d.title||'',body:d.body||'',tags:d.tags||'',items:Array.isArray(d.checklistItems)?d.checklistItems:parseChecklist(e.body),rec:d.rec||e.rec})}
+  else fillModal({title:e.title||'',body:e.type==='checklist'?'':e.body||'',tags:(e.tags||[]).join(', '),items:e.type==='checklist'?parseChecklist(e.body||''):[],rec:e.rec});
   buildTS(curType);
   $('modalHead').textContent='Edit '+(LABELS[curType]||'Entry');
   modalImages=[...(e.images||[])];renderModalPreviews();
@@ -1125,9 +1187,15 @@ function saveEntry(){
     modalChecklistItems=modalChecklistItems.filter(i=>i.text.trim());
     body=serializeChecklist(modalChecklistItems);
     if(!title&&!modalChecklistItems.length){$('mTitle').focus();return}
-  } else {body=$('mBody').value.trim();if(!title&&!body){$('mTitle').focus();return}}
-  if(editId){const e=entries.find(x=>x.id===editId);if(e){e.title=title;e.body=body;e.tags=tags;e.type=curType;e.images=[...modalImages];e.updatedTs=Date.now()}}
-  else entries.push({id:gid(),type:curType,title,body,tags,images:[...modalImages],ts:Date.now()});
+  } else {body=$('mBody').value.trim()}
+  let rec;
+  if(curType==='recording'){
+    rec=readRecFields();
+    if($('mRecUrl').value.trim()&&!rec.url){toast('That link doesn\'t look like a web address.');$('mRecUrl').focus();return}
+    if(!title&&!body&&!rec.url&&!rec.transcript){$('mRecUrl').focus();return}
+  } else if(curType!=='checklist'&&!title&&!body){$('mTitle').focus();return}
+  if(editId){const e=entries.find(x=>x.id===editId);if(e){e.title=title;e.body=body;e.tags=tags;e.type=curType;e.images=[...modalImages];e.updatedTs=Date.now();if(rec)e.rec=rec;else delete e.rec}}
+  else entries.push({id:gid(),type:curType,title,body,tags,images:[...modalImages],ts:Date.now(),...(rec?{rec}:{})});
   const ok=save();
   renderAll();clearDraft();
   releaseFocus($('ov'));$('ov').classList.remove('open');editId=null;modalImages=[];renderModalPreviews();modalChecklistItems=[];
@@ -1183,6 +1251,112 @@ async function renderPreview(text,seq){
   out.replaceChildren(...buf.childNodes);
   $('latexPreviewWrap').hidden=false;
 }
+
+/* ---------- Recordings ---------- */
+function safeUrl(u){
+  u=String(u||'').trim();if(!u)return '';
+  if(!/^[a-z][\w+.-]*:/i.test(u))u='https://'+u;
+  try{const x=new URL(u);return /^https?:$/.test(x.protocol)&&x.hostname.includes('.')?x.href:''}catch(e){return ''}
+}
+function normRec(r){
+  r=r&&typeof r==='object'?r:{};
+  return {url:safeUrl(r.url),passcode:String(r.passcode??''),date:/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(r.date)?r.date:'',attendees:String(r.attendees??''),transcript:String(r.transcript??'')};
+}
+function readRecFields(){return normRec({url:$('mRecUrl').value,passcode:$('mRecPass').value.trim(),date:$('mRecDate').value,attendees:$('mRecAtt').value.trim(),transcript:$('mRecTx').value.trim()})}
+function toLocalInput(d){const p=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`}
+function parseZoomDate(s){
+  const m=String(s).match(/([A-Za-z]{3,9})\.? (\d{1,2}),? (\d{4})(?:,? (\d{1,2}):(\d{2})(?::\d{2})? ?([AP]M)?)?/i);
+  if(!m)return '';
+  const d=new Date(`${m[1].slice(0,3)} ${m[2]}, ${m[3]}`);if(isNaN(d))return '';
+  if(m[4]){let h=+m[4]%12;if(/pm/i.test(m[6]||''))h+=12;else if(!m[6])h=+m[4];d.setHours(h,+m[5])}
+  return toLocalInput(d);
+}
+// Zoom's "Copy shareable link" text looks like:
+//   Topic: Group meeting / Date: Oct 17, 2026 10:00 AM Central Time / Meeting Recording: https://… / Access Passcode: X
+function parseZoomShare(text){
+  const get=re=>{const m=text.match(re);return m?m[1].trim():''};
+  const url=get(/(https?:\/\/[^\s<>"]*zoom\.us\/rec\/[^\s<>"]+)/i)||get(/(https?:\/\/[^\s<>"]+)/i);
+  return {url,passcode:get(/passcode\s*:\s*(\S+)/i),topic:get(/^\s*topic\s*:\s*(.+)$/im),date:parseZoomDate(get(/^\s*(?:start time|date)\s*:\s*(.+)$/im))};
+}
+function handleRecPaste(e){
+  const text=e.clipboardData?.getData('text')||'';
+  if(!/\n|passcode|topic\s*:/i.test(text))return;
+  const z=parseZoomShare(text);
+  if(!z.url)return;
+  e.preventDefault();
+  $('mRecUrl').value=z.url;
+  if(z.passcode)$('mRecPass').value=z.passcode;
+  if(z.date)$('mRecDate').value=z.date;
+  if(z.topic&&!$('mTitle').value.trim())$('mTitle').value=z.topic;
+  triggerAutosave();
+  flashIndicator('✓ Filled from Zoom',2200);
+}
+function parseVTT(text){
+  const lines=text.replace(/\r/g,'').split('\n');
+  if(!/^\uFEFF?WEBVTT/.test(lines[0]||'')&&!/-->/.test(text))return text.trim();
+  const out=[];let ts=null,last=null,expectText=false;
+  for(const raw of lines){
+    const l=raw.trim();
+    if(/-->/.test(l)){
+      ts=l.split(/\s*-->/)[0].replace(/[.,]\d+$/,'');
+      if(/^\d{1,2}:\d{2}$/.test(ts))ts='00:'+ts;
+      ts=ts.replace(/^(\d):/,'0$1:');
+      expectText=true;continue;
+    }
+    if(!l){expectText=false;continue}
+    if(!expectText)continue; // headers, cue numbers, NOTE blocks
+    const sm=l.match(/^([^:]{1,60}):\s+(.+)$/);
+    const speaker=sm?sm[1].trim():null,txt=sm?sm[2]:l;
+    if(last&&speaker&&last.speaker===speaker)last.text+=' '+txt;
+    else if(last&&!speaker&&last.ts===ts)last.text+=' '+txt;
+    else out.push(last={ts,speaker,text:txt});
+  }
+  return out.map(x=>`[${x.ts}] ${x.speaker?x.speaker+': ':''}${x.text}`).join('\n');
+}
+function importTranscript(e){
+  const file=e.target.files[0];e.target.value='';
+  if(!file)return;
+  const r=new FileReader();
+  r.onload=()=>{
+    const tx=parseVTT(String(r.result||''));
+    const ta=$('mRecTx');
+    if(ta.value.trim()&&!confirm('Replace the current transcript?'))return;
+    ta.value=tx;updateTxCount();triggerAutosave();
+    if(!$('mTitle').value.trim())$('mTitle').value=file.name.replace(/\.(vtt|txt|srt)$/i,'').replace(/[_-]+/g,' ').trim();
+    flashIndicator(`✓ Imported ${tx?tx.split('\n').length:0} lines`,2200);
+  };
+  r.onerror=()=>toast('Could not read that file.');
+  r.readAsText(file);
+}
+function updateTxCount(){const v=$('mRecTx').value.trim();$('mTxCount').textContent=v?v.split('\n').length+' lines':''}
+function fmtMeeting(d){const x=new Date(d);return isNaN(x)?'':x.toLocaleString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}
+function recMetaHTML(e){
+  const r=e.rec||normRec();
+  const link=r.url
+    ?`<a class="rec-open" href="${escHtml(r.url)}" target="_blank" rel="noopener noreferrer">${ic('video')}Open recording</a>`
+    :`<span class="rec-missing">No link yet — edit to add one</span>`;
+  const pass=r.passcode?`<button class="rec-pass" title="Copy passcode" data-v="${escHtml(r.passcode)}" onclick="copyText(this.dataset.v,'Passcode copied.')">${ic('copy')}<span>${escHtml(r.passcode)}</span></button>`:'';
+  const info=[r.date?fmtMeeting(r.date):'',r.attendees?escHtml(r.attendees):''].filter(Boolean).join(' · ');
+  return `<div class="rec-meta">${link}${pass}</div>${info?`<div class="rec-info">${info}</div>`:''}`;
+}
+function txLinesHTML(t){
+  return t.split('\n').map(l=>{
+    const m=l.match(/^\[(\d{2}:\d{2}:\d{2})\] (?:([^:]{1,60}): )?(.*)$/);
+    return m?`<div class="tx-line"><span class="tx-ts">${m[1]}</span>${m[2]?`<span class="tx-sp">${escHtml(m[2])}:</span> `:''}${escHtml(m[3])}</div>`:`<div class="tx-line">${escHtml(l)}</div>`;
+  }).join('');
+}
+function recTranscriptHTML(e,q){
+  const t=e.rec?.transcript;if(!t)return '';
+  const open=q&&t.toLowerCase().includes(q);
+  return `<details class="rec-tx"${open?' open':''} ontoggle="fillTranscript(this,'${e.id}')"><summary>Transcript · ${t.split('\n').length} lines</summary><div class="rec-tx-body">${open?txLinesHTML(t):''}</div></details>`;
+}
+// Transcripts can be long, so they're only rendered when expanded.
+function fillTranscript(d,id){
+  const body=d.querySelector('.rec-tx-body');
+  if(!d.open||body.childElementCount)return;
+  const e=entries.find(x=>x.id===id);if(e?.rec?.transcript)body.innerHTML=txLinesHTML(e.rec.transcript);
+}
+async function copyText(v,msg){try{await navigator.clipboard.writeText(v);toast(msg||'Copied.')}catch(e){toast('Could not copy — select and copy manually.')}}
 
 /* ---------- Experiences ---------- */
 function renderExp(){
